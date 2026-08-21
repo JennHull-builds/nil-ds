@@ -62,14 +62,14 @@ with tokens + primitives + Vite demo. Grow into packages when a split earns it.
 |-------|-----|
 | Full `packages/` + `apps/` monorepo day one | Premature; rename/split when consumers need it |
 | Radix as a hard dependency | Extract isn’t Radix-based; add only if a primitive needs it |
-| Next.js `apps/docs` + `sandbox` | Vite demo now; Storybook next; Next docs optional later |
+| Next.js `apps/docs` + `sandbox` | Vite demo now; **Storybook parked** until it earns the cost; Next docs optional later |
 | `.nilrc` | Optional once CLI exists |
 | Tailwind v4 `@theme` preset as mandatory | Fine as a later `@nilds/core` export; kit must work without forcing TW |
 | Soft Bento chrome | Wrong system — kit #5 |
 
 ### Near-term slices (after private remote is live)
 
-1. Storybook stub (or keep demo until Storybook earns the cost)
+1. ~~Storybook stub (or keep demo until Storybook earns the cost)~~ **parked** — Vite demo stays
 2. Figma variables path (document + sync plan — not Code Connect day one)
 3. npm publish readiness under `@nilds/*` (still private or gated until Jen says public)
 4. ~~Start `--nil-*` token rename when touching tokens next~~ **done 2026-08-21**
@@ -128,7 +128,7 @@ Docs/component names that still fuse them need a dedicated cleanup pass.
 - [x] Real name → **NIL DS**
 - [x] Remote → **private GitHub** until public flip
 - [x] Accent vs neutral-only for v0.1 → **accent kept** (swappable `--nil-color-accent`; not a grey-only slice)
-- [ ] Storybook vs keep Vite demo for the next polish pass
+- [x] Storybook vs Vite demo → **park Storybook**; keep Vite demo for polish
 - [x] First `--nil-*` token migration slice
 
 ---
@@ -165,3 +165,4 @@ reinjection, brand lime/mint/pork, Soft Bento, page/print chrome.
 - 2026-08-21: Layout tokens + `src/core/core.css` — reset, `.nil-container` / `.nil-grid`, demo on core layout.
 - 2026-08-21: Lightbox + CLI motion (`enter` / `blink` / `grid-bg`) tokens and core utilities.
 - 2026-08-21: Locked v0.1 colour — **accent kept** (not neutral-only).
+- 2026-08-21: Parked Storybook — Vite demo remains the showroom.

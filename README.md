@@ -94,7 +94,8 @@ Vite is demo-only. Kit consumers: plain `.tsx` + `tokens.css` + optional `core.c
 - [x] Private GitHub (until public flip)
 - [x] Token architecture + primitives + demo
 - [x] `--nil-*` token migration slice
-- [ ] Storybook / Figma path / `@nilds/*` publish readiness
+- [ ] Figma path / `@nilds/*` publish readiness
+- [x] Showroom: **Vite demo** (Storybook parked)
 - [ ] Monorepo split when it earns its keep (`PLAN.md`)
 
 ## Not in scope here
