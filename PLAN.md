@@ -86,6 +86,7 @@ nil-ds/
 ├── demo/                 # Vite playground
 └── src/
     ├── tokens/           # → future @nilds/tokens
+    ├── core/             # → future @nilds/core (reset + layout CSS)
     ├── components/       # → future @nilds/react
     └── index.ts
 ```
@@ -141,7 +142,7 @@ Hygiene debt (Bento* names in mothership) stays parked.
 
 1. ~~**Meta** (from MetaRow)~~ **done 2026-08-21** — bracket key-value; restores CLI vocab Badge left behind
 2. ~~**ThemeToggle**~~ **done 2026-08-21** — sharp segmented control; controlled theme object, not demo Button
-3. **Layout tokens + core CSS** — container / 12-col / gutters / reset (`@nilds/core`)
+3. ~~**Layout tokens + core CSS**~~ **done 2026-08-21** — container / 12-col / gutters / reset (`src/core` → `@nilds/core`)
 
 Also worth later: Lightbox; CLI motion extras (`enter`, `blink`, `grid-bg`).
 
@@ -161,3 +162,4 @@ reinjection, brand lime/mint/pork, Soft Bento, page/print chrome.
 - 2026-08-21: Extract gap audit parked (Meta → ThemeToggle → layout/core).
 - 2026-08-21: Meta primitive (MetaRow extract) — bracket key-value, demo + README.
 - 2026-08-21: ThemeToggle — controlled segmented light/dark; demo wired; no ThemeProvider.
+- 2026-08-21: Layout tokens + `src/core/core.css` — reset, `.nil-container` / `.nil-grid`, demo on core layout.

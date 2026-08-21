@@ -47,23 +47,27 @@ components (--nil-* only — never --nil-primitive-*)
 ```
 
 Source: `src/tokens/tokens.json` · CSS: `src/tokens/tokens.css`  
+Layout / reset: `src/core/core.css` (future `@nilds/core`) — load after tokens.  
 Theme: `data-theme="dark"` on an ancestor (light defaults on `:root`).
 
 ## Usage (today — single package)
 
 ```tsx
 import './tokens/tokens.css';
+import './core/core.css';
 import { Button, Card, Grid, Heading, Text } from 'nil-ds'; // or relative ./src
 
 function Example() {
   return (
-    <Grid columns={2}>
-      <Card>
-        <Heading level={3}>Real usage</Heading>
-        <Text muted>Every value traces back to a token.</Text>
-        <Button variant="primary">Do the thing</Button>
-      </Card>
-    </Grid>
+    <div className="nil-container">
+      <div className="nil-grid">
+        <Card style={{ gridColumn: 'span 6' }}>
+          <Heading level={3}>Real usage</Heading>
+          <Text muted>Every value traces back to a token.</Text>
+          <Button variant="primary">Do the thing</Button>
+        </Card>
+      </div>
+    </div>
   );
 }
 ```
@@ -79,7 +83,7 @@ npm run build:demo
 npm run typecheck
 ```
 
-Vite is demo-only. Kit consumers: plain `.tsx` + `tokens.css`.
+Vite is demo-only. Kit consumers: plain `.tsx` + `tokens.css` + optional `core.css`.
 
 ## Status
 

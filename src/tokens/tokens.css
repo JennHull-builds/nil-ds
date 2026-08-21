@@ -40,6 +40,15 @@
   --nil-primitive-type-scale-xl: 1.75rem;
   --nil-primitive-type-scale-2xl: 2.5rem;
 
+  /* Primitive — layout / breakpoints */
+  --nil-primitive-layout-page-x: 80px;
+  --nil-primitive-layout-section-y: 120px;
+  --nil-primitive-layout-max-width: 1440px;
+  --nil-primitive-layout-columns: 12;
+  --nil-primitive-layout-gutter: 24px;
+  --nil-primitive-breakpoint-md: 768px;
+  --nil-primitive-breakpoint-lg: 1024px;
+
   /* Semantic — non-color roles (alias primitives; theme-stable) */
   --nil-spacing-xs: var(--nil-primitive-spacing-xs);
   --nil-spacing-sm: var(--nil-primitive-spacing-sm);
@@ -69,6 +78,14 @@
   --nil-type-scale-lg: var(--nil-primitive-type-scale-lg);
   --nil-type-scale-xl: var(--nil-primitive-type-scale-xl);
   --nil-type-scale-2xl: var(--nil-primitive-type-scale-2xl);
+
+  --nil-layout-page-x: var(--nil-primitive-layout-page-x);
+  --nil-layout-section-y: var(--nil-primitive-layout-section-y);
+  --nil-layout-max-width: var(--nil-primitive-layout-max-width);
+  --nil-layout-columns: var(--nil-primitive-layout-columns);
+  --nil-layout-gutter: var(--nil-primitive-layout-gutter);
+  --nil-breakpoint-md: var(--nil-primitive-breakpoint-md);
+  --nil-breakpoint-lg: var(--nil-primitive-breakpoint-lg);
 
   /* Semantic — colour defaults (light theme) */
   --nil-color-bg: #f5f5f4;

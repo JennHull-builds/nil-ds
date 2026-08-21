@@ -1,0 +1,122 @@
+/**
+ * Core CSS — future @nilds/core.
+ * Load after tokens.css. Classes are .nil-* so they do not collide with
+ * consumer utilities. All values read --nil-* only.
+ *
+ * Layout pattern (from mothership-stable/foundations/globals.css):
+ *   <section>                         full-bleed band
+ *     <div class="nil-container">     max-width + page inset
+ *       <div class="nil-grid">        12-col, gutters
+ *         …
+ *       </div>
+ *     </div>
+ *   </section>
+ */
+
+/* ─── Reset ───────────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+body {
+  background-color: var(--nil-color-bg);
+  color: var(--nil-color-text);
+  font-family: var(--nil-font-body);
+  font-size: var(--nil-type-scale-base);
+  line-height: 1.5;
+  transition:
+    background-color var(--nil-motion-duration-fast) var(--nil-motion-easing-standard),
+    color var(--nil-motion-duration-fast) var(--nil-motion-easing-standard);
+  overflow-x: clip;
+  max-width: 100%;
+}
+
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
+}
+
+code,
+pre,
+.nil-mono {
+  font-family: var(--nil-font-mono);
+}
+
+/* ─── Layout ──────────────────────────────────────────────────────────────── */
+
+.nil-container {
+  width: 100%;
+  max-width: min(100%, var(--nil-layout-max-width));
+  margin-inline: auto;
+  padding-inline: var(--nil-layout-page-x);
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.nil-section-y {
+  padding-block: var(--nil-layout-section-y);
+}
+
+.nil-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--nil-layout-columns), minmax(0, 1fr));
+  gap: var(--nil-layout-gutter);
+}
+
+/* Escape .nil-container to the true page edge — never 100vw. */
+.nil-full-bleed {
+  width: 100%;
+  margin-inline: calc(-1 * var(--nil-layout-page-x));
+  max-width: none;
+}
+
+/*
+ * Responsive collapse. Literals match --nil-breakpoint-lg (1024px) and
+ * --nil-breakpoint-md (768px) — custom properties are not reliable in
+ * @media conditions across engines.
+ */
+@media (max-width: 1024px) {
+  .nil-container {
+    padding-inline: var(--nil-spacing-xl);
+  }
+
+  .nil-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .nil-full-bleed {
+    margin-inline: calc(-1 * var(--nil-spacing-xl));
+  }
+}
+
+@media (max-width: 767px) {
+  .nil-container {
+    padding-inline: var(--nil-spacing-md);
+  }
+
+  .nil-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .nil-section-y {
+    padding-block: var(--nil-spacing-2xl);
+  }
+
+  .nil-full-bleed {
+    margin-inline: calc(-1 * var(--nil-spacing-md));
+  }
+}

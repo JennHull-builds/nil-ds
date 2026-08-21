@@ -22,16 +22,8 @@ export function App() {
   const [theme, setTheme] = useState<Theme>('light');
 
   return (
-    <div
-      data-theme={theme}
-      style={{
-        minHeight: '100vh',
-        background: 'var(--nil-color-bg)',
-        color: 'var(--nil-color-text)',
-        padding: 'var(--nil-spacing-2xl) var(--nil-spacing-lg)',
-      }}
-    >
-      <div style={{ maxWidth: 960, margin: '0 auto' }}>
+    <div data-theme={theme} style={{ minHeight: '100vh' }}>
+      <div className="nil-container nil-section-y">
         <div
           style={{
             display: 'flex',
@@ -51,6 +43,25 @@ export function App() {
         </div>
 
         <Divider spacing="var(--nil-spacing-2xl)" />
+
+        <Heading level={2}>Layout (core)</Heading>
+        <Text muted size="sm">
+          <code>.nil-container</code> + <code>.nil-grid</code> — 12-col / gutters / responsive collapse. Future{' '}
+          <code>@nilds/core</code>.
+        </Text>
+        <div className="nil-grid" style={{ marginTop: 'var(--nil-spacing-md)' }}>
+          <Card style={{ gridColumn: 'span 4' }}>
+            <Text size="sm" muted>span 4</Text>
+          </Card>
+          <Card style={{ gridColumn: 'span 4' }}>
+            <Text size="sm" muted>span 4</Text>
+          </Card>
+          <Card style={{ gridColumn: 'span 4' }}>
+            <Text size="sm" muted>span 4</Text>
+          </Card>
+        </div>
+
+        <Divider />
 
         <Heading level={2}>Buttons</Heading>
         <Text muted size="sm">Variants and sizes, all reading --nil-* tokens only.</Text>
@@ -114,8 +125,8 @@ export function App() {
         <Divider spacing="var(--nil-spacing-2xl)" />
 
         <Text size="sm" muted>
-          Use the theme toggle above to check both themes — every colour here comes from
-          <code style={{ margin: '0 4px' }}>src/tokens/tokens.css</code>, nothing hardcoded in this page.
+          Use the theme toggle above to check both themes — colours from{' '}
+          <code>tokens.css</code>, layout from <code>core.css</code>.
         </Text>
       </div>
     </div>
