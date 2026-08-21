@@ -24,3 +24,6 @@ export type { DividerProps } from './components/Divider';
 
 export { Meta } from './components/Meta';
 export type { MetaProps } from './components/Meta';
+
+export { ThemeToggle } from './components/ThemeToggle';
+export type { Theme, ThemeToggleProps } from './components/ThemeToggle';

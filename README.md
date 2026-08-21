@@ -27,6 +27,7 @@ dx-grid) is a different system — not this kit.
 | `Input` | New |
 | `Divider` | New |
 | `Meta` | `.../MetaRow.tsx` (single item; compose for strips) |
+| `ThemeToggle` | `.../ThemeToggle.tsx` (controlled; no ThemeProvider) |
 
 Tokens: restructured from mothership foundations into an explicit two-layer
 model. Neutral default palette — swap accent without touching components.

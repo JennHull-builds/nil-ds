@@ -1,5 +1,17 @@
 import { useState } from 'react';
-import { Badge, Button, Card, Divider, Grid, Heading, Input, Meta, Text } from '../src';
+import {
+  Badge,
+  Button,
+  Card,
+  Divider,
+  Grid,
+  Heading,
+  Input,
+  Meta,
+  Text,
+  ThemeToggle,
+  type Theme,
+} from '../src';
 
 /**
  * Not a Storybook install — a single page that renders every primitive so
@@ -7,7 +19,7 @@ import { Badge, Button, Card, Divider, Grid, Heading, Input, Meta, Text } from '
  * stays a later plumbing step (see PLAN.md).
  */
 export function App() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState<Theme>('light');
 
   return (
     <div
@@ -35,12 +47,7 @@ export function App() {
               Token + primitive kit, extracted from mothership-stable. Brutalist CLI lineage — see README.
             </Text>
           </div>
-          <Button
-            variant="secondary"
-            onClick={() => setTheme((t) => (t === 'light' ? 'dark' : 'light'))}
-          >
-            Switch to {theme === 'light' ? 'dark' : 'light'}
-          </Button>
+          <ThemeToggle theme={theme} onThemeChange={setTheme} />
         </div>
 
         <Divider spacing="var(--nil-spacing-2xl)" />
@@ -87,9 +94,6 @@ export function App() {
 
         <Divider />
 
-
-        <Divider />
-
         <Heading level={2}>Meta</Heading>
         <Text muted size="sm">Bracket key-value tokens — CLI vocab Badge left behind. Compose for a strip.</Text>
         <div style={{ display: 'flex', gap: 'var(--nil-spacing-md)', flexWrap: 'wrap', marginTop: 'var(--nil-spacing-md)', alignItems: 'center' }}>
@@ -98,6 +102,8 @@ export function App() {
           <Meta label="Stack">React / Tokens</Meta>
           <Meta label="Status" tone="accent">Active</Meta>
         </div>
+
+        <Divider />
 
         <Heading level={2}>Input</Heading>
         <div style={{ maxWidth: 320, marginTop: 'var(--nil-spacing-md)', display: 'flex', flexDirection: 'column', gap: 'var(--nil-spacing-md)' }}>
@@ -108,7 +114,7 @@ export function App() {
         <Divider spacing="var(--nil-spacing-2xl)" />
 
         <Text size="sm" muted>
-          Toggle the button above to check both themes — every colour here comes from
+          Use the theme toggle above to check both themes — every colour here comes from
           <code style={{ margin: '0 4px' }}>src/tokens/tokens.css</code>, nothing hardcoded in this page.
         </Text>
       </div>
