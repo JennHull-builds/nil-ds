@@ -14,9 +14,9 @@ export function App() {
       data-theme={theme}
       style={{
         minHeight: '100vh',
-        background: 'var(--semantic-color-bg)',
-        color: 'var(--semantic-color-text)',
-        padding: 'var(--semantic-spacing-2xl) var(--semantic-spacing-lg)',
+        background: 'var(--nil-color-bg)',
+        color: 'var(--nil-color-text)',
+        padding: 'var(--nil-spacing-2xl) var(--nil-spacing-lg)',
       }}
     >
       <div style={{ maxWidth: 960, margin: '0 auto' }}>
@@ -25,7 +25,7 @@ export function App() {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'flex-start',
-            gap: 'var(--semantic-spacing-md)',
+            gap: 'var(--nil-spacing-md)',
             flexWrap: 'wrap',
           }}
         >
@@ -43,11 +43,11 @@ export function App() {
           </Button>
         </div>
 
-        <Divider spacing="var(--semantic-spacing-2xl)" />
+        <Divider spacing="var(--nil-spacing-2xl)" />
 
         <Heading level={2}>Buttons</Heading>
-        <Text muted size="sm">Variants and sizes, all reading semantic tokens only.</Text>
-        <div style={{ display: 'flex', gap: 'var(--semantic-spacing-sm)', flexWrap: 'wrap', marginTop: 'var(--semantic-spacing-md)' }}>
+        <Text muted size="sm">Variants and sizes, all reading --nil-* tokens only.</Text>
+        <div style={{ display: 'flex', gap: 'var(--nil-spacing-sm)', flexWrap: 'wrap', marginTop: 'var(--nil-spacing-md)' }}>
           <Button variant="primary">Primary</Button>
           <Button variant="secondary">Secondary</Button>
           <Button variant="ghost">Ghost</Button>
@@ -58,7 +58,7 @@ export function App() {
         <Divider />
 
         <Heading level={2}>Badges</Heading>
-        <div style={{ display: 'flex', gap: 'var(--semantic-spacing-sm)', flexWrap: 'wrap', marginTop: 'var(--semantic-spacing-md)' }}>
+        <div style={{ display: 'flex', gap: 'var(--nil-spacing-sm)', flexWrap: 'wrap', marginTop: 'var(--nil-spacing-md)' }}>
           <Badge tone="neutral">Neutral</Badge>
           <Badge tone="accent">Accent</Badge>
           <Badge tone="danger">Danger</Badge>
@@ -68,7 +68,7 @@ export function App() {
         <Divider />
 
         <Heading level={2}>Cards + Grid</Heading>
-        <div style={{ marginTop: 'var(--semantic-spacing-md)' }}>
+        <div style={{ marginTop: 'var(--nil-spacing-md)' }}>
           <Grid columns={3}>
             <Card>
               <Heading level={3}>Real usage</Heading>
@@ -88,12 +88,12 @@ export function App() {
         <Divider />
 
         <Heading level={2}>Input</Heading>
-        <div style={{ maxWidth: 320, marginTop: 'var(--semantic-spacing-md)', display: 'flex', flexDirection: 'column', gap: 'var(--semantic-spacing-md)' }}>
+        <div style={{ maxWidth: 320, marginTop: 'var(--nil-spacing-md)', display: 'flex', flexDirection: 'column', gap: 'var(--nil-spacing-md)' }}>
           <Input label="Name" placeholder="Sid Vicious" />
           <Input label="Email" type="email" error="This field is required" />
         </div>
 
-        <Divider spacing="var(--semantic-spacing-2xl)" />
+        <Divider spacing="var(--nil-spacing-2xl)" />
 
         <Text size="sm" muted>
           Toggle the button above to check both themes — every colour here comes from

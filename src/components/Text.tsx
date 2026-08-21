@@ -11,10 +11,10 @@ export function Text({ children, size = 'base', muted = false }: TextProps) {
   return (
     <p
       style={{
-        fontFamily: 'var(--semantic-font-body)',
-        fontSize: size === 'sm' ? 'var(--semantic-type-scale-sm)' : 'var(--semantic-type-scale-base)',
+        fontFamily: 'var(--nil-font-body)',
+        fontSize: size === 'sm' ? 'var(--nil-type-scale-sm)' : 'var(--nil-type-scale-base)',
         lineHeight: 1.6,
-        color: muted ? 'var(--semantic-color-text-muted)' : 'var(--semantic-color-text)',
+        color: muted ? 'var(--nil-color-text-muted)' : 'var(--nil-color-text)',
         margin: 0,
       }}
     >

@@ -53,7 +53,7 @@ with tokens + primitives + Vite demo. Grow into packages when a split earns it.
 | **`@nilds/react`** (or `@nilds/ui`) | React primitives — today’s `src/components/`. |
 | **`@nilds/cli`** | Later near-term: `nilds add …`, token sync (shadcn-shaped distribution). |
 | **`@nilds/icons`** | Later — 1-bit / geometric / CLI glyphs. Not day one. |
-| **3-tier tokens** | Primitive → semantic → component. Prefer `--nil-*` / `nil.*` namespace as we migrate CSS vars. |
+| **3-tier tokens** | Primitive → semantic → component. CSS namespace: `--nil-*` / `--nil-primitive-*`. |
 | **Scoped imports** | `import { Button } from '@nilds/react'` once packages exist. |
 
 ### Defer / ignore for now
@@ -72,7 +72,7 @@ with tokens + primitives + Vite demo. Grow into packages when a split earns it.
 1. Storybook stub (or keep demo until Storybook earns the cost)
 2. Figma variables path (document + sync plan — not Code Connect day one)
 3. npm publish readiness under `@nilds/*` (still private or gated until Jen says public)
-4. Start `--nil-*` token rename when touching tokens next
+4. ~~Start `--nil-*` token rename when touching tokens next~~ **done 2026-08-21**
 
 ---
 
@@ -128,7 +128,25 @@ Docs/component names that still fuse them need a dedicated cleanup pass.
 - [x] Remote → **private GitHub** until public flip
 - [ ] Accent vs neutral-only for v0.1 shareable slice
 - [ ] Storybook vs keep Vite demo for the next polish pass
-- [ ] First `--nil-*` token migration slice timing
+- [x] First `--nil-*` token migration slice
+
+---
+
+## Extract gaps (2026-08-21 audit)
+
+Mothership foundations vs this kit. Six mapped primitives + Input/Divider are in.
+Hygiene debt (Bento* names in mothership) stays parked.
+
+**Next craft slices (ranked):**
+
+1. **Meta** (from MetaRow) — bracket key-value; restores CLI vocab Badge left behind
+2. **ThemeToggle** — sharp segmented control; theme as kit object, not demo Button
+3. **Layout tokens + core CSS** — container / 12-col / gutters / reset (`@nilds/core`)
+
+Also worth later: Lightbox; CLI motion extras (`enter`, `blink`, `grid-bg`).
+
+**Skip:** Header, Hero, WorkListItem, ProjectCard, CaseStudyQuickLinks, ThemeProvider
+reinjection, brand lime/mint/pork, Soft Bento, page/print chrome.
 
 ---
 
@@ -138,3 +156,6 @@ Docs/component names that still fuse them need a dedicated cleanup pass.
 - 2026-08-21: Taxonomy fix (brutalist CLI ≠ Soft Bento). Local git init.
 - 2026-08-21: Renamed **NIL DS** / `nil-ds`. Private GitHub. Gemini monorepo
   taken as north star; single-package now. Storybook / Figma / npm near-term.
+- 2026-08-21: Craft pass — square CLI look, disabled state, semantic-only
+  components, `--nil-*` / `--nil-primitive-*` CSS namespace.
+- 2026-08-21: Extract gap audit parked (Meta → ThemeToggle → layout/core).

@@ -8,30 +8,30 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantStyles: Record<NonNullable<ButtonProps['variant']>, React.CSSProperties> = {
   primary: {
-    background: 'var(--semantic-color-accent)',
-    color: 'var(--semantic-color-accent-contrast)',
-    border: 'var(--semantic-border-width) solid transparent',
+    background: 'var(--nil-color-accent)',
+    color: 'var(--nil-color-accent-contrast)',
+    border: 'var(--nil-border-width) solid transparent',
   },
   secondary: {
     background: 'transparent',
-    color: 'var(--semantic-color-text)',
-    border: 'var(--semantic-border-width-thick) solid var(--semantic-color-border)',
+    color: 'var(--nil-color-text)',
+    border: 'var(--nil-border-width-thick) solid var(--nil-color-border)',
   },
   ghost: {
     background: 'transparent',
-    color: 'var(--semantic-color-text)',
-    border: 'var(--semantic-border-width) solid transparent',
+    color: 'var(--nil-color-text)',
+    border: 'var(--nil-border-width) solid transparent',
   },
 };
 
 const sizeStyles: Record<NonNullable<ButtonProps['size']>, React.CSSProperties> = {
   sm: {
-    padding: 'var(--semantic-spacing-xs) var(--semantic-spacing-sm)',
-    fontSize: 'var(--semantic-type-scale-sm)',
+    padding: 'var(--nil-spacing-xs) var(--nil-spacing-sm)',
+    fontSize: 'var(--nil-type-scale-sm)',
   },
   md: {
-    padding: 'var(--semantic-spacing-sm) var(--semantic-spacing-lg)',
-    fontSize: 'var(--semantic-type-scale-base)',
+    padding: 'var(--nil-spacing-sm) var(--nil-spacing-lg)',
+    fontSize: 'var(--nil-type-scale-base)',
   },
 };
 
@@ -46,20 +46,20 @@ export function Button({ children, variant = 'primary', size = 'md', style, disa
       {...rest}
       disabled={disabled}
       style={{
-        fontFamily: 'var(--semantic-font-body)',
+        fontFamily: 'var(--nil-font-body)',
         fontWeight: 600,
-        borderRadius: 'var(--semantic-radius-none)',
+        borderRadius: 'var(--nil-radius-none)',
         cursor: disabled ? 'not-allowed' : 'pointer',
-        transition: `background var(--semantic-motion-duration-base) var(--semantic-motion-easing-standard)`,
+        transition: `background var(--nil-motion-duration-base) var(--nil-motion-easing-standard)`,
         ...variantStyles[variant],
         ...sizeStyles[size],
         ...(disabled
           ? {
               opacity: 0.55,
               cursor: 'not-allowed',
-              background: 'var(--semantic-color-surface)',
-              color: 'var(--semantic-color-text-muted)',
-              border: 'var(--semantic-border-width-thick) solid var(--semantic-color-border)',
+              background: 'var(--nil-color-surface)',
+              color: 'var(--nil-color-text-muted)',
+              border: 'var(--nil-border-width-thick) solid var(--nil-color-border)',
             }
           : null),
         ...style,

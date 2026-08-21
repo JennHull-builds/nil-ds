@@ -6,10 +6,10 @@ export interface BadgeProps {
 }
 
 const toneColor: Record<NonNullable<BadgeProps['tone']>, string> = {
-  neutral: 'var(--semantic-color-text-muted)',
-  accent: 'var(--semantic-color-accent)',
-  danger: 'var(--semantic-color-danger)',
-  success: 'var(--semantic-color-success)',
+  neutral: 'var(--nil-color-text-muted)',
+  accent: 'var(--nil-color-accent)',
+  danger: 'var(--nil-color-danger)',
+  success: 'var(--nil-color-success)',
 };
 
 /**
@@ -23,14 +23,14 @@ export function Badge({ children, tone = 'neutral' }: BadgeProps) {
       style={{
         display: 'inline-flex',
         alignItems: 'center',
-        gap: 'var(--semantic-spacing-xs)',
-        padding: 'var(--semantic-spacing-xs) var(--semantic-spacing-sm)',
-        fontFamily: 'var(--semantic-font-mono)',
-        fontSize: 'var(--semantic-type-scale-xs)',
+        gap: 'var(--nil-spacing-xs)',
+        padding: 'var(--nil-spacing-xs) var(--nil-spacing-sm)',
+        fontFamily: 'var(--nil-font-mono)',
+        fontSize: 'var(--nil-type-scale-xs)',
         letterSpacing: '0.04em',
         textTransform: 'uppercase',
-        borderRadius: 'var(--semantic-radius-none)',
-        border: `var(--semantic-border-width) solid ${color}`,
+        borderRadius: 'var(--nil-radius-none)',
+        border: `var(--nil-border-width) solid ${color}`,
         color,
       }}
     >

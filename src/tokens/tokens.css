@@ -1,90 +1,92 @@
 /**
  * CSS output of tokens.json. Hand-authored to stay dependency-free (no build
  * step required to consume this kit) — if tokens.json changes, update this
- * file too. Components in ../components only ever read the --semantic-*
- * custom properties, never the --primitive-* ones directly.
+ * file too.
+ *
+ * Namespace: --nil-* (consumer / semantic) and --nil-primitive-* (raw).
+ * Components only ever read --nil-* properties, never --nil-primitive-*.
  */
 
 :root {
   /* Primitive — spacing */
-  --primitive-spacing-xs: 4px;
-  --primitive-spacing-sm: 8px;
-  --primitive-spacing-md: 16px;
-  --primitive-spacing-lg: 24px;
-  --primitive-spacing-xl: 32px;
-  --primitive-spacing-2xl: 64px;
+  --nil-primitive-spacing-xs: 4px;
+  --nil-primitive-spacing-sm: 8px;
+  --nil-primitive-spacing-md: 16px;
+  --nil-primitive-spacing-lg: 24px;
+  --nil-primitive-spacing-xl: 32px;
+  --nil-primitive-spacing-2xl: 64px;
 
   /* Primitive — radius / border */
-  --primitive-radius-none: 0px;
-  --primitive-radius-sm: 4px;
-  --primitive-radius-md: 8px;
-  --primitive-radius-full: 999px;
-  --primitive-border-width: 1px;
-  --primitive-border-width-thick: 2px;
+  --nil-primitive-radius-none: 0px;
+  --nil-primitive-radius-sm: 4px;
+  --nil-primitive-radius-md: 8px;
+  --nil-primitive-radius-full: 999px;
+  --nil-primitive-border-width: 1px;
+  --nil-primitive-border-width-thick: 2px;
 
   /* Primitive — motion */
-  --primitive-motion-duration-fast: 120ms;
-  --primitive-motion-duration-base: 200ms;
-  --primitive-motion-duration-slow: 360ms;
-  --primitive-motion-easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --nil-primitive-motion-duration-fast: 120ms;
+  --nil-primitive-motion-duration-base: 200ms;
+  --nil-primitive-motion-duration-slow: 360ms;
+  --nil-primitive-motion-easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
 
   /* Primitive — type */
-  --primitive-font-body: system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --primitive-font-mono: 'JetBrains Mono', ui-monospace, monospace;
-  --primitive-type-scale-xs: 0.75rem;
-  --primitive-type-scale-sm: 0.875rem;
-  --primitive-type-scale-base: 1rem;
-  --primitive-type-scale-lg: 1.25rem;
-  --primitive-type-scale-xl: 1.75rem;
-  --primitive-type-scale-2xl: 2.5rem;
+  --nil-primitive-font-body: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --nil-primitive-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --nil-primitive-type-scale-xs: 0.75rem;
+  --nil-primitive-type-scale-sm: 0.875rem;
+  --nil-primitive-type-scale-base: 1rem;
+  --nil-primitive-type-scale-lg: 1.25rem;
+  --nil-primitive-type-scale-xl: 1.75rem;
+  --nil-primitive-type-scale-2xl: 2.5rem;
 
   /* Semantic — non-color roles (alias primitives; theme-stable) */
-  --semantic-spacing-xs: var(--primitive-spacing-xs);
-  --semantic-spacing-sm: var(--primitive-spacing-sm);
-  --semantic-spacing-md: var(--primitive-spacing-md);
-  --semantic-spacing-lg: var(--primitive-spacing-lg);
-  --semantic-spacing-xl: var(--primitive-spacing-xl);
-  --semantic-spacing-2xl: var(--primitive-spacing-2xl);
+  --nil-spacing-xs: var(--nil-primitive-spacing-xs);
+  --nil-spacing-sm: var(--nil-primitive-spacing-sm);
+  --nil-spacing-md: var(--nil-primitive-spacing-md);
+  --nil-spacing-lg: var(--nil-primitive-spacing-lg);
+  --nil-spacing-xl: var(--nil-primitive-spacing-xl);
+  --nil-spacing-2xl: var(--nil-primitive-spacing-2xl);
 
-  --semantic-radius-none: var(--primitive-radius-none);
-  --semantic-radius-sm: var(--primitive-radius-sm);
-  --semantic-radius-md: var(--primitive-radius-md);
-  --semantic-radius-full: var(--primitive-radius-full);
+  --nil-radius-none: var(--nil-primitive-radius-none);
+  --nil-radius-sm: var(--nil-primitive-radius-sm);
+  --nil-radius-md: var(--nil-primitive-radius-md);
+  --nil-radius-full: var(--nil-primitive-radius-full);
 
-  --semantic-border-width: var(--primitive-border-width);
-  --semantic-border-width-thick: var(--primitive-border-width-thick);
+  --nil-border-width: var(--nil-primitive-border-width);
+  --nil-border-width-thick: var(--nil-primitive-border-width-thick);
 
-  --semantic-motion-duration-fast: var(--primitive-motion-duration-fast);
-  --semantic-motion-duration-base: var(--primitive-motion-duration-base);
-  --semantic-motion-duration-slow: var(--primitive-motion-duration-slow);
-  --semantic-motion-easing-standard: var(--primitive-motion-easing-standard);
+  --nil-motion-duration-fast: var(--nil-primitive-motion-duration-fast);
+  --nil-motion-duration-base: var(--nil-primitive-motion-duration-base);
+  --nil-motion-duration-slow: var(--nil-primitive-motion-duration-slow);
+  --nil-motion-easing-standard: var(--nil-primitive-motion-easing-standard);
 
-  --semantic-font-body: var(--primitive-font-body);
-  --semantic-font-mono: var(--primitive-font-mono);
-  --semantic-type-scale-xs: var(--primitive-type-scale-xs);
-  --semantic-type-scale-sm: var(--primitive-type-scale-sm);
-  --semantic-type-scale-base: var(--primitive-type-scale-base);
-  --semantic-type-scale-lg: var(--primitive-type-scale-lg);
-  --semantic-type-scale-xl: var(--primitive-type-scale-xl);
-  --semantic-type-scale-2xl: var(--primitive-type-scale-2xl);
+  --nil-font-body: var(--nil-primitive-font-body);
+  --nil-font-mono: var(--nil-primitive-font-mono);
+  --nil-type-scale-xs: var(--nil-primitive-type-scale-xs);
+  --nil-type-scale-sm: var(--nil-primitive-type-scale-sm);
+  --nil-type-scale-base: var(--nil-primitive-type-scale-base);
+  --nil-type-scale-lg: var(--nil-primitive-type-scale-lg);
+  --nil-type-scale-xl: var(--nil-primitive-type-scale-xl);
+  --nil-type-scale-2xl: var(--nil-primitive-type-scale-2xl);
 
   /* Semantic — colour defaults (light theme) */
-  --semantic-color-bg: #f5f5f4;
-  --semantic-color-surface: #d4d4d4;
-  --semantic-color-text: #0a0a0a;
-  --semantic-color-text-muted: #4a4a4a;
-  --semantic-color-border: #0a0a0a;
-  --semantic-color-accent: #3b6ef5;
-  --semantic-color-accent-contrast: #ffffff;
-  --semantic-color-danger: #c0392b;
-  --semantic-color-success: #2e7d4f;
+  --nil-color-bg: #f5f5f4;
+  --nil-color-surface: #d4d4d4;
+  --nil-color-text: #0a0a0a;
+  --nil-color-text-muted: #4a4a4a;
+  --nil-color-border: #0a0a0a;
+  --nil-color-accent: #3b6ef5;
+  --nil-color-accent-contrast: #ffffff;
+  --nil-color-danger: #c0392b;
+  --nil-color-success: #2e7d4f;
 }
 
 [data-theme='dark'] {
-  --semantic-color-bg: #0a0a0a;
-  --semantic-color-surface: #1c1c1c;
-  --semantic-color-text: #f5f5f4;
-  --semantic-color-text-muted: #8a8a8a;
-  --semantic-color-border: #d4d4d4;
+  --nil-color-bg: #0a0a0a;
+  --nil-color-surface: #1c1c1c;
+  --nil-color-text: #f5f5f4;
+  --nil-color-text-muted: #8a8a8a;
+  --nil-color-border: #d4d4d4;
   /* accent / danger / success stay theme-independent brand tokens */
 }

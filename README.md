@@ -29,7 +29,8 @@ dx-grid) is a different system — not this kit.
 
 Tokens: restructured from mothership foundations into an explicit two-layer
 model. Neutral default palette — swap accent without touching components.
-Target CSS namespace as we migrate: `--nil-*` (see `PLAN.md`).
+Target CSS namespace: `--nil-*` (semantic / consumer) and `--nil-primitive-*`
+(raw). Components read `--nil-*` only.
 
 ## Token architecture
 
@@ -40,7 +41,7 @@ primitive tokens (raw values)
 semantic tokens (roles per theme)
         │
         ▼
-components (semantic only — never raw primitives)
+components (--nil-* only — never --nil-primitive-*)
 ```
 
 Source: `src/tokens/tokens.json` · CSS: `src/tokens/tokens.css`  
@@ -83,7 +84,7 @@ Vite is demo-only. Kit consumers: plain `.tsx` + `tokens.css`.
 - [x] Name: **NIL DS** · folder/repo `nil-ds`
 - [x] Private GitHub (until public flip)
 - [x] Token architecture + primitives + demo
-- [ ] `--nil-*` token migration slice
+- [x] `--nil-*` token migration slice
 - [ ] Storybook / Figma path / `@nilds/*` publish readiness
 - [ ] Monorepo split when it earns its keep (`PLAN.md`)
 

@@ -3,12 +3,12 @@ export interface DividerProps {
 }
 
 /** New for this kit — a plain rule using the border/spacing tokens, no Mothership equivalent existed. */
-export function Divider({ spacing = 'var(--semantic-spacing-md)' }: DividerProps) {
+export function Divider({ spacing = 'var(--nil-spacing-md)' }: DividerProps) {
   return (
     <hr
       style={{
         border: 'none',
-        borderTop: 'var(--semantic-border-width) solid var(--semantic-color-border)',
+        borderTop: 'var(--nil-border-width) solid var(--nil-color-border)',
         margin: `${spacing} 0`,
       }}
     />

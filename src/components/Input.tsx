@@ -16,13 +16,13 @@ export function Input({ label, error, id, style, ...rest }: InputProps) {
   const inputId = id ?? generatedId;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-spacing-xs)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--nil-spacing-xs)' }}>
       <label
         htmlFor={inputId}
         style={{
-          fontFamily: 'var(--semantic-font-body)',
-          fontSize: 'var(--semantic-type-scale-sm)',
-          color: 'var(--semantic-color-text)',
+          fontFamily: 'var(--nil-font-body)',
+          fontSize: 'var(--nil-type-scale-sm)',
+          color: 'var(--nil-color-text)',
         }}
       >
         {label}
@@ -32,22 +32,22 @@ export function Input({ label, error, id, style, ...rest }: InputProps) {
         {...rest}
         aria-invalid={Boolean(error)}
         style={{
-          fontFamily: 'var(--semantic-font-body)',
-          fontSize: 'var(--semantic-type-scale-base)',
-          padding: 'var(--semantic-spacing-sm)',
-          borderRadius: 'var(--semantic-radius-none)',
-          border: `var(--semantic-border-width) solid ${error ? 'var(--semantic-color-danger)' : 'var(--semantic-color-border)'}`,
-          background: 'var(--semantic-color-bg)',
-          color: 'var(--semantic-color-text)',
+          fontFamily: 'var(--nil-font-body)',
+          fontSize: 'var(--nil-type-scale-base)',
+          padding: 'var(--nil-spacing-sm)',
+          borderRadius: 'var(--nil-radius-none)',
+          border: `var(--nil-border-width) solid ${error ? 'var(--nil-color-danger)' : 'var(--nil-color-border)'}`,
+          background: 'var(--nil-color-bg)',
+          color: 'var(--nil-color-text)',
           ...style,
         }}
       />
       {error && (
         <span
           style={{
-            fontFamily: 'var(--semantic-font-body)',
-            fontSize: 'var(--semantic-type-scale-xs)',
-            color: 'var(--semantic-color-danger)',
+            fontFamily: 'var(--nil-font-body)',
+            fontSize: 'var(--nil-type-scale-xs)',
+            color: 'var(--nil-color-danger)',
           }}
         >
           {error}
