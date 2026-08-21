@@ -28,6 +28,7 @@ dx-grid) is a different system — not this kit.
 | `Divider` | New |
 | `Meta` | `.../MetaRow.tsx` (single item; compose for strips) |
 | `ThemeToggle` | `.../ThemeToggle.tsx` (controlled; no ThemeProvider) |
+| `Lightbox` | `.../Lightbox.tsx` (controlled; plain `<img>`) |
 
 Tokens: restructured from mothership foundations into an explicit two-layer
 model. Neutral default palette — swap accent without touching components.
@@ -47,7 +48,8 @@ components (--nil-* only — never --nil-primitive-*)
 ```
 
 Source: `src/tokens/tokens.json` · CSS: `src/tokens/tokens.css`  
-Layout / reset: `src/core/core.css` (future `@nilds/core`) — load after tokens.  
+Layout / reset / CLI motion: `src/core/core.css` (future `@nilds/core`) — load after tokens.  
+Classes: `.nil-container`, `.nil-grid`, `.nil-grid-bg`, `.nil-cursor-blink`, `.nil-enter` (+ `.is-visible`).  
 Theme: `data-theme="dark"` on an ancestor (light defaults on `:root`).
 
 ## Usage (today — single package)

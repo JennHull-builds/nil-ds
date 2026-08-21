@@ -120,3 +120,67 @@ pre,
     margin-inline: calc(-1 * var(--nil-spacing-md));
   }
 }
+
+/* ─── CLI motion extras ───────────────────────────────────────────────────── */
+
+/* Structural hatch — opt-in on surfaces (e.g. Card cells), not open layouts. */
+.nil-grid-bg {
+  background-image:
+    linear-gradient(to right, var(--nil-color-grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--nil-color-grid-line) 1px, transparent 1px);
+  background-size: var(--nil-spacing-lg) var(--nil-spacing-lg);
+}
+
+@keyframes nil-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.nil-cursor-blink {
+  animation: nil-blink var(--nil-motion-duration-blink) var(--nil-motion-easing-step) infinite;
+  margin-left: 1px;
+}
+
+/*
+ * Entrance: start hidden; add .is-visible (IntersectionObserver or mount) to play.
+ * Optional stagger: style={{ ['--nil-anim-delay' as string]: '120ms' }}
+ */
+.nil-enter {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity var(--nil-motion-duration-enter) var(--nil-motion-easing-out-expo) var(--nil-anim-delay, 0ms),
+    transform var(--nil-motion-duration-enter) var(--nil-motion-easing-out-expo) var(--nil-anim-delay, 0ms);
+}
+
+.nil-enter.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.nil-enter-fade {
+  opacity: 0;
+  transition: opacity var(--nil-motion-duration-enter) var(--nil-motion-easing-standard) var(--nil-anim-delay, 0ms);
+}
+
+.nil-enter-fade.is-visible {
+  opacity: 1;
+}
+
+@keyframes nil-lightbox-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.nil-lightbox-backdrop {
+  animation: nil-lightbox-fade-in var(--nil-motion-duration-base) var(--nil-motion-easing-out-expo) both;
+}

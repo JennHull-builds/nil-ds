@@ -144,7 +144,7 @@ Hygiene debt (Bento* names in mothership) stays parked.
 2. ~~**ThemeToggle**~~ **done 2026-08-21** — sharp segmented control; controlled theme object, not demo Button
 3. ~~**Layout tokens + core CSS**~~ **done 2026-08-21** — container / 12-col / gutters / reset (`src/core` → `@nilds/core`)
 
-Also worth later: Lightbox; CLI motion extras (`enter`, `blink`, `grid-bg`).
+Also worth later: ~~Lightbox; CLI motion extras (`enter`, `blink`, `grid-bg`)~~ **done 2026-08-21**.
 
 **Skip:** Header, Hero, WorkListItem, ProjectCard, CaseStudyQuickLinks, ThemeProvider
 reinjection, brand lime/mint/pork, Soft Bento, page/print chrome.
@@ -163,3 +163,4 @@ reinjection, brand lime/mint/pork, Soft Bento, page/print chrome.
 - 2026-08-21: Meta primitive (MetaRow extract) — bracket key-value, demo + README.
 - 2026-08-21: ThemeToggle — controlled segmented light/dark; demo wired; no ThemeProvider.
 - 2026-08-21: Layout tokens + `src/core/core.css` — reset, `.nil-container` / `.nil-grid`, demo on core layout.
+- 2026-08-21: Lightbox + CLI motion (`enter` / `blink` / `grid-bg`) tokens and core utilities.

@@ -28,7 +28,11 @@
   --nil-primitive-motion-duration-fast: 120ms;
   --nil-primitive-motion-duration-base: 200ms;
   --nil-primitive-motion-duration-slow: 360ms;
+  --nil-primitive-motion-duration-enter: 650ms;
+  --nil-primitive-motion-duration-blink: 1100ms;
   --nil-primitive-motion-easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --nil-primitive-motion-easing-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --nil-primitive-motion-easing-step: step-end;
 
   /* Primitive — type */
   --nil-primitive-font-body: system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -49,6 +53,11 @@
   --nil-primitive-breakpoint-md: 768px;
   --nil-primitive-breakpoint-lg: 1024px;
 
+  --nil-primitive-color-overlay: rgba(10, 10, 10, 0.92);
+  --nil-primitive-color-overlay-fg: #f5f5f4;
+  --nil-primitive-color-overlay-border: rgba(245, 245, 244, 0.4);
+  --nil-primitive-color-grid-line: rgba(128, 128, 128, 0.12);
+
   /* Semantic — non-color roles (alias primitives; theme-stable) */
   --nil-spacing-xs: var(--nil-primitive-spacing-xs);
   --nil-spacing-sm: var(--nil-primitive-spacing-sm);
@@ -68,7 +77,11 @@
   --nil-motion-duration-fast: var(--nil-primitive-motion-duration-fast);
   --nil-motion-duration-base: var(--nil-primitive-motion-duration-base);
   --nil-motion-duration-slow: var(--nil-primitive-motion-duration-slow);
+  --nil-motion-duration-enter: var(--nil-primitive-motion-duration-enter);
+  --nil-motion-duration-blink: var(--nil-primitive-motion-duration-blink);
   --nil-motion-easing-standard: var(--nil-primitive-motion-easing-standard);
+  --nil-motion-easing-out-expo: var(--nil-primitive-motion-easing-out-expo);
+  --nil-motion-easing-step: var(--nil-primitive-motion-easing-step);
 
   --nil-font-body: var(--nil-primitive-font-body);
   --nil-font-mono: var(--nil-primitive-font-mono);
@@ -97,6 +110,11 @@
   --nil-color-accent-contrast: #ffffff;
   --nil-color-danger: #c0392b;
   --nil-color-success: #2e7d4f;
+  /* Theme-stable chrome (lightbox / grid hatch) */
+  --nil-color-overlay: var(--nil-primitive-color-overlay);
+  --nil-color-overlay-fg: var(--nil-primitive-color-overlay-fg);
+  --nil-color-overlay-border: var(--nil-primitive-color-overlay-border);
+  --nil-color-grid-line: var(--nil-primitive-color-grid-line);
 }
 
 [data-theme='dark'] {

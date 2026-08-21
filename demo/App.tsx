@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Badge,
   Button,
@@ -7,11 +7,32 @@ import {
   Grid,
   Heading,
   Input,
+  Lightbox,
   Meta,
   Text,
   ThemeToggle,
+  type LightboxImage,
   type Theme,
 } from '../src';
+
+/** Tiny diagram-like SVG so Lightbox has something to enlarge without assets. */
+const DEMO_LIGHTBOX: LightboxImage = {
+  src:
+    'data:image/svg+xml,' +
+    encodeURIComponent(
+      `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+        <rect width="800" height="500" fill="#0a0a0a"/>
+        <rect x="40" y="40" width="720" height="420" fill="none" stroke="#f5f5f4" stroke-width="2"/>
+        <text x="60" y="100" fill="#f5f5f4" font-family="monospace" font-size="28">NIL DS / SPEC</text>
+        <line x1="60" y1="140" x2="740" y2="140" stroke="#3b6ef5" stroke-width="2"/>
+        <text x="60" y="200" fill="#8a8a8a" font-family="monospace" font-size="16">grid · tokens · lightbox</text>
+        <rect x="60" y="240" width="200" height="160" fill="none" stroke="#d4d4d4" stroke-width="1"/>
+        <rect x="300" y="240" width="200" height="160" fill="none" stroke="#d4d4d4" stroke-width="1"/>
+        <rect x="540" y="240" width="200" height="160" fill="none" stroke="#d4d4d4" stroke-width="1"/>
+      </svg>`,
+    ),
+  alt: 'Sample technical drawing for Lightbox demo',
+};
 
 /**
  * Not a Storybook install — a single page that renders every primitive so
@@ -20,6 +41,13 @@ import {
  */
 export function App() {
   const [theme, setTheme] = useState<Theme>('light');
+  const [lightbox, setLightbox] = useState<LightboxImage | null>(null);
+  const [entered, setEntered] = useState(false);
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setEntered(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
 
   return (
     <div data-theme={theme} style={{ minHeight: '100vh' }}>
@@ -34,7 +62,12 @@ export function App() {
           }}
         >
           <div>
-            <Heading level={1}>NIL DS</Heading>
+            <Heading level={1}>
+              NIL DS
+              <span className="nil-cursor-blink" aria-hidden>
+                _
+              </span>
+            </Heading>
             <Text muted>
               Token + primitive kit, extracted from mothership-stable. Brutalist CLI lineage — see README.
             </Text>
@@ -60,6 +93,37 @@ export function App() {
             <Text size="sm" muted>span 4</Text>
           </Card>
         </div>
+
+        <Divider />
+
+        <Heading level={2}>Motion</Heading>
+        <Text muted size="sm">
+          <code>.nil-grid-bg</code>, <code>.nil-cursor-blink</code>, <code>.nil-enter</code> — CLI extras in core.
+        </Text>
+        <div
+          className={`nil-enter${entered ? ' is-visible' : ''}`}
+          style={{ marginTop: 'var(--nil-spacing-md)', maxWidth: 420 }}
+        >
+          <Card className="nil-grid-bg">
+            <Text size="sm">
+              Hatch surface + enter fade
+              <span className="nil-cursor-blink" aria-hidden>
+                ▌
+              </span>
+            </Text>
+          </Card>
+        </div>
+
+        <Divider />
+
+        <Heading level={2}>Lightbox</Heading>
+        <Text muted size="sm">Controlled full-screen image viewer — Esc / backdrop / Close.</Text>
+        <div style={{ marginTop: 'var(--nil-spacing-md)' }}>
+          <Button variant="secondary" onClick={() => setLightbox(DEMO_LIGHTBOX)}>
+            Open sample drawing
+          </Button>
+        </div>
+        <Lightbox image={lightbox} onClose={() => setLightbox(null)} />
 
         <Divider />
 
@@ -126,7 +190,7 @@ export function App() {
 
         <Text size="sm" muted>
           Use the theme toggle above to check both themes — colours from{' '}
-          <code>tokens.css</code>, layout from <code>core.css</code>.
+          <code>tokens.css</code>, layout + motion from <code>core.css</code>.
         </Text>
       </div>
     </div>

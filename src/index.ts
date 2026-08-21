@@ -27,3 +27,6 @@ export type { MetaProps } from './components/Meta';
 
 export { ThemeToggle } from './components/ThemeToggle';
 export type { Theme, ThemeToggleProps } from './components/ThemeToggle';
+
+export { Lightbox } from './components/Lightbox';
+export type { LightboxImage, LightboxProps } from './components/Lightbox';
