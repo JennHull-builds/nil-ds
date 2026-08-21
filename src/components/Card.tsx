@@ -11,13 +11,13 @@ export interface CardProps {
  * surface cell for grid layouts) with the padding override kept as a prop
  * since callers reach for that most often.
  */
-export function Card({ children, padding = 'var(--primitive-spacing-md)', style }: CardProps) {
+export function Card({ children, padding = 'var(--semantic-spacing-md)', style }: CardProps) {
   return (
     <div
       style={{
         background: 'var(--semantic-color-surface)',
-        border: `var(--primitive-border-width) solid var(--semantic-color-border)`,
-        borderRadius: 'var(--primitive-radius-md)',
+        border: `var(--semantic-border-width) solid var(--semantic-color-border)`,
+        borderRadius: 'var(--semantic-radius-none)',
         padding,
         ...style,
       }}

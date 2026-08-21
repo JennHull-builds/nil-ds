@@ -12,7 +12,10 @@ const toneColor: Record<NonNullable<BadgeProps['tone']>, string> = {
   success: 'var(--semantic-color-success)',
 };
 
-/** Extracted from mothership-stable's TagPill, with tone replacing the fixed pill colour. */
+/**
+ * Extracted from mothership-stable's TagPill, with tone replacing the fixed
+ * pill colour. Square corners — CLI lineage, not soft pills.
+ */
 export function Badge({ children, tone = 'neutral' }: BadgeProps) {
   const color = toneColor[tone];
   return (
@@ -20,14 +23,14 @@ export function Badge({ children, tone = 'neutral' }: BadgeProps) {
       style={{
         display: 'inline-flex',
         alignItems: 'center',
-        gap: 'var(--primitive-spacing-xs)',
-        padding: 'var(--primitive-spacing-xs) var(--primitive-spacing-sm)',
-        fontFamily: 'var(--primitive-font-mono)',
-        fontSize: 'var(--primitive-type-scale-xs)',
+        gap: 'var(--semantic-spacing-xs)',
+        padding: 'var(--semantic-spacing-xs) var(--semantic-spacing-sm)',
+        fontFamily: 'var(--semantic-font-mono)',
+        fontSize: 'var(--semantic-type-scale-xs)',
         letterSpacing: '0.04em',
         textTransform: 'uppercase',
-        borderRadius: 'var(--primitive-radius-full)',
-        border: `1px solid ${color}`,
+        borderRadius: 'var(--semantic-radius-none)',
+        border: `var(--semantic-border-width) solid ${color}`,
         color,
       }}
     >

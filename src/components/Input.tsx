@@ -16,12 +16,12 @@ export function Input({ label, error, id, style, ...rest }: InputProps) {
   const inputId = id ?? generatedId;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--primitive-spacing-xs)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-spacing-xs)' }}>
       <label
         htmlFor={inputId}
         style={{
-          fontFamily: 'var(--primitive-font-body)',
-          fontSize: 'var(--primitive-type-scale-sm)',
+          fontFamily: 'var(--semantic-font-body)',
+          fontSize: 'var(--semantic-type-scale-sm)',
           color: 'var(--semantic-color-text)',
         }}
       >
@@ -32,11 +32,11 @@ export function Input({ label, error, id, style, ...rest }: InputProps) {
         {...rest}
         aria-invalid={Boolean(error)}
         style={{
-          fontFamily: 'var(--primitive-font-body)',
-          fontSize: 'var(--primitive-type-scale-base)',
-          padding: 'var(--primitive-spacing-sm)',
-          borderRadius: 'var(--primitive-radius-sm)',
-          border: `var(--primitive-border-width) solid ${error ? 'var(--semantic-color-danger)' : 'var(--semantic-color-border)'}`,
+          fontFamily: 'var(--semantic-font-body)',
+          fontSize: 'var(--semantic-type-scale-base)',
+          padding: 'var(--semantic-spacing-sm)',
+          borderRadius: 'var(--semantic-radius-none)',
+          border: `var(--semantic-border-width) solid ${error ? 'var(--semantic-color-danger)' : 'var(--semantic-color-border)'}`,
           background: 'var(--semantic-color-bg)',
           color: 'var(--semantic-color-text)',
           ...style,
@@ -45,8 +45,8 @@ export function Input({ label, error, id, style, ...rest }: InputProps) {
       {error && (
         <span
           style={{
-            fontFamily: 'var(--primitive-font-body)',
-            fontSize: 'var(--primitive-type-scale-xs)',
+            fontFamily: 'var(--semantic-font-body)',
+            fontSize: 'var(--semantic-type-scale-xs)',
             color: 'var(--semantic-color-danger)',
           }}
         >

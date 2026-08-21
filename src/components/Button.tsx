@@ -10,23 +10,29 @@ const variantStyles: Record<NonNullable<ButtonProps['variant']>, React.CSSProper
   primary: {
     background: 'var(--semantic-color-accent)',
     color: 'var(--semantic-color-accent-contrast)',
-    border: '1px solid transparent',
+    border: 'var(--semantic-border-width) solid transparent',
   },
   secondary: {
     background: 'transparent',
     color: 'var(--semantic-color-text)',
-    border: 'var(--primitive-border-width-thick) solid var(--semantic-color-border)',
+    border: 'var(--semantic-border-width-thick) solid var(--semantic-color-border)',
   },
   ghost: {
     background: 'transparent',
     color: 'var(--semantic-color-text)',
-    border: '1px solid transparent',
+    border: 'var(--semantic-border-width) solid transparent',
   },
 };
 
 const sizeStyles: Record<NonNullable<ButtonProps['size']>, React.CSSProperties> = {
-  sm: { padding: 'var(--primitive-spacing-xs) var(--primitive-spacing-sm)', fontSize: 'var(--primitive-type-scale-sm)' },
-  md: { padding: 'var(--primitive-spacing-sm) var(--primitive-spacing-lg)', fontSize: 'var(--primitive-type-scale-base)' },
+  sm: {
+    padding: 'var(--semantic-spacing-xs) var(--semantic-spacing-sm)',
+    fontSize: 'var(--semantic-type-scale-sm)',
+  },
+  md: {
+    padding: 'var(--semantic-spacing-sm) var(--semantic-spacing-lg)',
+    fontSize: 'var(--semantic-type-scale-base)',
+  },
 };
 
 /**
@@ -34,18 +40,28 @@ const sizeStyles: Record<NonNullable<ButtonProps['size']>, React.CSSProperties> 
  * props replace the bracket-specific decoration so it fits any visual system
  * that consumes these tokens.
  */
-export function Button({ children, variant = 'primary', size = 'md', style, ...rest }: ButtonProps) {
+export function Button({ children, variant = 'primary', size = 'md', style, disabled, ...rest }: ButtonProps) {
   return (
     <button
       {...rest}
+      disabled={disabled}
       style={{
-        fontFamily: 'var(--primitive-font-body)',
+        fontFamily: 'var(--semantic-font-body)',
         fontWeight: 600,
-        borderRadius: 'var(--primitive-radius-sm)',
-        cursor: 'pointer',
-        transition: `background var(--primitive-motion-duration-base) var(--primitive-motion-easing-standard)`,
+        borderRadius: 'var(--semantic-radius-none)',
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        transition: `background var(--semantic-motion-duration-base) var(--semantic-motion-easing-standard)`,
         ...variantStyles[variant],
         ...sizeStyles[size],
+        ...(disabled
+          ? {
+              opacity: 0.55,
+              cursor: 'not-allowed',
+              background: 'var(--semantic-color-surface)',
+              color: 'var(--semantic-color-text-muted)',
+              border: 'var(--semantic-border-width-thick) solid var(--semantic-color-border)',
+            }
+          : null),
         ...style,
       }}
     >

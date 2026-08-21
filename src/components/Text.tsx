@@ -11,8 +11,8 @@ export function Text({ children, size = 'base', muted = false }: TextProps) {
   return (
     <p
       style={{
-        fontFamily: 'var(--primitive-font-body)',
-        fontSize: size === 'sm' ? 'var(--primitive-type-scale-sm)' : 'var(--primitive-type-scale-base)',
+        fontFamily: 'var(--semantic-font-body)',
+        fontSize: size === 'sm' ? 'var(--semantic-type-scale-sm)' : 'var(--semantic-type-scale-base)',
         lineHeight: 1.6,
         color: muted ? 'var(--semantic-color-text-muted)' : 'var(--semantic-color-text)',
         margin: 0,

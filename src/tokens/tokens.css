@@ -38,7 +38,37 @@
   --primitive-type-scale-xl: 1.75rem;
   --primitive-type-scale-2xl: 2.5rem;
 
-  /* Semantic defaults — light theme */
+  /* Semantic — non-color roles (alias primitives; theme-stable) */
+  --semantic-spacing-xs: var(--primitive-spacing-xs);
+  --semantic-spacing-sm: var(--primitive-spacing-sm);
+  --semantic-spacing-md: var(--primitive-spacing-md);
+  --semantic-spacing-lg: var(--primitive-spacing-lg);
+  --semantic-spacing-xl: var(--primitive-spacing-xl);
+  --semantic-spacing-2xl: var(--primitive-spacing-2xl);
+
+  --semantic-radius-none: var(--primitive-radius-none);
+  --semantic-radius-sm: var(--primitive-radius-sm);
+  --semantic-radius-md: var(--primitive-radius-md);
+  --semantic-radius-full: var(--primitive-radius-full);
+
+  --semantic-border-width: var(--primitive-border-width);
+  --semantic-border-width-thick: var(--primitive-border-width-thick);
+
+  --semantic-motion-duration-fast: var(--primitive-motion-duration-fast);
+  --semantic-motion-duration-base: var(--primitive-motion-duration-base);
+  --semantic-motion-duration-slow: var(--primitive-motion-duration-slow);
+  --semantic-motion-easing-standard: var(--primitive-motion-easing-standard);
+
+  --semantic-font-body: var(--primitive-font-body);
+  --semantic-font-mono: var(--primitive-font-mono);
+  --semantic-type-scale-xs: var(--primitive-type-scale-xs);
+  --semantic-type-scale-sm: var(--primitive-type-scale-sm);
+  --semantic-type-scale-base: var(--primitive-type-scale-base);
+  --semantic-type-scale-lg: var(--primitive-type-scale-lg);
+  --semantic-type-scale-xl: var(--primitive-type-scale-xl);
+  --semantic-type-scale-2xl: var(--primitive-type-scale-2xl);
+
+  /* Semantic — colour defaults (light theme) */
   --semantic-color-bg: #f5f5f4;
   --semantic-color-surface: #d4d4d4;
   --semantic-color-text: #0a0a0a;

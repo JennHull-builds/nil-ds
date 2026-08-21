@@ -7,7 +7,7 @@ export interface GridProps {
 }
 
 /** Extracted from mothership-stable's BentoGrid — equal-width column grid for Card cells. */
-export function Grid({ children, columns = 3, gap = 'var(--primitive-spacing-lg)' }: GridProps) {
+export function Grid({ children, columns = 3, gap = 'var(--semantic-spacing-lg)' }: GridProps) {
   return (
     <div
       style={{
