@@ -1,0 +1,60 @@
+/**
+ * CSS output of tokens.json. Hand-authored to stay dependency-free (no build
+ * step required to consume this kit) — if tokens.json changes, update this
+ * file too. Components in ../components only ever read the --semantic-*
+ * custom properties, never the --primitive-* ones directly.
+ */
+
+:root {
+  /* Primitive — spacing */
+  --primitive-spacing-xs: 4px;
+  --primitive-spacing-sm: 8px;
+  --primitive-spacing-md: 16px;
+  --primitive-spacing-lg: 24px;
+  --primitive-spacing-xl: 32px;
+  --primitive-spacing-2xl: 64px;
+
+  /* Primitive — radius / border */
+  --primitive-radius-none: 0px;
+  --primitive-radius-sm: 4px;
+  --primitive-radius-md: 8px;
+  --primitive-radius-full: 999px;
+  --primitive-border-width: 1px;
+  --primitive-border-width-thick: 2px;
+
+  /* Primitive — motion */
+  --primitive-motion-duration-fast: 120ms;
+  --primitive-motion-duration-base: 200ms;
+  --primitive-motion-duration-slow: 360ms;
+  --primitive-motion-easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Primitive — type */
+  --primitive-font-body: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --primitive-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --primitive-type-scale-xs: 0.75rem;
+  --primitive-type-scale-sm: 0.875rem;
+  --primitive-type-scale-base: 1rem;
+  --primitive-type-scale-lg: 1.25rem;
+  --primitive-type-scale-xl: 1.75rem;
+  --primitive-type-scale-2xl: 2.5rem;
+
+  /* Semantic defaults — light theme */
+  --semantic-color-bg: #f5f5f4;
+  --semantic-color-surface: #d4d4d4;
+  --semantic-color-text: #0a0a0a;
+  --semantic-color-text-muted: #4a4a4a;
+  --semantic-color-border: #0a0a0a;
+  --semantic-color-accent: #3b6ef5;
+  --semantic-color-accent-contrast: #ffffff;
+  --semantic-color-danger: #c0392b;
+  --semantic-color-success: #2e7d4f;
+}
+
+[data-theme='dark'] {
+  --semantic-color-bg: #0a0a0a;
+  --semantic-color-surface: #1c1c1c;
+  --semantic-color-text: #f5f5f4;
+  --semantic-color-text-muted: #8a8a8a;
+  --semantic-color-border: #d4d4d4;
+  /* accent / danger / success stay theme-independent brand tokens */
+}
