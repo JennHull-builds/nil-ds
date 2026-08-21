@@ -31,8 +31,9 @@ dx-grid) is a different system — not this kit.
 | `Lightbox` | `.../Lightbox.tsx` (controlled; plain `<img>`) |
 
 Tokens: restructured from mothership foundations into an explicit two-layer
-model. Neutral default palette — swap accent without touching components.
-Target CSS namespace: `--nil-*` (semantic / consumer) and `--nil-primitive-*`
+model. Neutral surfaces + borders; **accent is in** for v0.1 (placeholder blue —
+swap `--nil-color-accent` / `primitive.color.accent` per brand). Not a grey-only
+kit. Target CSS namespace: `--nil-*` (semantic / consumer) and `--nil-primitive-*`
 (raw). Components read `--nil-*` only.
 
 ## Token architecture

@@ -3,7 +3,7 @@
 **Name:** NIL DS · repo/folder `nil-ds` · npm org target `@nilds/*`  
 **Status:** Private GitHub until Jen flips to public. Kit #1 active.  
 **Lineage:** Token + primitive extract from `mothership-stable` (brutalist CLI),
-neutral/swappable default palette — not Soft Bento (console → dx-grid).
+neutral surfaces + swappable accent — not Soft Bento (console → dx-grid).
 
 Locked name 2026-08-21 (Jen). Was working-name `design-foundry`.
 
@@ -127,7 +127,7 @@ Docs/component names that still fuse them need a dedicated cleanup pass.
 
 - [x] Real name → **NIL DS**
 - [x] Remote → **private GitHub** until public flip
-- [ ] Accent vs neutral-only for v0.1 shareable slice
+- [x] Accent vs neutral-only for v0.1 → **accent kept** (swappable `--nil-color-accent`; not a grey-only slice)
 - [ ] Storybook vs keep Vite demo for the next polish pass
 - [x] First `--nil-*` token migration slice
 
@@ -164,3 +164,4 @@ reinjection, brand lime/mint/pork, Soft Bento, page/print chrome.
 - 2026-08-21: ThemeToggle — controlled segmented light/dark; demo wired; no ThemeProvider.
 - 2026-08-21: Layout tokens + `src/core/core.css` — reset, `.nil-container` / `.nil-grid`, demo on core layout.
 - 2026-08-21: Lightbox + CLI motion (`enter` / `blink` / `grid-bg`) tokens and core utilities.
+- 2026-08-21: Locked v0.1 colour — **accent kept** (not neutral-only).
