@@ -26,6 +26,7 @@ dx-grid) is a different system — not this kit.
 | `Text` | `.../BodyText.tsx` |
 | `Input` | New |
 | `Divider` | New |
+| `Meta` | `.../MetaRow.tsx` (single item; compose for strips) |
 
 Tokens: restructured from mothership foundations into an explicit two-layer
 model. Neutral default palette — swap accent without touching components.

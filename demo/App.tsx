@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Badge, Button, Card, Divider, Grid, Heading, Input, Text } from '../src';
+import { Badge, Button, Card, Divider, Grid, Heading, Input, Meta, Text } from '../src';
 
 /**
  * Not a Storybook install — a single page that renders every primitive so
@@ -86,6 +86,18 @@ export function App() {
         </div>
 
         <Divider />
+
+
+        <Divider />
+
+        <Heading level={2}>Meta</Heading>
+        <Text muted size="sm">Bracket key-value tokens — CLI vocab Badge left behind. Compose for a strip.</Text>
+        <div style={{ display: 'flex', gap: 'var(--nil-spacing-md)', flexWrap: 'wrap', marginTop: 'var(--nil-spacing-md)', alignItems: 'center' }}>
+          <Meta label="Role">Design Engineer</Meta>
+          <Meta label="Year">2024</Meta>
+          <Meta label="Stack">React / Tokens</Meta>
+          <Meta label="Status" tone="accent">Active</Meta>
+        </div>
 
         <Heading level={2}>Input</Heading>
         <div style={{ maxWidth: 320, marginTop: 'var(--nil-spacing-md)', display: 'flex', flexDirection: 'column', gap: 'var(--nil-spacing-md)' }}>

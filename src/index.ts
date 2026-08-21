@@ -21,3 +21,6 @@ export type { TextProps } from './components/Text';
 
 export { Divider } from './components/Divider';
 export type { DividerProps } from './components/Divider';
+
+export { Meta } from './components/Meta';
+export type { MetaProps } from './components/Meta';

@@ -139,7 +139,7 @@ Hygiene debt (Bento* names in mothership) stays parked.
 
 **Next craft slices (ranked):**
 
-1. **Meta** (from MetaRow) — bracket key-value; restores CLI vocab Badge left behind
+1. ~~**Meta** (from MetaRow)~~ **done 2026-08-21** — bracket key-value; restores CLI vocab Badge left behind
 2. **ThemeToggle** — sharp segmented control; theme as kit object, not demo Button
 3. **Layout tokens + core CSS** — container / 12-col / gutters / reset (`@nilds/core`)
 
@@ -159,3 +159,4 @@ reinjection, brand lime/mint/pork, Soft Bento, page/print chrome.
 - 2026-08-21: Craft pass — square CLI look, disabled state, semantic-only
   components, `--nil-*` / `--nil-primitive-*` CSS namespace.
 - 2026-08-21: Extract gap audit parked (Meta → ThemeToggle → layout/core).
+- 2026-08-21: Meta primitive (MetaRow extract) — bracket key-value, demo + README.
