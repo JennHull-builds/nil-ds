@@ -11,9 +11,10 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
  * general-purpose primitive layer does. Follows the same token-only styling
  * rule as the extracted components.
  */
-export function Input({ label, error, id, style, ...rest }: InputProps) {
+export function Input({ label, error, id, style, className, ...rest }: InputProps) {
   const generatedId = useId();
   const inputId = id ?? generatedId;
+  const errorId = error ? `${inputId}-error` : undefined;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--nil-spacing-xs)' }}>
@@ -31,6 +32,8 @@ export function Input({ label, error, id, style, ...rest }: InputProps) {
         id={inputId}
         {...rest}
         aria-invalid={Boolean(error)}
+        aria-describedby={errorId}
+        className={['nil-input', className].filter(Boolean).join(' ')}
         style={{
           fontFamily: 'var(--nil-font-body)',
           fontSize: 'var(--nil-type-scale-base)',
@@ -44,6 +47,7 @@ export function Input({ label, error, id, style, ...rest }: InputProps) {
       />
       {error && (
         <span
+          id={errorId}
           style={{
             fontFamily: 'var(--nil-font-body)',
             fontSize: 'var(--nil-type-scale-xs)',

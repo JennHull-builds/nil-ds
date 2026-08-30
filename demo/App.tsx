@@ -34,6 +34,44 @@ const DEMO_LIGHTBOX: LightboxImage = {
   alt: 'Sample technical drawing for Lightbox demo',
 };
 
+const DEMO_SECTIONS = [
+  { id: 'layout', label: 'Layout' },
+  { id: 'motion', label: 'Motion' },
+  { id: 'lightbox', label: 'Lightbox' },
+  { id: 'buttons', label: 'Buttons' },
+  { id: 'badges', label: 'Badges' },
+  { id: 'cards', label: 'Cards' },
+  { id: 'meta', label: 'Meta' },
+  { id: 'input', label: 'Input' },
+] as const;
+
+function DemoSection({
+  id,
+  title,
+  lede,
+  children,
+}: {
+  id: string;
+  title: string;
+  lede?: React.ReactNode;
+  children?: React.ReactNode;
+}) {
+  return (
+    <>
+      <Divider spacing={id === 'layout' ? 'var(--nil-spacing-2xl)' : undefined} />
+      <section id={id} style={{ scrollMarginTop: '4rem' }}>
+        <Heading level={2}>{title}</Heading>
+        {lede ? (
+          <Text muted size="sm">
+            {lede}
+          </Text>
+        ) : null}
+        {children}
+      </section>
+    </>
+  );
+}
+
 /**
  * Not a Storybook install — a single page that renders every primitive so
  * they're visible without opening each component file. Storybook itself
@@ -69,128 +107,195 @@ export function App() {
               </span>
             </Heading>
             <Text muted>
-              Token + primitive kit, extracted from mothership-stable. Brutalist CLI lineage — see README.
+              Machine-readable token primitives for agent-ready UI — brutalist CLI lineage, every
+              value wired to <code>--nil-*</code> tokens.
             </Text>
           </div>
           <ThemeToggle theme={theme} onThemeChange={setTheme} />
         </div>
 
-        <Divider spacing="var(--nil-spacing-2xl)" />
+        <nav className="nil-demo-nav" aria-label="Demo sections">
+          {DEMO_SECTIONS.map((section) => (
+            <a key={section.id} href={`#${section.id}`}>
+              {section.label}
+            </a>
+          ))}
+        </nav>
 
-        <Heading level={2}>Layout (core)</Heading>
-        <Text muted size="sm">
-          <code>.nil-container</code> + <code>.nil-grid</code> — 12-col / gutters / responsive collapse. Future{' '}
-          <code>@nilds/core</code>.
-        </Text>
-        <div className="nil-grid" style={{ marginTop: 'var(--nil-spacing-md)' }}>
-          <Card style={{ gridColumn: 'span 4' }}>
-            <Text size="sm" muted>span 4</Text>
-          </Card>
-          <Card style={{ gridColumn: 'span 4' }}>
-            <Text size="sm" muted>span 4</Text>
-          </Card>
-          <Card style={{ gridColumn: 'span 4' }}>
-            <Text size="sm" muted>span 4</Text>
-          </Card>
-        </div>
-
-        <Divider />
-
-        <Heading level={2}>Motion</Heading>
-        <Text muted size="sm">
-          <code>.nil-grid-bg</code>, <code>.nil-cursor-blink</code>, <code>.nil-enter</code> — CLI extras in core.
-        </Text>
-        <div
-          className={`nil-enter${entered ? ' is-visible' : ''}`}
-          style={{ marginTop: 'var(--nil-spacing-md)', maxWidth: 420 }}
+        <DemoSection
+          id="layout"
+          title="Layout (core)"
+          lede={
+            <>
+              <code>.nil-container</code> + <code>.nil-grid</code> — 12-col / gutters / responsive
+              collapse. Future <code>@nilds/core</code>.
+            </>
+          }
         >
-          <Card className="nil-grid-bg">
-            <Text size="sm">
-              Hatch surface + enter fade
-              <span className="nil-cursor-blink" aria-hidden>
-                ▌
-              </span>
-            </Text>
-          </Card>
-        </div>
-
-        <Divider />
-
-        <Heading level={2}>Lightbox</Heading>
-        <Text muted size="sm">Controlled full-screen image viewer — Esc / backdrop / Close.</Text>
-        <div style={{ marginTop: 'var(--nil-spacing-md)' }}>
-          <Button variant="secondary" onClick={() => setLightbox(DEMO_LIGHTBOX)}>
-            Open sample drawing
-          </Button>
-        </div>
-        <Lightbox image={lightbox} onClose={() => setLightbox(null)} />
-
-        <Divider />
-
-        <Heading level={2}>Buttons</Heading>
-        <Text muted size="sm">Variants and sizes, all reading --nil-* tokens only.</Text>
-        <div style={{ display: 'flex', gap: 'var(--nil-spacing-sm)', flexWrap: 'wrap', marginTop: 'var(--nil-spacing-md)' }}>
-          <Button variant="primary">Primary</Button>
-          <Button variant="secondary">Secondary</Button>
-          <Button variant="ghost">Ghost</Button>
-          <Button variant="primary" size="sm">Primary sm</Button>
-          <Button variant="primary" disabled>Disabled</Button>
-        </div>
-
-        <Divider />
-
-        <Heading level={2}>Badges</Heading>
-        <div style={{ display: 'flex', gap: 'var(--nil-spacing-sm)', flexWrap: 'wrap', marginTop: 'var(--nil-spacing-md)' }}>
-          <Badge tone="neutral">Neutral</Badge>
-          <Badge tone="accent">Accent</Badge>
-          <Badge tone="danger">Danger</Badge>
-          <Badge tone="success">Success</Badge>
-        </div>
-
-        <Divider />
-
-        <Heading level={2}>Cards + Grid</Heading>
-        <div style={{ marginTop: 'var(--nil-spacing-md)' }}>
-          <Grid columns={3}>
-            <Card>
-              <Heading level={3}>Real usage</Heading>
-              <Text size="sm" muted>Every value here traces back to a token, not a magic number.</Text>
+          <div className="nil-grid" style={{ marginTop: 'var(--nil-spacing-md)' }}>
+            <Card style={{ gridColumn: 'span 4' }}>
+              <Text size="sm" muted>
+                span 4
+              </Text>
             </Card>
-            <Card>
-              <Heading level={3}>Second cell</Heading>
-              <Text size="sm" muted>Grid is an equal-width column layout, extracted from BentoGrid.</Text>
+            <Card style={{ gridColumn: 'span 4' }}>
+              <Text size="sm" muted>
+                span 4
+              </Text>
             </Card>
-            <Card>
-              <Heading level={3}>Third cell</Heading>
-              <Badge tone="accent">extracted</Badge>
+            <Card style={{ gridColumn: 'span 4' }}>
+              <Text size="sm" muted>
+                span 4
+              </Text>
             </Card>
-          </Grid>
-        </div>
+          </div>
+        </DemoSection>
 
-        <Divider />
+        <DemoSection
+          id="motion"
+          title="Motion"
+          lede={
+            <>
+              <code>.nil-grid-bg</code>, <code>.nil-cursor-blink</code>, <code>.nil-enter</code> —
+              CLI extras in core.
+            </>
+          }
+        >
+          <div
+            className={`nil-enter${entered ? ' is-visible' : ''}`}
+            style={{ marginTop: 'var(--nil-spacing-md)', maxWidth: 420 }}
+          >
+            <Card className="nil-grid-bg">
+              <Text size="sm">
+                Hatch surface + enter fade
+                <span className="nil-cursor-blink" aria-hidden>
+                  ▌
+                </span>
+              </Text>
+            </Card>
+          </div>
+        </DemoSection>
 
-        <Heading level={2}>Meta</Heading>
-        <Text muted size="sm">Bracket key-value tokens — CLI vocab Badge left behind. Compose for a strip.</Text>
-        <div style={{ display: 'flex', gap: 'var(--nil-spacing-md)', flexWrap: 'wrap', marginTop: 'var(--nil-spacing-md)', alignItems: 'center' }}>
-          <Meta label="Role">Design Engineer</Meta>
-          <Meta label="Year">2024</Meta>
-          <Meta label="Stack">React / Tokens</Meta>
-          <Meta label="Status" tone="accent">Active</Meta>
-        </div>
+        <DemoSection
+          id="lightbox"
+          title="Lightbox"
+          lede="Controlled full-screen image viewer — Esc / backdrop / Close."
+        >
+          <div style={{ marginTop: 'var(--nil-spacing-md)' }}>
+            <Button variant="secondary" onClick={() => setLightbox(DEMO_LIGHTBOX)}>
+              Open sample drawing
+            </Button>
+          </div>
+          <Lightbox image={lightbox} onClose={() => setLightbox(null)} />
+        </DemoSection>
 
-        <Divider />
+        <DemoSection
+          id="buttons"
+          title="Buttons"
+          lede="Variants and sizes, all reading --nil-* tokens only."
+        >
+          <div
+            style={{
+              display: 'flex',
+              gap: 'var(--nil-spacing-sm)',
+              flexWrap: 'wrap',
+              marginTop: 'var(--nil-spacing-md)',
+            }}
+          >
+            <Button variant="primary">Primary</Button>
+            <Button variant="secondary">Secondary</Button>
+            <Button variant="ghost">Ghost</Button>
+            <Button variant="primary" size="sm">
+              Primary sm
+            </Button>
+            <Button variant="primary" disabled>
+              Disabled
+            </Button>
+          </div>
+        </DemoSection>
 
-        <Heading level={2}>Input</Heading>
-        <div style={{ maxWidth: 320, marginTop: 'var(--nil-spacing-md)', display: 'flex', flexDirection: 'column', gap: 'var(--nil-spacing-md)' }}>
-          <Input label="Name" placeholder="Sid Vicious" />
-          <Input label="Email" type="email" error="This field is required" />
-        </div>
+        <DemoSection id="badges" title="Badges">
+          <div
+            style={{
+              display: 'flex',
+              gap: 'var(--nil-spacing-sm)',
+              flexWrap: 'wrap',
+              marginTop: 'var(--nil-spacing-md)',
+            }}
+          >
+            <Badge tone="neutral">Neutral</Badge>
+            <Badge tone="accent">Accent</Badge>
+            <Badge tone="danger">Danger</Badge>
+            <Badge tone="success">Success</Badge>
+          </div>
+        </DemoSection>
+
+        <DemoSection id="cards" title="Cards + Grid">
+          <div style={{ marginTop: 'var(--nil-spacing-md)' }}>
+            <Grid columns={3}>
+              <Card>
+                <Heading level={3}>Token-backed cell</Heading>
+                <Text size="sm" muted>
+                  Every value traces back to a token — no magic numbers in consumer code.
+                </Text>
+              </Card>
+              <Card>
+                <Heading level={3}>Equal-width grid</Heading>
+                <Text size="sm" muted>
+                  Responsive column layout — collapses to a single stack on narrow viewports.
+                </Text>
+              </Card>
+              <Card>
+                <Heading level={3}>Composable primitive</Heading>
+                <Badge tone="accent">extracted</Badge>
+              </Card>
+            </Grid>
+          </div>
+        </DemoSection>
+
+        <DemoSection
+          id="meta"
+          title="Meta"
+          lede="Bracket key-value tokens — CLI vocab Badge left behind. Compose for a strip."
+        >
+          <div
+            style={{
+              display: 'flex',
+              gap: 'var(--nil-spacing-md)',
+              flexWrap: 'wrap',
+              marginTop: 'var(--nil-spacing-md)',
+              alignItems: 'center',
+            }}
+          >
+            <Meta label="Role">Design Engineer</Meta>
+            <Meta label="Year">2024</Meta>
+            <Meta label="Stack">React / Tokens</Meta>
+            <Meta label="Status" tone="accent">
+              Active
+            </Meta>
+          </div>
+        </DemoSection>
+
+        <DemoSection id="input" title="Input">
+          <div
+            style={{
+              maxWidth: 320,
+              marginTop: 'var(--nil-spacing-md)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 'var(--nil-spacing-md)',
+            }}
+          >
+            <Input label="Name" placeholder="Your name" />
+            <Input label="Email" type="email" error="This field is required" />
+          </div>
+        </DemoSection>
 
         <Divider spacing="var(--nil-spacing-2xl)" />
 
         <Text size="sm" muted>
-          Use the theme toggle above to check both themes — colours from{' '}
-          <code>tokens.css</code>, layout + motion from <code>core.css</code>.
+          Use the theme toggle above to check both themes — colours from <code>tokens.css</code>,
+          layout + motion from <code>core.css</code>.
         </Text>
       </div>
     </div>

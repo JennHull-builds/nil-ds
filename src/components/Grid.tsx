@@ -10,10 +10,10 @@ export interface GridProps {
 export function Grid({ children, columns = 3, gap = 'var(--nil-spacing-lg)' }: GridProps) {
   return (
     <div
+      className="nil-component-grid"
       style={{
-        display: 'grid',
-        gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
         gap,
+        ['--nil-grid-columns' as string]: String(columns),
       }}
     >
       {children}

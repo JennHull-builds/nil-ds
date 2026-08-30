@@ -40,11 +40,12 @@ const sizeStyles: Record<NonNullable<ButtonProps['size']>, React.CSSProperties> 
  * props replace the bracket-specific decoration so it fits any visual system
  * that consumes these tokens.
  */
-export function Button({ children, variant = 'primary', size = 'md', style, disabled, ...rest }: ButtonProps) {
+export function Button({ children, variant = 'primary', size = 'md', style, disabled, className, ...rest }: ButtonProps) {
   return (
     <button
       {...rest}
       disabled={disabled}
+      className={['nil-btn', `nil-btn--${variant}`, className].filter(Boolean).join(' ')}
       style={{
         fontFamily: 'var(--nil-font-body)',
         fontWeight: 600,

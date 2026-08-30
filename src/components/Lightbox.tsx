@@ -62,6 +62,7 @@ export function Lightbox({ image, onClose }: LightboxProps) {
         type="button"
         onClick={onClose}
         aria-label="Close enlarged image"
+        className="nil-lightbox-close"
         style={{
           position: 'absolute',
           top: 'var(--nil-spacing-lg)',

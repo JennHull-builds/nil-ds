@@ -184,3 +184,127 @@ pre,
 .nil-lightbox-backdrop {
   animation: nil-lightbox-fade-in var(--nil-motion-duration-base) var(--nil-motion-easing-out-expo) both;
 }
+
+/* ─── Component grid (Grid.tsx) ───────────────────────────────────────────── */
+
+.nil-component-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--nil-grid-columns, 3), minmax(0, 1fr));
+}
+
+@media (max-width: 767px) {
+  .nil-component-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── Interactive feedback ──────────────────────────────────────────────────── */
+
+.nil-btn:not(:disabled) {
+  transition:
+    background var(--nil-motion-duration-base) var(--nil-motion-easing-standard),
+    border-color var(--nil-motion-duration-base) var(--nil-motion-easing-standard),
+    opacity var(--nil-motion-duration-base) var(--nil-motion-easing-standard);
+}
+
+.nil-btn--primary:not(:disabled):hover {
+  filter: brightness(1.08);
+}
+
+.nil-btn--secondary:not(:disabled):hover,
+.nil-btn--ghost:not(:disabled):hover {
+  background: var(--nil-color-surface);
+}
+
+.nil-btn:focus-visible,
+.nil-input:focus-visible,
+.nil-theme-segment:focus-visible,
+.nil-lightbox-close:focus-visible,
+.nil-demo-nav a:focus-visible {
+  outline: 2px solid var(--nil-color-accent);
+  outline-offset: 2px;
+}
+
+.nil-input:not(:disabled):hover {
+  border-color: var(--nil-color-text-muted);
+}
+
+.nil-theme-toggle {
+  display: flex;
+  align-items: stretch;
+  height: 28px;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: var(--nil-border-width) solid var(--nil-color-border);
+  border-radius: var(--nil-radius-none);
+}
+
+.nil-theme-segment {
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--nil-type-scale-xs);
+  line-height: 1;
+  background: transparent;
+  color: var(--nil-color-text);
+  opacity: 0.3;
+  border: none;
+  cursor: pointer;
+  transition:
+    background var(--nil-motion-duration-base) var(--nil-motion-easing-standard),
+    color var(--nil-motion-duration-base) var(--nil-motion-easing-standard),
+    opacity var(--nil-motion-duration-base) var(--nil-motion-easing-standard);
+}
+
+.nil-theme-segment[aria-pressed='true'] {
+  background: var(--nil-color-accent);
+  color: var(--nil-color-accent-contrast);
+  opacity: 1;
+}
+
+.nil-theme-segment:not([aria-pressed='true']):hover {
+  opacity: 0.55;
+}
+
+.nil-theme-divider {
+  width: var(--nil-border-width);
+  display: block;
+  background: var(--nil-color-border);
+  flex-shrink: 0;
+}
+
+.nil-lightbox-close:not(:disabled):hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ─── Demo shell ────────────────────────────────────────────────────────────── */
+
+.nil-demo-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--nil-spacing-xs);
+  padding-block: var(--nil-spacing-sm);
+  margin-bottom: var(--nil-spacing-lg);
+  background: var(--nil-color-bg);
+  border-bottom: var(--nil-border-width) solid var(--nil-color-border);
+}
+
+.nil-demo-nav a {
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--nil-color-text-muted);
+  padding: var(--nil-spacing-xs) var(--nil-spacing-sm);
+  border: var(--nil-border-width) solid transparent;
+  transition: color var(--nil-motion-duration-fast) var(--nil-motion-easing-standard);
+}
+
+.nil-demo-nav a:hover {
+  color: var(--nil-color-text);
+}
