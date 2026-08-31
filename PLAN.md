@@ -128,6 +128,7 @@ Docs/component names that still fuse them need a dedicated cleanup pass.
 - [x] Real name → **NIL DS**
 - [x] Remote → **private GitHub** until public flip
 - [x] Accent vs neutral-only for v0.1 → **accent kept** (swappable `--nil-color-accent`; not a grey-only slice)
+- [x] Mothership light base + accent lock → **light semantic from `colours.light`; accent `#0241e3` (Jen)**
 - [x] Storybook vs Vite demo → **park Storybook**; keep Vite demo for polish
 - [x] First `--nil-*` token migration slice
 
@@ -166,3 +167,9 @@ reinjection, brand lime/mint/pork, Soft Bento, page/print chrome.
 - 2026-08-21: Lightbox + CLI motion (`enter` / `blink` / `grid-bg`) tokens and core utilities.
 - 2026-08-21: Locked v0.1 colour — **accent kept** (not neutral-only).
 - 2026-08-21: Parked Storybook — Vite demo remains the showroom.
+- 2026-08-31: **Mothership light base** — semantic light tokens aligned to
+  `mothership-stable/foundations/tokens.json` `colours.light` (bg `#EDECE8`,
+  text/border/primary `#0A0A0A`, muted surface `#E2E1DC`). Brutalist defaults:
+  `0px` radius, `2px` borders. **Accent locked `#0241e3`** (Jen — not Mothership
+  orange `#CC3100`). Light is demo default (`data-theme="light"`). First consumer:
+  TetherLog.

@@ -21,7 +21,7 @@
   --nil-primitive-radius-sm: 4px;
   --nil-primitive-radius-md: 8px;
   --nil-primitive-radius-full: 999px;
-  --nil-primitive-border-width: 1px;
+  --nil-primitive-border-width: 2px;
   --nil-primitive-border-width-thick: 2px;
 
   /* Primitive — motion */
@@ -100,13 +100,13 @@
   --nil-breakpoint-md: var(--nil-primitive-breakpoint-md);
   --nil-breakpoint-lg: var(--nil-primitive-breakpoint-lg);
 
-  /* Semantic — colour defaults (light theme) */
-  --nil-color-bg: #f5f5f4;
-  --nil-color-surface: #d4d4d4;
+  /* Semantic — colour defaults (light theme, Mothership colours.light + accent lock) */
+  --nil-color-bg: #edece8;
+  --nil-color-surface: #e2e1dc;
   --nil-color-text: #0a0a0a;
   --nil-color-text-muted: #4a4a4a;
   --nil-color-border: #0a0a0a;
-  --nil-color-accent: #3b6ef5;
+  --nil-color-accent: #0241e3;
   --nil-color-accent-contrast: #ffffff;
   --nil-color-danger: #c0392b;
   --nil-color-success: #2e7d4f;

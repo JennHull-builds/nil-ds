@@ -24,7 +24,7 @@ const DEMO_LIGHTBOX: LightboxImage = {
         <rect width="800" height="500" fill="#0a0a0a"/>
         <rect x="40" y="40" width="720" height="420" fill="none" stroke="#f5f5f4" stroke-width="2"/>
         <text x="60" y="100" fill="#f5f5f4" font-family="monospace" font-size="28">NIL DS / SPEC</text>
-        <line x1="60" y1="140" x2="740" y2="140" stroke="#3b6ef5" stroke-width="2"/>
+        <line x1="60" y1="140" x2="740" y2="140" stroke="#0241e3" stroke-width="2"/>
         <text x="60" y="200" fill="#8a8a8a" font-family="monospace" font-size="16">grid · tokens · lightbox</text>
         <rect x="60" y="240" width="200" height="160" fill="none" stroke="#d4d4d4" stroke-width="1"/>
         <rect x="300" y="240" width="200" height="160" fill="none" stroke="#d4d4d4" stroke-width="1"/>
@@ -107,11 +107,37 @@ export function App() {
               </span>
             </Heading>
             <Text muted>
-              Machine-readable token primitives for agent-ready UI — brutalist CLI lineage, every
-              value wired to <code>--nil-*</code> tokens.
+              Machine-readable token primitives for agent-ready UI — Mothership light base,
+              accent <code>#0241e3</code>, every value wired to <code>--nil-*</code> tokens.
             </Text>
           </div>
           <ThemeToggle theme={theme} onThemeChange={setTheme} />
+        </div>
+
+        <div
+          className="nil-demo-layer-strip"
+          style={{
+            display: 'flex',
+            gap: 'var(--nil-spacing-md)',
+            flexWrap: 'wrap',
+            marginTop: 'var(--nil-spacing-lg)',
+            fontFamily: 'var(--nil-font-mono)',
+            fontSize: 'var(--nil-type-scale-xs)',
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase',
+          }}
+        >
+          <span>
+            <strong>1 · Primitive</strong> — <code>tokens.json</code> raw values
+          </span>
+          <span aria-hidden>→</span>
+          <span>
+            <strong>2 · Semantic</strong> — <code>tokens.css</code> <code>--nil-*</code> roles
+          </span>
+          <span aria-hidden>→</span>
+          <span>
+            <strong>3 · Component</strong> — React primitives below
+          </span>
         </div>
 
         <nav className="nil-demo-nav" aria-label="Demo sections">
