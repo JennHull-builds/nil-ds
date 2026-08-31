@@ -6,8 +6,9 @@ export interface DialProps {
   sublabel?: string;
   /** 0–100 progress for dot position on ring */
   progress?: number;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
   label?: string;
+  variant?: 'default' | 'solid';
   className?: string;
   style?: CSSProperties;
 }
@@ -16,6 +17,7 @@ const SIZE_MAP = {
   sm: 'var(--nil-size-dial-sm)',
   md: 'var(--nil-size-dial-md)',
   lg: 'var(--nil-size-dial-lg)',
+  xl: 'var(--nil-size-dial-xl)',
 } as const;
 
 /**
@@ -28,12 +30,17 @@ export function Dial({
   progress = 50,
   size = 'md',
   label,
+  variant = 'default',
   className,
   style,
 }: DialProps) {
   const dim = SIZE_MAP[size];
   const pct = Math.min(100, Math.max(0, progress));
   const angle = (pct / 100) * 360 - 90;
+  const isSolid = variant === 'solid';
+  const dotRad = (angle * Math.PI) / 180;
+  const dotX = 50 + 38 * Math.cos(dotRad);
+  const dotY = 50 + 38 * Math.sin(dotRad);
 
   return (
     <div
@@ -63,6 +70,7 @@ export function Dial({
         }}
       >
         <svg viewBox="0 0 100 100" width="100%" height="100%" aria-hidden>
+          {isSolid && <circle cx="50" cy="50" r="39" fill="var(--nil-color-text)" />}
           {Array.from({ length: 48 }).map((_, i) => {
             const a = (i / 48) * 360 - 90;
             const rad = (a * Math.PI) / 180;
@@ -82,24 +90,9 @@ export function Dial({
               />
             );
           })}
-          <circle cx="50" cy="50" r="38" fill="none" stroke="var(--nil-color-border)" strokeWidth="1" opacity="0.3" />
+          <circle cx="50" cy="50" r="38" fill="none" stroke="var(--nil-color-border)" strokeWidth="1" opacity={isSolid ? 0 : 0.3} />
+          <circle cx={dotX} cy={dotY} r="3" fill="var(--nil-color-accent)" />
         </svg>
-        <div
-          style={{
-            position: 'absolute',
-            left: '50%',
-            top: '50%',
-            width: '10%',
-            height: '10%',
-            marginLeft: '-5%',
-            marginTop: '-5%',
-            borderRadius: '50%',
-            background: 'var(--nil-color-accent)',
-            transform: `rotate(${angle}deg) translateY(-140%)`,
-            transformOrigin: 'center center',
-          }}
-          aria-hidden
-        />
         <div
           style={{
             position: 'absolute',
@@ -109,13 +102,14 @@ export function Dial({
             alignItems: 'center',
             justifyContent: 'center',
             textAlign: 'center',
-            padding: 'var(--nil-spacing-sm)',
+            padding: 'var(--nil-spacing-lg)',
+            color: isSolid ? 'var(--nil-color-bg)' : 'inherit',
           }}
         >
           <span
             style={{
               fontFamily: 'var(--nil-font-display)',
-              fontSize: size === 'lg' ? 'var(--nil-type-scale-xl)' : 'var(--nil-type-scale-lg)',
+              fontSize: size === 'xl' ? 'var(--nil-type-scale-2xl)' : size === 'lg' ? 'var(--nil-type-scale-xl)' : 'var(--nil-type-scale-lg)',
               fontWeight: 600,
               fontVariantNumeric: 'tabular-nums',
             }}
@@ -124,7 +118,7 @@ export function Dial({
             {unit ? <span style={{ fontSize: '0.65em' }}>{unit}</span> : null}
           </span>
           {sublabel ? (
-            <span style={{ fontSize: 'var(--nil-type-scale-xs)', color: 'var(--nil-color-text-muted)' }}>{sublabel}</span>
+            <span style={{ fontSize: 'var(--nil-type-scale-xs)', color: isSolid ? 'inherit' : 'var(--nil-color-text-muted)', opacity: isSolid ? 0.7 : 1 }}>{sublabel}</span>
           ) : null}
         </div>
       </div>

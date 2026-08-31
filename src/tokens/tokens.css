@@ -57,6 +57,7 @@
   --nil-primitive-size-dial-sm: 64px;
   --nil-primitive-size-dial-md: 120px;
   --nil-primitive-size-dial-lg: 180px;
+  --nil-primitive-size-dial-xl: 240px;
   --nil-primitive-size-ring-sm: 48px;
   --nil-primitive-size-ring-md: 72px;
   --nil-primitive-layout-page-x: 80px;
@@ -110,6 +111,7 @@
   --nil-size-dial-sm: var(--nil-primitive-size-dial-sm);
   --nil-size-dial-md: var(--nil-primitive-size-dial-md);
   --nil-size-dial-lg: var(--nil-primitive-size-dial-lg);
+  --nil-size-dial-xl: var(--nil-primitive-size-dial-xl);
   --nil-size-ring-sm: var(--nil-primitive-size-ring-sm);
   --nil-size-ring-md: var(--nil-primitive-size-ring-md);
   --nil-layout-page-x: var(--nil-primitive-layout-page-x);

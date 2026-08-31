@@ -44,12 +44,12 @@ export function Meta({ label, children, tone = 'neutral' }: MetaProps) {
         maxWidth: '100%',
       }}
     >
-      <span aria-hidden style={{ color: brackets }}>
+      <span aria-hidden className="nil-bracket" style={{ color: brackets }}>
         [
       </span>
       <span style={{ color: labelColor }}>{label}:</span>
       <span style={{ overflowWrap: 'anywhere' }}>{children}</span>
-      <span aria-hidden style={{ color: brackets }}>
+      <span aria-hidden className="nil-bracket" style={{ color: brackets }}>
         ]
       </span>
     </span>

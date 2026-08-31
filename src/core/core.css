@@ -123,6 +123,12 @@ pre,
 
 /* ─── CLI motion extras ───────────────────────────────────────────────────── */
 
+/* Bracket glyphs — slightly larger than the label shell. */
+.nil-bracket {
+  font-size: 1.12em;
+  line-height: 1;
+}
+
 /* Structural hatch — opt-in on surfaces (e.g. Card cells), not open layouts. */
 .nil-grid-bg {
   background-image:
@@ -198,12 +204,97 @@ pre,
   }
 }
 
+/* ─── Button ────────────────────────────────────────────────────────────────── */
+
+.nil-btn {
+  appearance: none;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.35em;
+  line-height: 1.45;
+  border-style: solid;
+  border-radius: var(--nil-radius-default);
+  cursor: pointer;
+  font-family: var(--nil-font-mono);
+  font-weight: 500;
+  white-space: nowrap;
+  padding: 4px;
+}
+
+.nil-btn__label {
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.nil-btn__bracket {
+  color: var(--nil-color-border);
+  font-weight: 500;
+  font-size: 1.12em;
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1;
+}
+
+.nil-btn--sm {
+  font-size: var(--nil-type-scale-xs);
+}
+
+.nil-btn--md {
+  font-size: var(--nil-type-scale-sm);
+}
+
+.nil-btn--primary {
+  background: var(--nil-color-accent);
+  color: var(--nil-color-accent-contrast);
+  border-width: var(--nil-border-width-thick);
+  border-color: var(--nil-color-accent);
+}
+
+.nil-btn--primary .nil-btn__bracket {
+  color: color-mix(in srgb, var(--nil-color-accent-contrast) 62%, transparent);
+}
+
+.nil-btn--secondary {
+  background: var(--nil-color-bg);
+  color: var(--nil-color-text);
+  border-width: var(--nil-border-width-thick);
+  border-color: var(--nil-color-border);
+}
+
+.nil-btn--ghost {
+  background: transparent;
+  color: var(--nil-color-text);
+  border-width: var(--nil-border-width);
+  border-color: transparent;
+}
+
+.nil-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  background: var(--nil-color-surface);
+  color: var(--nil-color-text-muted);
+  border-width: var(--nil-border-width-thick);
+  border-color: var(--nil-color-border);
+}
+
+.nil-btn--primary:disabled {
+  filter: none;
+}
+
+.nil-btn:disabled .nil-btn__bracket {
+  color: var(--nil-color-text-muted);
+}
+
 /* ─── Interactive feedback ──────────────────────────────────────────────────── */
 
 .nil-btn:not(:disabled) {
   transition:
     background var(--nil-motion-duration-base) var(--nil-motion-easing-standard),
     border-color var(--nil-motion-duration-base) var(--nil-motion-easing-standard),
+    color var(--nil-motion-duration-base) var(--nil-motion-easing-standard),
+    filter var(--nil-motion-duration-base) var(--nil-motion-easing-standard),
     opacity var(--nil-motion-duration-base) var(--nil-motion-easing-standard);
 }
 
@@ -211,35 +302,30 @@ pre,
   filter: brightness(1.08);
 }
 
-.nil-btn--secondary:not(:disabled):hover,
-.nil-btn--ghost:not(:disabled):hover {
+.nil-btn--secondary:not(:disabled):hover {
   background: var(--nil-color-surface);
 }
 
-.nil-btn--bracket {
-  display: inline-flex;
-  align-items: center;
-  gap: 0;
-}
-
-.nil-btn--bracket .nil-btn__bracket {
-  color: var(--nil-color-text-muted);
-}
-
-.nil-btn--bracket .nil-btn__label {
-  padding: 0 var(--nil-spacing-xs);
-}
-
-.nil-btn--bracket:not(:disabled):hover {
-  background: var(--nil-color-bg);
-}
-
-.nil-btn--bracket:not(:disabled):active {
+.nil-btn--secondary:not(:disabled):active {
   background: var(--nil-color-text);
   color: var(--nil-color-bg);
 }
 
-.nil-btn--bracket:not(:disabled):active .nil-btn__bracket {
+.nil-btn--secondary:not(:disabled):active .nil-btn__bracket {
+  color: var(--nil-color-text-muted);
+}
+
+.nil-btn--ghost:not(:disabled):hover {
+  background: var(--nil-color-surface);
+  border-color: var(--nil-color-border);
+}
+
+.nil-btn--ghost:not(:disabled):active {
+  background: var(--nil-color-text);
+  color: var(--nil-color-bg);
+}
+
+.nil-btn--ghost:not(:disabled):active .nil-btn__bracket {
   color: var(--nil-color-text-muted);
 }
 
@@ -380,6 +466,7 @@ pre,
 
 .nil-demo-canvas > .nil-demo-scene:first-of-type {
   padding-top: 0;
+  padding-bottom: 0;
 }
 
 @media (max-width: 767px) {

@@ -25,7 +25,8 @@ export function Readout({ label, value, unit, sublabel, size = 'lg', className, 
             fontSize: 'var(--nil-type-scale-xs)',
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
-            color: 'var(--nil-color-text-muted)',
+            color: 'inherit',
+            opacity: 0.6,
             marginBottom: 'var(--nil-spacing-xs)',
           }}
         >
@@ -63,7 +64,8 @@ export function Readout({ label, value, unit, sublabel, size = 'lg', className, 
           style={{
             marginTop: 'var(--nil-spacing-xs)',
             fontSize: 'var(--nil-type-scale-sm)',
-            color: 'var(--nil-color-text-muted)',
+            color: 'inherit',
+            opacity: 0.6,
           }}
         >
           {sublabel}

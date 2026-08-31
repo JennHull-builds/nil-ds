@@ -8,17 +8,49 @@
   border-top: none;
 }
 
-/* Solid sticky bar — grid band starts below this rule. */
+/* Hero title + layer strip — modest top inset; section-y was too airy here. */
+.nil-demo-intro-head {
+  padding-top: var(--nil-spacing-2xl);
+  margin-bottom: var(--nil-spacing-lg);
+}
+
+@media (max-width: 767px) {
+  .nil-demo-intro-head {
+    padding-top: var(--nil-spacing-xl);
+  }
+}
+
+/* Solid sticky bar — grid hatch starts in .nil-demo-intro-hero below. */
 .nil-demo-nav-bar {
   position: sticky;
   top: 0;
   z-index: 10;
   margin-inline: calc(-1 * var(--nil-layout-page-x));
   padding-inline: var(--nil-layout-page-x);
-  padding-top: var(--nil-layout-section-y);
-  margin-bottom: var(--nil-spacing-lg);
   background: var(--nil-color-bg);
   border-bottom: var(--nil-border-width) solid var(--nil-color-border);
+}
+
+/* Grid band — full bleed, only behind the stacked hero cards. */
+.nil-demo-intro-hero {
+  margin-inline: calc(-1 * var(--nil-layout-page-x));
+  padding-inline: var(--nil-layout-page-x);
+  padding-block: var(--nil-spacing-2xl);
+  background-color: var(--nil-color-bg);
+}
+
+@media (max-width: 1024px) {
+  .nil-demo-intro-hero {
+    margin-inline: calc(-1 * var(--nil-spacing-xl));
+    padding-inline: var(--nil-spacing-xl);
+  }
+}
+
+@media (max-width: 767px) {
+  .nil-demo-intro-hero {
+    margin-inline: calc(-1 * var(--nil-spacing-md));
+    padding-inline: var(--nil-spacing-md);
+  }
 }
 
 @media (max-width: 1024px) {
@@ -32,7 +64,6 @@
   .nil-demo-nav-bar {
     margin-inline: calc(-1 * var(--nil-spacing-md));
     padding-inline: var(--nil-spacing-md);
-    padding-top: var(--nil-spacing-2xl);
   }
 }
 
@@ -40,7 +71,7 @@
   display: flex;
   gap: var(--nil-spacing-md);
   flex-wrap: wrap;
-  margin-top: var(--nil-spacing-lg);
+  margin-top: var(--nil-spacing-md);
   font-family: var(--nil-font-mono);
   font-size: var(--nil-type-scale-xs);
   letter-spacing: 0.06em;
@@ -69,8 +100,13 @@
 }
 
 .nil-demo-scene-grid--climate {
-  grid-template-columns: 1fr 1.2fr 0.8fr;
-  align-items: start;
+  grid-template-columns: minmax(220px, 1.5fr) 1fr 1fr 0.6fr;
+  align-items: center;
+}
+
+.nil-demo-scene-grid--schedule {
+  grid-template-columns: 2.5fr 1fr;
+  align-items: stretch;
 }
 
 .nil-demo-scene-grid--analytics {
@@ -82,7 +118,8 @@
   display: flex;
   gap: var(--nil-spacing-lg);
   justify-content: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
 }
 
 .nil-demo-instrument {
@@ -190,9 +227,44 @@
   gap: var(--nil-spacing-lg);
 }
 
+.nil-demo-button-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--nil-spacing-lg);
+  margin-top: var(--nil-spacing-md);
+  padding: var(--nil-spacing-md);
+  background: var(--nil-color-surface);
+  border: var(--nil-border-width) solid var(--nil-color-border);
+  border-radius: var(--nil-radius-default);
+}
+
+.nil-demo-button-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--nil-spacing-xs);
+}
+
+.nil-demo-button-label {
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--nil-color-text-muted);
+}
+
 @media (max-width: 1024px) {
   .nil-demo-scene-grid--climate {
     grid-template-columns: 1fr;
+  }
+
+  .nil-demo-scene-grid--schedule {
+    grid-template-columns: 1fr;
+  }
+
+  .nil-demo-scene-grid--rings {
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 
   .nil-demo-scene-grid--analytics {

@@ -40,15 +40,31 @@ export function GalleryScene() {
         <Text muted>Every primitive state — appendix for auditors.</Text>
       </div>
 
-      <div className={`nil-demo-gallery-grid nil-enter${visible ? ' is-visible' : ''}`} style={{ marginTop: 'var(--nil-spacing-lg)' }}>
-        <Card>
+      <div className="nil-demo-gallery-grid" style={{ marginTop: 'var(--nil-spacing-lg)' }}>
+        <Card className="nil-demo-gallery-buttons" style={{ gridColumn: '1 / -1' }}>
           <Heading level={3}>Buttons</Heading>
-          <div style={{ display: 'flex', gap: 'var(--nil-spacing-sm)', flexWrap: 'wrap', marginTop: 'var(--nil-spacing-sm)' }}>
-            <Button variant="primary">Primary</Button>
-            <Button variant="secondary">Secondary</Button>
-            <Button variant="ghost">Ghost</Button>
-            <Button variant="bracket">Run query</Button>
-            <Button variant="primary" disabled>Disabled</Button>
+          <Text size="sm" muted style={{ marginTop: 'var(--nil-spacing-xs)' }}>
+            IBM Plex Mono · uppercase label · brackets match Meta spacing
+          </Text>
+          <div className="nil-demo-button-strip">
+            <div className="nil-demo-button-cell">
+              <Button variant="primary">Apply</Button>
+              <span className="nil-demo-button-label">primary</span>
+            </div>
+            <div className="nil-demo-button-cell">
+              <Button variant="secondary">Run query</Button>
+              <span className="nil-demo-button-label">secondary</span>
+            </div>
+            <div className="nil-demo-button-cell">
+              <Button variant="ghost">Cancel</Button>
+              <span className="nil-demo-button-label">ghost</span>
+            </div>
+            <div className="nil-demo-button-cell">
+              <Button variant="secondary" disabled>
+                Disabled
+              </Button>
+              <span className="nil-demo-button-label">disabled</span>
+            </div>
           </div>
         </Card>
 
