@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
-  variant?: 'primary' | 'secondary' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'bracket';
   size?: 'sm' | 'md';
 }
 
@@ -22,6 +22,11 @@ const variantStyles: Record<NonNullable<ButtonProps['variant']>, React.CSSProper
     color: 'var(--nil-color-text)',
     border: 'var(--nil-border-width) solid transparent',
   },
+  bracket: {
+    background: 'var(--nil-color-surface)',
+    color: 'var(--nil-color-text)',
+    border: 'var(--nil-border-width-thick) solid var(--nil-color-border)',
+  },
 };
 
 const sizeStyles: Record<NonNullable<ButtonProps['size']>, React.CSSProperties> = {
@@ -36,19 +41,22 @@ const sizeStyles: Record<NonNullable<ButtonProps['size']>, React.CSSProperties> 
 };
 
 /**
- * Extracted from mothership-stable's BracketButton, generalised: variant/size
- * props replace the bracket-specific decoration so it fits any visual system
- * that consumes these tokens.
+ * Bracket variant restores the terminal `[ ACTION ]` vocabulary from the
+ * cyber-brutalist explorations. Other variants stay general-purpose.
  */
 export function Button({ children, variant = 'primary', size = 'md', style, disabled, className, ...rest }: ButtonProps) {
+  const isBracket = variant === 'bracket';
+
   return (
     <button
       {...rest}
       disabled={disabled}
       className={['nil-btn', `nil-btn--${variant}`, className].filter(Boolean).join(' ')}
       style={{
-        fontFamily: 'var(--nil-font-body)',
-        fontWeight: 600,
+        fontFamily: isBracket ? 'var(--nil-font-mono)' : 'var(--nil-font-body)',
+        fontWeight: isBracket ? 500 : 600,
+        letterSpacing: isBracket ? '0.08em' : undefined,
+        textTransform: isBracket ? 'uppercase' : undefined,
         borderRadius: 'var(--nil-radius-default)',
         cursor: disabled ? 'not-allowed' : 'pointer',
         transition: `background var(--nil-motion-duration-base) var(--nil-motion-easing-standard)`,
@@ -66,7 +74,19 @@ export function Button({ children, variant = 'primary', size = 'md', style, disa
         ...style,
       }}
     >
-      {children}
+      {isBracket ? (
+        <>
+          <span aria-hidden className="nil-btn__bracket">
+            [
+          </span>
+          <span className="nil-btn__label">{children}</span>
+          <span aria-hidden className="nil-btn__bracket">
+            ]
+          </span>
+        </>
+      ) : (
+        children
+      )}
     </button>
   );
 }

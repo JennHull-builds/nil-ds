@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ThemeToggle, type Theme } from '../src';
+import type { Theme } from '../src';
 import './demo.css';
 import { AnalyticsScene } from './scenes/AnalyticsScene';
 import { ClimateScene } from './scenes/ClimateScene';
@@ -21,23 +21,13 @@ export function App() {
   const [theme, setTheme] = useState<Theme>('light');
 
   return (
-    <div data-theme={theme} className="nil-demo-canvas nil-grid-bg">
-      <div className="nil-container nil-section-y">
-        <nav className="nil-demo-nav" aria-label="Showroom scenes">
-          {SCENES.map((scene) => (
-            <a key={scene.id} href={`#${scene.id}`}>
-              {scene.label}
-            </a>
-          ))}
-        </nav>
-
-        <IntroScene theme={theme} onThemeChange={setTheme} />
-        <ClimateScene />
-        <InstrumentScene />
-        <AnalyticsScene />
-        <TokenLabScene />
-        <GalleryScene />
-      </div>
+    <div data-theme={theme} className="nil-demo-canvas">
+      <IntroScene band theme={theme} onThemeChange={setTheme} scenes={SCENES} />
+      <ClimateScene />
+      <InstrumentScene band />
+      <AnalyticsScene />
+      <TokenLabScene band />
+      <GalleryScene />
     </div>
   );
 }

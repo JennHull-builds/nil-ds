@@ -8,19 +8,25 @@ export interface StackProps {
   style?: CSSProperties;
 }
 
+/** 8px offset per back layer — depth from geometry, not box-shadow. */
+const STACK_OFFSET = 8;
+
 /**
- * Offset hard-border card stack — left-stacked shadows, default radius.
+ * Offset hard-border card stack. Back layers peek left/down; top card sits forward
+ * with bg vs surface contrast. No box-shadow — stacked offsets read cleaner than
+ * competing hard shadows on every layer.
  */
 export function Stack({ children, depth = 2, className, style }: StackProps) {
   const layers = Math.min(3, Math.max(1, depth));
+  const peek = `${layers * STACK_OFFSET}px`;
 
   return (
     <div
       className={['nil-stack', className].filter(Boolean).join(' ')}
       style={{
         position: 'relative',
-        paddingLeft: `${layers * 8}px`,
-        paddingBottom: `${layers * 8}px`,
+        paddingLeft: peek,
+        paddingBottom: peek,
         ...style,
       }}
     >
@@ -31,12 +37,14 @@ export function Stack({ children, depth = 2, className, style }: StackProps) {
           className="nil-stack__layer"
           style={{
             position: 'absolute',
-            inset: 0,
-            transform: `translate(${-8 * (layers - i)}px, ${8 * (layers - i)}px)`,
+            left: peek,
+            top: 0,
+            right: 0,
+            bottom: peek,
+            transform: `translate(${-STACK_OFFSET * (layers - i)}px, ${STACK_OFFSET * (layers - i)}px)`,
             border: 'var(--nil-border-width) solid var(--nil-color-border)',
             borderRadius: 'var(--nil-radius-default)',
             background: 'var(--nil-color-surface)',
-            boxShadow: `${4 * (layers - i)}px ${4 * (layers - i)}px 0 var(--nil-color-shadow-stack)`,
             zIndex: i,
           }}
         />
@@ -49,7 +57,6 @@ export function Stack({ children, depth = 2, className, style }: StackProps) {
           border: 'var(--nil-border-width) solid var(--nil-color-border)',
           borderRadius: 'var(--nil-radius-default)',
           background: 'var(--nil-color-bg)',
-          boxShadow: '4px 4px 0 var(--nil-color-shadow-stack)',
         }}
       >
         {children}

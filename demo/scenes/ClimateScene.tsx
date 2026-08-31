@@ -9,6 +9,7 @@ import {
   Toggle,
 } from '../../src';
 import { useReveal } from '../hooks/useReveal';
+import { DemoScene } from '../DemoScene';
 
 export function ClimateScene() {
   const { ref, visible } = useReveal();
@@ -16,7 +17,7 @@ export function ClimateScene() {
   const [dayOffOn, setDayOffOn] = useState(false);
 
   return (
-    <section id="climate" className="nil-demo-scene" ref={ref as React.RefObject<HTMLElement>}>
+    <DemoScene id="climate" ref={ref}>
       <div className={`nil-enter${visible ? ' is-visible' : ''}`}>
         <Heading level={2}>Climate console</Heading>
         <p className="nil-label" style={{ marginTop: 'var(--nil-spacing-xs)' }}>
@@ -31,7 +32,7 @@ export function ClimateScene() {
         <Panel title="Rooms">
           <DataRow label="Living room" detail="19.0°C" />
           <DataRow label="Bedroom" detail="18.2°C" />
-          <DataRow label="Kitchen" value="18.5°C" active />
+          <DataRow label="Kitchen" detail="18.5°C" active />
           <DataRow label="Bathroom" detail="17.8°C" />
         </Panel>
 
@@ -69,6 +70,6 @@ export function ClimateScene() {
           <Readout label="Outside" value="14" unit="°C" size="md" />
         </Panel>
       </div>
-    </section>
+    </DemoScene>
   );
 }

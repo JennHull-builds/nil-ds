@@ -8,6 +8,7 @@ import {
   Text,
 } from '../../src';
 import { useReveal } from '../hooks/useReveal';
+import { DemoScene } from '../DemoScene';
 
 const ROOMS = ['Living room', 'Bedroom', 'Bathroom', 'Kitchen'];
 const BAR_HEIGHTS = [40, 55, 35, 70, 48, 62, 38];
@@ -18,7 +19,7 @@ export function AnalyticsScene() {
   const [tab, setTab] = useState(2);
 
   return (
-    <section id="analytics" className="nil-demo-scene" ref={ref as React.RefObject<HTMLElement>}>
+    <DemoScene id="analytics" ref={ref}>
       <div className={`nil-enter${visible ? ' is-visible' : ''}`}>
         <Heading level={2}>Lighting</Heading>
         <TabStrip tabs={ROOMS} activeIndex={tab} onTabChange={setTab} style={{ marginTop: 'var(--nil-spacing-md)' }} />
@@ -62,6 +63,6 @@ export function AnalyticsScene() {
           <DataRow label="Live" value="2.4 kW" detail="14:41" />
         </Panel>
       </div>
-    </section>
+    </DemoScene>
   );
 }

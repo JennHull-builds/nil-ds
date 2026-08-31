@@ -12,7 +12,7 @@
     {
       "name": "Button",
       "tokens": ["--nil-color-accent", "--nil-color-accent-contrast", "--nil-color-text", "--nil-color-border", "--nil-color-surface", "--nil-border-width"],
-      "props": { "variant": "primary|secondary|ghost", "size": "sm|md", "disabled": "boolean" }
+      "props": { "variant": "primary|secondary|ghost|bracket", "size": "sm|md", "disabled": "boolean" }
     },
     {
       "name": "Panel",

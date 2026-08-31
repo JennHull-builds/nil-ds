@@ -216,6 +216,33 @@ pre,
   background: var(--nil-color-surface);
 }
 
+.nil-btn--bracket {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+}
+
+.nil-btn--bracket .nil-btn__bracket {
+  color: var(--nil-color-text-muted);
+}
+
+.nil-btn--bracket .nil-btn__label {
+  padding: 0 var(--nil-spacing-xs);
+}
+
+.nil-btn--bracket:not(:disabled):hover {
+  background: var(--nil-color-bg);
+}
+
+.nil-btn--bracket:not(:disabled):active {
+  background: var(--nil-color-text);
+  color: var(--nil-color-bg);
+}
+
+.nil-btn--bracket:not(:disabled):active .nil-btn__bracket {
+  color: var(--nil-color-text-muted);
+}
+
 .nil-btn:focus-visible,
 .nil-input:focus-visible,
 .nil-theme-segment:focus-visible,
@@ -281,16 +308,10 @@ pre,
 /* ─── Demo shell ────────────────────────────────────────────────────────────── */
 
 .nil-demo-nav {
-  position: sticky;
-  top: 0;
-  z-index: 10;
   display: flex;
   flex-wrap: wrap;
   gap: var(--nil-spacing-xs);
   padding-block: var(--nil-spacing-sm);
-  margin-bottom: var(--nil-spacing-lg);
-  background: var(--nil-color-bg);
-  border-bottom: var(--nil-border-width) solid var(--nil-color-border);
 }
 
 .nil-demo-nav a {
@@ -357,12 +378,37 @@ pre,
   padding-block: var(--nil-spacing-2xl);
 }
 
-.nil-demo-scene:first-of-type {
-  padding-top: var(--nil-spacing-xl);
+.nil-demo-canvas > .nil-demo-scene:first-of-type {
+  padding-top: 0;
 }
 
 @media (max-width: 767px) {
   .nil-demo-scene {
     padding-block: var(--nil-spacing-xl);
   }
+}
+
+/* ─── DataRow ─────────────────────────────────────────────────────────────── */
+
+.nil-data-row {
+  padding-block: var(--nil-spacing-sm);
+  padding-inline: 0;
+  border-bottom: var(--nil-border-width) solid var(--nil-color-border);
+}
+
+/* Single full-bleed rule between rows — hide inset divider above active row. */
+.nil-data-row:has(+ .nil-data-row--active) {
+  border-bottom: none;
+}
+
+.nil-data-row--active {
+  margin-inline: calc(-1 * var(--nil-spacing-md));
+  padding-inline: var(--nil-spacing-md);
+  border-top: var(--nil-border-width) solid var(--nil-color-border);
+  background: color-mix(in srgb, var(--nil-color-bg) 78%, var(--nil-color-accent-contrast));
+  color: var(--nil-color-text);
+}
+
+[data-theme='dark'] .nil-data-row--active {
+  background: color-mix(in srgb, var(--nil-color-surface) 88%, var(--nil-color-text));
 }

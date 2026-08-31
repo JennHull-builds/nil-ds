@@ -1,3 +1,41 @@
+/* Full-bleed grid bands — bordered caps so transitions read as intentional. */
+.nil-demo-scene--band {
+  background-color: var(--nil-color-bg);
+  border-block: var(--nil-border-width) solid var(--nil-color-border);
+}
+
+.nil-demo-scene--band:first-of-type {
+  border-top: none;
+}
+
+/* Solid sticky bar — grid band starts below this rule. */
+.nil-demo-nav-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  margin-inline: calc(-1 * var(--nil-layout-page-x));
+  padding-inline: var(--nil-layout-page-x);
+  padding-top: var(--nil-layout-section-y);
+  margin-bottom: var(--nil-spacing-lg);
+  background: var(--nil-color-bg);
+  border-bottom: var(--nil-border-width) solid var(--nil-color-border);
+}
+
+@media (max-width: 1024px) {
+  .nil-demo-nav-bar {
+    margin-inline: calc(-1 * var(--nil-spacing-xl));
+    padding-inline: var(--nil-spacing-xl);
+  }
+}
+
+@media (max-width: 767px) {
+  .nil-demo-nav-bar {
+    margin-inline: calc(-1 * var(--nil-spacing-md));
+    padding-inline: var(--nil-spacing-md);
+    padding-top: var(--nil-spacing-2xl);
+  }
+}
+
 .nil-demo-layer-strip {
   display: flex;
   gap: var(--nil-spacing-md);

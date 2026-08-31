@@ -8,18 +8,33 @@ import {
   type Theme,
 } from '../../src';
 import { useReveal } from '../hooks/useReveal';
+import { DemoScene } from '../DemoScene';
 
 export function IntroScene({
   theme,
   onThemeChange,
+  band,
+  scenes,
 }: {
   theme: Theme;
   onThemeChange: (t: Theme) => void;
+  band?: boolean;
+  scenes: readonly { id: string; label: string }[];
 }) {
   const { ref, visible } = useReveal();
 
   return (
-    <section id="intro" className="nil-demo-scene" ref={ref as React.RefObject<HTMLElement>}>
+    <DemoScene id="intro" band={band} ref={ref}>
+      <div className="nil-demo-nav-bar">
+        <nav className="nil-demo-nav" aria-label="Showroom scenes">
+          {scenes.map((scene) => (
+            <a key={scene.id} href={`#${scene.id}`}>
+              {scene.label}
+            </a>
+          ))}
+        </nav>
+      </div>
+
       <div
         className={`nil-enter${visible ? ' is-visible' : ''}`}
         style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 'var(--nil-spacing-md)', flexWrap: 'wrap' }}
@@ -47,7 +62,7 @@ export function IntroScene({
         style={{ marginTop: 'var(--nil-spacing-xl)', ['--nil-anim-delay' as string]: '120ms' }}
       >
         <Stack depth={3}>
-          <div className="nil-demo-hero-inner nil-grid-bg">
+          <div className="nil-demo-hero-inner">
             <div className="nil-demo-brand">Designer Soul. Developer Brain.</div>
             <Prompt>READY TO EXECUTE</Prompt>
             <div style={{ display: 'flex', gap: 'var(--nil-spacing-md)', flexWrap: 'wrap', marginTop: 'var(--nil-spacing-md)' }}>
@@ -71,6 +86,6 @@ export function IntroScene({
           </div>
         </Stack>
       </div>
-    </section>
+    </DemoScene>
   );
 }

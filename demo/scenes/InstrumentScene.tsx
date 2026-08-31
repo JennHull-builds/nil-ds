@@ -9,6 +9,7 @@ import {
   Toggle,
 } from '../../src';
 import { useReveal } from '../hooks/useReveal';
+import { DemoScene } from '../DemoScene';
 
 function RadiatorIcon() {
   return (
@@ -31,12 +32,12 @@ function SolarIcon() {
   );
 }
 
-export function InstrumentScene() {
+export function InstrumentScene({ band }: { band?: boolean }) {
   const { ref, visible } = useReveal();
   const [heatOn, setHeatOn] = useState(true);
 
   return (
-    <section id="instrument" className="nil-demo-scene" ref={ref as React.RefObject<HTMLElement>}>
+    <DemoScene id="instrument" band={band} ref={ref}>
       <div className={`nil-enter${visible ? ' is-visible' : ''}`}>
         <Heading level={2}>Instrument panel</Heading>
         <p className="nil-label" style={{ marginTop: 'var(--nil-spacing-xs)' }}>Mobile-density readouts</p>
@@ -75,6 +76,6 @@ export function InstrumentScene() {
           </div>
         </Panel>
       </div>
-    </section>
+    </DemoScene>
   );
 }

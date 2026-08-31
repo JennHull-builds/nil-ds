@@ -8,6 +8,7 @@ import {
 } from '../../src';
 import tokensJson from '../../src/tokens/tokens.json';
 import { useReveal } from '../hooks/useReveal';
+import { DemoScene } from '../DemoScene';
 
 const ACCENT_PRESETS = [
   { label: '#1752eb', value: '#1752eb' },
@@ -33,7 +34,7 @@ const SEMANTIC_COLORS = [
   'color-success',
 ] as const;
 
-export function TokenLabScene() {
+export function TokenLabScene({ band }: { band?: boolean }) {
   const { ref, visible } = useReveal();
   const [swatches, setSwatches] = useState<Record<string, string>>({});
   const [copied, setCopied] = useState(false);
@@ -67,7 +68,7 @@ export function TokenLabScene() {
   }, []);
 
   return (
-    <section id="token-lab" className="nil-demo-scene" ref={ref as React.RefObject<HTMLElement>}>
+    <DemoScene id="token-lab" band={band} ref={ref}>
       <div className={`nil-enter${visible ? ' is-visible' : ''}`}>
         <Heading level={2}>Token Lab</Heading>
         <Text muted>Swap primitive. Semantic follows. Components unchanged.</Text>
@@ -130,6 +131,6 @@ export function TokenLabScene() {
           {copied ? 'Copied!' : 'Copy tokens.json primitive block'}
         </Button>
       </div>
-    </section>
+    </DemoScene>
   );
 }

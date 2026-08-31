@@ -8,17 +8,34 @@ export function useReveal() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    const reveal = () => setVisible(true);
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setVisible(true);
+          reveal();
           observer.disconnect();
         }
       },
-      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
+      { threshold: 0.08 },
     );
+
     observer.observe(el);
-    return () => observer.disconnect();
+
+    // Above-the-fold: IO can miss on first paint after HMR — check once layout settles.
+    const raf = requestAnimationFrame(() => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        reveal();
+        observer.disconnect();
+      }
+    });
+
+    return () => {
+      cancelAnimationFrame(raf);
+      observer.disconnect();
+    };
   }, []);
 
   return { ref, visible };

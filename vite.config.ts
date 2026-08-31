@@ -8,6 +8,11 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   root: 'demo',
   plugins: [react()],
+  server: {
+    host: true,
+    port: 5173,
+    strictPort: true,
+  },
   build: {
     outDir: '../dist-demo',
     emptyOutDir: true,

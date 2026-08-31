@@ -13,6 +13,7 @@ import {
   type LightboxImage,
 } from '../../src';
 import { useReveal } from '../hooks/useReveal';
+import { DemoScene } from '../DemoScene';
 
 const DEMO_LIGHTBOX: LightboxImage = {
   src:
@@ -33,7 +34,7 @@ export function GalleryScene() {
   const [lightbox, setLightbox] = useState<LightboxImage | null>(null);
 
   return (
-    <section id="gallery" className="nil-demo-scene" ref={ref as React.RefObject<HTMLElement>}>
+    <DemoScene id="gallery" ref={ref}>
       <div className={`nil-enter${visible ? ' is-visible' : ''}`}>
         <Heading level={2}>Gallery</Heading>
         <Text muted>Every primitive state — appendix for auditors.</Text>
@@ -46,6 +47,7 @@ export function GalleryScene() {
             <Button variant="primary">Primary</Button>
             <Button variant="secondary">Secondary</Button>
             <Button variant="ghost">Ghost</Button>
+            <Button variant="bracket">Run query</Button>
             <Button variant="primary" disabled>Disabled</Button>
           </div>
         </Card>
@@ -99,6 +101,6 @@ export function GalleryScene() {
       </Text>
 
       <Lightbox image={lightbox} onClose={() => setLightbox(null)} />
-    </section>
+    </DemoScene>
   );
 }
