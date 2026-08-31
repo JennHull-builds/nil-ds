@@ -39,5 +39,5 @@ See `registry.json` for per-component token dependencies and props.
 
 - Import Radix/shadcn into NIL kit source
 - Use `#000` / `#fff` unless explicitly requested
-- Round corners on brutalist primitives (0px default)
+- Hardcode corner radius in components — use `--nil-radius-default` (4px soft brutalist)
 - Invent magic pixel values — use `--nil-spacing-*` and layout tokens

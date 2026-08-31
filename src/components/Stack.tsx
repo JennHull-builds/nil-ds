@@ -9,7 +9,7 @@ export interface StackProps {
 }
 
 /**
- * Offset hard-border card stack — left-stacked shadows, no radius.
+ * Offset hard-border card stack — left-stacked shadows, default radius.
  */
 export function Stack({ children, depth = 2, className, style }: StackProps) {
   const layers = Math.min(3, Math.max(1, depth));
@@ -34,7 +34,7 @@ export function Stack({ children, depth = 2, className, style }: StackProps) {
             inset: 0,
             transform: `translate(${-8 * (layers - i)}px, ${8 * (layers - i)}px)`,
             border: 'var(--nil-border-width) solid var(--nil-color-border)',
-            borderRadius: 'var(--nil-radius-none)',
+            borderRadius: 'var(--nil-radius-default)',
             background: 'var(--nil-color-surface)',
             boxShadow: `${4 * (layers - i)}px ${4 * (layers - i)}px 0 var(--nil-color-shadow-stack)`,
             zIndex: i,
@@ -47,7 +47,7 @@ export function Stack({ children, depth = 2, className, style }: StackProps) {
           position: 'relative',
           zIndex: layers + 1,
           border: 'var(--nil-border-width) solid var(--nil-color-border)',
-          borderRadius: 'var(--nil-radius-none)',
+          borderRadius: 'var(--nil-radius-default)',
           background: 'var(--nil-color-bg)',
           boxShadow: '4px 4px 0 var(--nil-color-shadow-stack)',
         }}

@@ -38,7 +38,7 @@ export function Input({ label, error, id, style, className, ...rest }: InputProp
           fontFamily: 'var(--nil-font-body)',
           fontSize: 'var(--nil-type-scale-base)',
           padding: 'var(--nil-spacing-sm)',
-          borderRadius: 'var(--nil-radius-none)',
+          borderRadius: 'var(--nil-radius-default)',
           border: `var(--nil-border-width) solid ${error ? 'var(--nil-color-danger)' : 'var(--nil-color-border)'}`,
           background: 'var(--nil-color-surface)',
           color: 'var(--nil-color-text)',

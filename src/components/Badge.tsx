@@ -14,7 +14,7 @@ const toneColor: Record<NonNullable<BadgeProps['tone']>, string> = {
 
 /**
  * Extracted from mothership-stable's TagPill, with tone replacing the fixed
- * pill colour. Square corners — CLI lineage, not soft pills.
+ * pill colour. Default radius — CLI lineage, not soft pills.
  */
 export function Badge({ children, tone = 'neutral' }: BadgeProps) {
   const color = toneColor[tone];
@@ -29,7 +29,7 @@ export function Badge({ children, tone = 'neutral' }: BadgeProps) {
         fontSize: 'var(--nil-type-scale-xs)',
         letterSpacing: '0.04em',
         textTransform: 'uppercase',
-        borderRadius: 'var(--nil-radius-none)',
+        borderRadius: 'var(--nil-radius-default)',
         border: `var(--nil-border-width) solid ${color}`,
         color,
       }}

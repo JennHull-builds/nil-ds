@@ -12,7 +12,7 @@ export interface ThemeToggleProps extends Omit<HTMLAttributes<HTMLDivElement>, '
 
 /**
  * Extracted from mothership-stable's ThemeToggle. Sharp segmented light/dark
- * control — 0 radius, hard border. Controlled: no ThemeProvider; theme is a
+ * control — default radius, hard border. Controlled: no ThemeProvider; theme is a
  * kit object the consumer wires to `data-theme`.
  */
 export function ThemeToggle({

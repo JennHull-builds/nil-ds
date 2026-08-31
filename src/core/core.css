@@ -236,7 +236,7 @@ pre,
   overflow: hidden;
   flex-shrink: 0;
   border: var(--nil-border-width) solid var(--nil-color-border);
-  border-radius: var(--nil-radius-none);
+  border-radius: var(--nil-radius-default);
 }
 
 .nil-theme-segment {
@@ -338,8 +338,10 @@ pre,
 }
 
 .nil-stat {
+  font-family: var(--nil-font-display);
   font-size: var(--nil-type-scale-3xl);
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
   line-height: 1.1;
 }
 

@@ -1,12 +1,12 @@
 {
   "version": "0.1.0",
   "tokens": "src/tokens/tokens.json",
-  "css": ["src/tokens/tokens.css", "src/core/core.css"],
+  "css": ["src/core/fonts.css", "src/tokens/tokens.css", "src/core/core.css"],
   "rules": [
     "Components only reference --nil-* semantic tokens",
     "Never use --nil-primitive-* in components",
     "App-specific colours live in consumer @theme, not NIL primitives",
-    "0px radius and 2px borders unless explicitly overridden per primitive"
+    "4px default radius (--nil-radius-default) and 2px borders; Toggle uses --nil-radius-full"
   ],
   "components": [
     {
@@ -56,7 +56,7 @@
     },
     {
       "name": "Readout",
-      "tokens": ["--nil-type-scale-3xl", "--nil-type-scale-2xl", "--nil-color-text-muted"],
+      "tokens": ["--nil-font-display", "--nil-type-scale-3xl", "--nil-type-scale-2xl", "--nil-color-text-muted"],
       "props": { "value": "string|number", "unit": "string?", "size": "md|lg" }
     },
     {

@@ -37,7 +37,7 @@ export function Meta({ label, children, tone = 'neutral' }: MetaProps) {
         letterSpacing: '0.04em',
         lineHeight: 1.45,
         textTransform: 'uppercase',
-        borderRadius: 'var(--nil-radius-none)',
+        borderRadius: 'var(--nil-radius-default)',
         color: 'var(--nil-color-text)',
         whiteSpace: 'nowrap',
         minWidth: 0,

@@ -35,16 +35,27 @@ export function Readout({ label, value, unit, sublabel, size = 'lg', className, 
       <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.25em', lineHeight: 1.1 }}>
         <span
           style={{
-            fontFamily: 'var(--nil-font-body)',
+            fontFamily: 'var(--nil-font-display)',
             fontSize: valueSize,
             fontWeight: 600,
+            fontVariantNumeric: 'tabular-nums',
             color: 'inherit',
           }}
         >
           {value}
         </span>
         {unit ? (
-          <span style={{ fontSize: 'var(--nil-type-scale-lg)', fontWeight: 500, opacity: 0.85 }}>{unit}</span>
+          <span
+            style={{
+              fontFamily: 'var(--nil-font-display)',
+              fontSize: 'var(--nil-type-scale-lg)',
+              fontWeight: 500,
+              fontVariantNumeric: 'tabular-nums',
+              opacity: 0.85,
+            }}
+          >
+            {unit}
+          </span>
         ) : null}
       </div>
       {sublabel ? (

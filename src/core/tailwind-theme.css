@@ -15,7 +15,9 @@
 
   --font-sans: var(--nil-font-body);
   --font-mono: var(--nil-font-mono);
+  --font-display: var(--nil-font-display);
 
   --radius-none: var(--nil-radius-none);
+  --radius-default: var(--nil-radius-default);
   --radius-full: var(--nil-radius-full);
 }

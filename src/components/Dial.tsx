@@ -112,7 +112,14 @@ export function Dial({
             padding: 'var(--nil-spacing-sm)',
           }}
         >
-          <span style={{ fontSize: size === 'lg' ? 'var(--nil-type-scale-xl)' : 'var(--nil-type-scale-lg)', fontWeight: 600 }}>
+          <span
+            style={{
+              fontFamily: 'var(--nil-font-display)',
+              fontSize: size === 'lg' ? 'var(--nil-type-scale-xl)' : 'var(--nil-type-scale-lg)',
+              fontWeight: 600,
+              fontVariantNumeric: 'tabular-nums',
+            }}
+          >
             {value}
             {unit ? <span style={{ fontSize: '0.65em' }}>{unit}</span> : null}
           </span>

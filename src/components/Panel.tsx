@@ -30,7 +30,7 @@ export function Panel({
       className={['nil-panel', isInverse ? 'nil-panel--inverse' : '', className].filter(Boolean).join(' ')}
       style={{
         border: 'var(--nil-border-width) solid var(--nil-color-border)',
-        borderRadius: 'var(--nil-radius-none)',
+        borderRadius: 'var(--nil-radius-default)',
         background: isInverse ? 'var(--nil-color-text)' : 'var(--nil-color-surface)',
         color: isInverse ? 'var(--nil-color-bg)' : 'var(--nil-color-text)',
         ...style,

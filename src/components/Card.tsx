@@ -19,7 +19,7 @@ export function Card({ children, padding = 'var(--nil-spacing-md)', style, class
       style={{
         backgroundColor: 'var(--nil-color-surface)',
         border: `var(--nil-border-width) solid var(--nil-color-border)`,
-        borderRadius: 'var(--nil-radius-none)',
+        borderRadius: 'var(--nil-radius-default)',
         padding,
         ...style,
       }}

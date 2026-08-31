@@ -74,7 +74,7 @@ export function Lightbox({ image, onClose }: LightboxProps) {
           color: 'var(--nil-color-overlay-fg)',
           background: 'transparent',
           border: 'var(--nil-border-width-thick) solid var(--nil-color-overlay-border)',
-          borderRadius: 'var(--nil-radius-none)',
+          borderRadius: 'var(--nil-radius-default)',
           padding: 'var(--nil-spacing-xs) var(--nil-spacing-md)',
           cursor: 'pointer',
         }}
@@ -91,7 +91,7 @@ export function Lightbox({ image, onClose }: LightboxProps) {
           maxHeight: '100%',
           objectFit: 'contain',
           border: 'var(--nil-border-width-thick) solid var(--nil-color-overlay-border)',
-          borderRadius: 'var(--nil-radius-none)',
+          borderRadius: 'var(--nil-radius-default)',
         }}
       />
     </div>

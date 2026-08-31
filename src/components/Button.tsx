@@ -49,7 +49,7 @@ export function Button({ children, variant = 'primary', size = 'md', style, disa
       style={{
         fontFamily: 'var(--nil-font-body)',
         fontWeight: 600,
-        borderRadius: 'var(--nil-radius-none)',
+        borderRadius: 'var(--nil-radius-default)',
         cursor: disabled ? 'not-allowed' : 'pointer',
         transition: `background var(--nil-motion-duration-base) var(--nil-motion-easing-standard)`,
         ...variantStyles[variant],

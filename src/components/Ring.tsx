@@ -67,9 +67,10 @@ export function Ring({ value, label, size = 'sm', className, style }: RingProps)
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontFamily: 'var(--nil-font-mono)',
+            fontFamily: 'var(--nil-font-display)',
             fontSize: 'var(--nil-type-scale-xs)',
             fontWeight: 600,
+            fontVariantNumeric: 'tabular-nums',
           }}
         >
           {pct}%
