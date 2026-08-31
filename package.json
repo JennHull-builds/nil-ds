@@ -8,9 +8,11 @@
   "types": "src/index.ts",
   "scripts": {
     "dev": "vite",
-    "build:demo": "vite build",
+    "build:demo": "npm run tokens:build && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "tokens:build": "node scripts/build-tokens.mjs",
+    "tokens:validate": "node scripts/validate-tokens.mjs",
+    "typecheck": "npm run tokens:validate && tsc --noEmit"
   },
   "peerDependencies": {
     "react": ">=18",

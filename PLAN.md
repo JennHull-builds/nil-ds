@@ -173,3 +173,8 @@ reinjection, brand lime/mint/pork, Soft Bento, page/print chrome.
   `0px` radius, `2px` borders. **Accent locked `#0241e3`** (Jen — not Mothership
   orange `#CC3100`). Light is demo default (`data-theme="light"`). First consumer:
   TetherLog.
+- 2026-08-31: **v0.1 proper elevation** — accent `#1752eb`, lighter canvas
+  `#F3F2EE`. Token build pipeline (`scripts/build-tokens.mjs`, validate on
+  typecheck). New primitives: Panel, Stack, Prompt, Readout, Dial, Ring, Toggle,
+  DataRow, TabStrip. Five-scene Vite showroom + Token Lab. `registry.json`,
+  `AGENTS.md`, `APPLY.md`, `FIGMA.md`, `tailwind-theme.css`, Vercel config.

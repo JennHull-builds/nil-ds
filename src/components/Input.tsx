@@ -40,7 +40,7 @@ export function Input({ label, error, id, style, className, ...rest }: InputProp
           padding: 'var(--nil-spacing-sm)',
           borderRadius: 'var(--nil-radius-none)',
           border: `var(--nil-border-width) solid ${error ? 'var(--nil-color-danger)' : 'var(--nil-color-border)'}`,
-          background: 'var(--nil-color-bg)',
+          background: 'var(--nil-color-surface)',
           color: 'var(--nil-color-text)',
           ...style,
         }}

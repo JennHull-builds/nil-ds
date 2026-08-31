@@ -1,0 +1,21 @@
+/**
+ * NIL DS — Tailwind v4 @theme alias block.
+ * Import after tokens.css + core.css in consumer index.css.
+ */
+@theme {
+  --color-paper: var(--nil-color-bg);
+  --color-raised: var(--nil-color-surface);
+  --color-line: var(--nil-color-border);
+  --color-ink: var(--nil-color-text);
+  --color-muted: var(--nil-color-text-muted);
+  --color-mark: var(--nil-color-accent);
+  --color-mark-text: var(--nil-color-accent-contrast);
+  --color-danger: var(--nil-color-danger);
+  --color-success: var(--nil-color-success);
+
+  --font-sans: var(--nil-font-body);
+  --font-mono: var(--nil-font-mono);
+
+  --radius-none: var(--nil-radius-none);
+  --radius-full: var(--nil-radius-full);
+}

@@ -1,0 +1,163 @@
+.nil-demo-layer-strip {
+  display: flex;
+  gap: var(--nil-spacing-md);
+  flex-wrap: wrap;
+  margin-top: var(--nil-spacing-lg);
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--nil-color-text-muted);
+}
+
+.nil-demo-layer-strip strong {
+  color: var(--nil-color-text);
+}
+
+.nil-demo-hero-inner {
+  padding: var(--nil-spacing-xl);
+}
+
+.nil-demo-brand {
+  font-size: var(--nil-type-scale-2xl);
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: var(--nil-spacing-md);
+}
+
+.nil-demo-scene-grid {
+  display: grid;
+  gap: var(--nil-spacing-lg);
+}
+
+.nil-demo-scene-grid--climate {
+  grid-template-columns: 1fr 1.2fr 0.8fr;
+  align-items: start;
+}
+
+.nil-demo-scene-grid--analytics {
+  grid-template-columns: 1fr 1fr;
+  gap: var(--nil-spacing-md);
+}
+
+.nil-demo-scene-grid--rings {
+  display: flex;
+  gap: var(--nil-spacing-lg);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.nil-demo-instrument {
+  max-width: 420px;
+  margin-inline: auto;
+}
+
+.nil-demo-pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--nil-spacing-md);
+  margin-top: var(--nil-spacing-lg);
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-xs);
+  letter-spacing: 0.06em;
+}
+
+.nil-demo-pagination-dots {
+  display: flex;
+  gap: var(--nil-spacing-xs);
+}
+
+.nil-demo-pagination-dot {
+  width: 8px;
+  height: 8px;
+  border: var(--nil-border-width) solid var(--nil-color-border);
+  background: transparent;
+}
+
+.nil-demo-pagination-dot.is-active {
+  background: var(--nil-color-accent);
+  border-color: var(--nil-color-accent);
+}
+
+.nil-demo-swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--nil-spacing-sm);
+}
+
+.nil-demo-swatch {
+  border: var(--nil-border-width) solid var(--nil-color-border);
+  padding: var(--nil-spacing-sm);
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-xs);
+}
+
+.nil-demo-swatch-chip {
+  height: 32px;
+  border: var(--nil-border-width) solid var(--nil-color-border);
+  margin-bottom: var(--nil-spacing-xs);
+}
+
+.nil-demo-preset-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--nil-spacing-sm);
+  margin-top: var(--nil-spacing-md);
+}
+
+.nil-demo-mini-preview {
+  display: flex;
+  gap: var(--nil-spacing-lg);
+  align-items: center;
+  margin-top: var(--nil-spacing-lg);
+  padding: var(--nil-spacing-md);
+  border: var(--nil-border-width) solid var(--nil-color-border);
+}
+
+.nil-demo-chart-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--nil-spacing-sm);
+  height: 120px;
+  padding-top: var(--nil-spacing-md);
+}
+
+.nil-demo-chart-bar {
+  flex: 1;
+  background: var(--nil-color-border);
+  min-height: 8px;
+}
+
+.nil-demo-chart-bar.is-accent {
+  background: var(--nil-color-accent);
+}
+
+.nil-demo-step-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 48px;
+  margin-top: var(--nil-spacing-md);
+}
+
+.nil-demo-step-bar {
+  flex: 1;
+  background: var(--nil-color-text);
+  min-height: 4px;
+}
+
+.nil-demo-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--nil-spacing-lg);
+}
+
+@media (max-width: 1024px) {
+  .nil-demo-scene-grid--climate {
+    grid-template-columns: 1fr;
+  }
+
+  .nil-demo-scene-grid--analytics {
+    grid-template-columns: 1fr;
+  }
+}

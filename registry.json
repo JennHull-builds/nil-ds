@@ -1,0 +1,68 @@
+{
+  "version": "0.1.0",
+  "tokens": "src/tokens/tokens.json",
+  "css": ["src/tokens/tokens.css", "src/core/core.css"],
+  "rules": [
+    "Components only reference --nil-* semantic tokens",
+    "Never use --nil-primitive-* in components",
+    "App-specific colours live in consumer @theme, not NIL primitives",
+    "0px radius and 2px borders unless explicitly overridden per primitive"
+  ],
+  "components": [
+    {
+      "name": "Button",
+      "tokens": ["--nil-color-accent", "--nil-color-accent-contrast", "--nil-color-text", "--nil-color-border", "--nil-color-surface", "--nil-border-width"],
+      "props": { "variant": "primary|secondary|ghost", "size": "sm|md", "disabled": "boolean" }
+    },
+    {
+      "name": "Panel",
+      "tokens": ["--nil-color-surface", "--nil-color-text", "--nil-color-border", "--nil-color-bg"],
+      "props": { "title": "string?", "variant": "default|inverse" }
+    },
+    {
+      "name": "Stack",
+      "tokens": ["--nil-color-border", "--nil-color-surface", "--nil-color-bg", "--nil-color-shadow-stack"],
+      "props": { "depth": "1-3" }
+    },
+    {
+      "name": "Dial",
+      "tokens": ["--nil-color-accent", "--nil-color-border", "--nil-size-dial-sm|md|lg"],
+      "props": { "value": "string|number", "unit": "string?", "progress": "0-100", "size": "sm|md|lg" }
+    },
+    {
+      "name": "Ring",
+      "tokens": ["--nil-color-accent", "--nil-color-border", "--nil-size-ring-sm|md"],
+      "props": { "value": "0-100", "label": "string?" }
+    },
+    {
+      "name": "Toggle",
+      "tokens": ["--nil-color-text", "--nil-color-bg", "--nil-color-border"],
+      "props": { "checked": "boolean", "onCheckedChange": "function" }
+    },
+    {
+      "name": "DataRow",
+      "tokens": ["--nil-color-text", "--nil-color-text-muted", "--nil-color-surface", "--nil-color-border"],
+      "props": { "label": "string", "value": "ReactNode?", "detail": "ReactNode?", "active": "boolean" }
+    },
+    {
+      "name": "TabStrip",
+      "tokens": ["--nil-color-text", "--nil-color-text-muted", "--nil-color-border"],
+      "props": { "tabs": "string[]", "activeIndex": "number", "onTabChange": "function" }
+    },
+    {
+      "name": "Meta",
+      "tokens": ["--nil-color-accent", "--nil-color-danger", "--nil-color-success", "--nil-color-border", "--nil-color-text-muted"],
+      "props": { "label": "string", "tone": "neutral|accent|danger|success" }
+    },
+    {
+      "name": "Readout",
+      "tokens": ["--nil-type-scale-3xl", "--nil-type-scale-2xl", "--nil-color-text-muted"],
+      "props": { "value": "string|number", "unit": "string?", "size": "md|lg" }
+    },
+    {
+      "name": "Prompt",
+      "tokens": ["--nil-color-text", "--nil-color-text-muted", "--nil-color-accent"],
+      "props": { "prefix": "string?", "showCursor": "boolean" }
+    }
+  ]
+}

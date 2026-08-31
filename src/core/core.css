@@ -308,3 +308,59 @@ pre,
 .nil-demo-nav a:hover {
   color: var(--nil-color-text);
 }
+
+.nil-demo-nav a.is-active {
+  color: var(--nil-color-text);
+  border-color: var(--nil-color-border);
+  background: var(--nil-color-surface);
+}
+
+/* ─── Toggle / TabStrip focus ─────────────────────────────────────────────── */
+
+.nil-toggle:focus-visible,
+.nil-tab-strip__tab:focus-visible {
+  outline: 2px solid var(--nil-color-accent);
+  outline-offset: 2px;
+}
+
+.nil-toggle:not(:disabled):hover {
+  opacity: 0.9;
+}
+
+/* ─── Typography utilities ─────────────────────────────────────────────────── */
+
+.nil-label {
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--nil-color-text-muted);
+}
+
+.nil-stat {
+  font-size: var(--nil-type-scale-3xl);
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+/* ─── Demo canvas ──────────────────────────────────────────────────────────── */
+
+.nil-demo-canvas {
+  min-height: 100vh;
+  background-color: var(--nil-color-bg);
+}
+
+.nil-demo-scene {
+  scroll-margin-top: 5rem;
+  padding-block: var(--nil-spacing-2xl);
+}
+
+.nil-demo-scene:first-of-type {
+  padding-top: var(--nil-spacing-xl);
+}
+
+@media (max-width: 767px) {
+  .nil-demo-scene {
+    padding-block: var(--nil-spacing-xl);
+  }
+}
