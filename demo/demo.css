@@ -20,51 +20,19 @@
   }
 }
 
-/* Solid sticky bar — grid hatch starts in .nil-demo-intro-hero below. */
+/* Solid sticky bar — full viewport width; grid hatch starts in .nil-demo-intro-hero below. */
 .nil-demo-nav-bar {
   position: sticky;
   top: 0;
   z-index: 10;
-  margin-inline: calc(-1 * var(--nil-layout-page-x));
-  padding-inline: var(--nil-layout-page-x);
   background: var(--nil-color-bg);
   border-bottom: var(--nil-border-width) solid var(--nil-color-border);
 }
 
-/* Grid band — full bleed, only behind the stacked hero cards. */
+/* Grid band — full viewport width, only behind the stacked hero cards. */
 .nil-demo-intro-hero {
-  margin-inline: calc(-1 * var(--nil-layout-page-x));
-  padding-inline: var(--nil-layout-page-x);
   padding-block: var(--nil-spacing-2xl);
   background-color: var(--nil-color-bg);
-}
-
-@media (max-width: 1024px) {
-  .nil-demo-intro-hero {
-    margin-inline: calc(-1 * var(--nil-spacing-xl));
-    padding-inline: var(--nil-spacing-xl);
-  }
-}
-
-@media (max-width: 767px) {
-  .nil-demo-intro-hero {
-    margin-inline: calc(-1 * var(--nil-spacing-md));
-    padding-inline: var(--nil-spacing-md);
-  }
-}
-
-@media (max-width: 1024px) {
-  .nil-demo-nav-bar {
-    margin-inline: calc(-1 * var(--nil-spacing-xl));
-    padding-inline: var(--nil-spacing-xl);
-  }
-}
-
-@media (max-width: 767px) {
-  .nil-demo-nav-bar {
-    margin-inline: calc(-1 * var(--nil-spacing-md));
-    padding-inline: var(--nil-spacing-md);
-  }
 }
 
 .nil-demo-layer-strip {

@@ -8,8 +8,10 @@ export const DemoScene = forwardRef<
     /** Grid hatch — defaults to band; set false when grid is scoped to a child (e.g. intro hero). */
     gridBg?: boolean;
     children: ReactNode;
+    /** Full-viewport siblings rendered outside .nil-container (e.g. intro nav + hero band). */
+    afterContainer?: ReactNode;
   }
->(function DemoScene({ id, band, gridBg, children }, ref) {
+>(function DemoScene({ id, band, gridBg, children, afterContainer }, ref) {
   const showGrid = gridBg ?? band;
 
   return (
@@ -25,6 +27,7 @@ export const DemoScene = forwardRef<
         .join(' ')}
     >
       <div className="nil-container">{children}</div>
+      {afterContainer}
     </section>
   );
 });
