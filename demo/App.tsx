@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { Theme } from '../src';
 import './demo.css';
 import { AnalyticsScene } from './scenes/AnalyticsScene';
@@ -19,6 +19,14 @@ const SCENES = [
 
 export function App() {
   const [theme, setTheme] = useState<Theme>('light');
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.setAttribute('data-theme', theme);
+    // Theme owns canvas roles; drop Token Lab inline overrides so tokens apply.
+    root.style.removeProperty('--nil-color-bg');
+    root.style.removeProperty('--nil-color-surface');
+  }, [theme]);
 
   return (
     <div data-theme={theme} className="nil-demo-canvas">

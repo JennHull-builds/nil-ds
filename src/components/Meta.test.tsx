@@ -35,4 +35,23 @@ describe('Meta', () => {
     expect(screen.getByText('TONE:')).toHaveStyle({ color: expected });
     expect(screen.getByText('[')).toHaveStyle({ color: expected });
   });
+
+  it.each(['accent', 'danger', 'success'] as const)(
+    'applies emphasis weight to brackets and label for %s tone',
+    (tone) => {
+    render(
+      <Meta label="TONE" tone={tone}>
+        value
+      </Meta>,
+    );
+    expect(screen.getByText('TONE:')).toHaveStyle({ fontWeight: 'var(--nil-type-weight-mono-emphasis)' });
+    expect(screen.getByText('[')).toHaveStyle({ fontWeight: 'var(--nil-type-weight-mono-emphasis)' });
+    expect(screen.getByText('value')).not.toHaveStyle({ fontWeight: 'var(--nil-type-weight-mono-emphasis)' });
+  });
+
+  it('keeps base mono weight on neutral tone labels and brackets', () => {
+    render(<Meta label="STATUS">Idle</Meta>);
+    expect(screen.getByText('STATUS:')).toHaveStyle({ fontWeight: 'var(--nil-type-weight-mono)' });
+    expect(screen.getByText('[')).toHaveStyle({ fontWeight: 'var(--nil-type-weight-mono)' });
+  });
 });

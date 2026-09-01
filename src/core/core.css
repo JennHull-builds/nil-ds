@@ -43,6 +43,24 @@ body {
   max-width: 100%;
 }
 
+/*
+ * Theme root — any ancestor with data-theme paints with semantic roles so
+ * inheriting text and currentColor follow the active theme, not :root light.
+ */
+[data-theme='light'],
+[data-theme='dark'] {
+  color: var(--nil-color-text);
+  background-color: var(--nil-color-bg);
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+}
+
 img,
 video,
 canvas,
@@ -196,6 +214,7 @@ pre,
 .nil-component-grid {
   display: grid;
   grid-template-columns: repeat(var(--nil-grid-columns, 3), minmax(0, 1fr));
+  color: var(--nil-color-text);
 }
 
 @media (max-width: 767px) {
@@ -439,9 +458,15 @@ pre,
 .nil-label {
   font-family: var(--nil-font-mono);
   font-size: var(--nil-type-scale-xs);
+  font-weight: var(--nil-type-weight-mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--nil-color-text-muted);
+}
+
+.nil-label--accent {
+  color: var(--nil-color-accent);
+  font-weight: var(--nil-type-weight-mono-emphasis);
 }
 
 .nil-stat {
@@ -450,6 +475,7 @@ pre,
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   line-height: 1.1;
+  color: var(--nil-color-text);
 }
 
 /* ─── Demo canvas ──────────────────────────────────────────────────────────── */
@@ -457,6 +483,7 @@ pre,
 .nil-demo-canvas {
   min-height: 100vh;
   background-color: var(--nil-color-bg);
+  color: var(--nil-color-text);
 }
 
 .nil-demo-scene {
@@ -549,6 +576,10 @@ pre,
   border: var(--nil-border-width) solid var(--nil-color-border);
   background: var(--nil-color-surface);
   color: var(--nil-color-text);
+}
+
+.nil-input::placeholder {
+  color: var(--nil-color-text-muted);
 }
 
 .nil-input[aria-invalid='true'] {

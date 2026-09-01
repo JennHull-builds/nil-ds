@@ -30,6 +30,7 @@ export function Ring({ value, label, size = 'sm', className, style, ...rest }: R
         flexDirection: 'column',
         alignItems: 'center',
         gap: 'var(--nil-spacing-xs)',
+        color: 'var(--nil-color-text)',
         ...style,
       }}
       role="img"
@@ -70,6 +71,7 @@ export function Ring({ value, label, size = 'sm', className, style, ...rest }: R
             fontSize: 'var(--nil-type-scale-xs)',
             fontWeight: 600,
             fontVariantNumeric: 'tabular-nums',
+            color: 'var(--nil-color-text)',
           }}
         >
           {pct}%

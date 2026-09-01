@@ -45,7 +45,7 @@ export function Dial({
     <div
       {...rest}
       className={['nil-dial', className].filter(Boolean).join(' ')}
-      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--nil-spacing-sm)', ...style }}
+      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--nil-spacing-sm)', color: 'var(--nil-color-text)', ...style }}
       role="img"
       aria-label={label ? `${label}: ${value}${unit ?? ''}` : `${value}${unit ?? ''}`}
     >
@@ -103,7 +103,7 @@ export function Dial({
             justifyContent: 'center',
             textAlign: 'center',
             padding: 'var(--nil-spacing-lg)',
-            color: isSolid ? 'var(--nil-color-bg)' : 'inherit',
+            color: isSolid ? 'var(--nil-color-bg)' : 'var(--nil-color-text)',
           }}
         >
           <span

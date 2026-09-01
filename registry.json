@@ -51,7 +51,7 @@
     },
     {
       "name": "Meta",
-      "tokens": ["--nil-color-accent", "--nil-color-danger", "--nil-color-success", "--nil-color-border", "--nil-color-text-muted"],
+      "tokens": ["--nil-color-accent", "--nil-color-danger", "--nil-color-success", "--nil-color-border", "--nil-color-text-muted", "--nil-type-weight-mono", "--nil-type-weight-mono-emphasis"],
       "props": { "label": "string", "tone": "neutral|accent|danger|success" }
     },
     {

@@ -41,4 +41,9 @@ describe('Dial', () => {
     const filledCircle = container.querySelector('circle[fill="var(--nil-color-text)"]');
     expect(filledCircle).not.toBeInTheDocument();
   });
+
+  it('uses the semantic text token for the default value colour', () => {
+    const { container } = render(<Dial value={18.5} unit="°C" />);
+    expect(container.querySelector('.nil-dial')).toHaveStyle({ color: 'var(--nil-color-text)' });
+  });
 });

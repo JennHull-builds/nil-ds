@@ -24,6 +24,7 @@ describe('Card', () => {
     expect(screen.getByText('Styled')).toHaveStyle({
       marginTop: '12px',
       borderRadius: 'var(--nil-radius-default)',
+      color: 'var(--nil-color-text)',
     });
   });
 

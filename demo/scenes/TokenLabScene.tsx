@@ -40,12 +40,18 @@ export function TokenLabScene({ band }: { band?: boolean }) {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    const root = document.documentElement;
-    const next: Record<string, string> = {};
-    for (const key of SEMANTIC_COLORS) {
-      next[key] = getComputedStyle(root).getPropertyValue(`--nil-${key}`).trim();
-    }
-    setSwatches(next);
+    const read = () => {
+      const root = document.documentElement;
+      const next: Record<string, string> = {};
+      for (const key of SEMANTIC_COLORS) {
+        next[key] = getComputedStyle(root).getPropertyValue(`--nil-${key}`).trim();
+      }
+      setSwatches(next);
+    };
+    read();
+    const observer = new MutationObserver(read);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    return () => observer.disconnect();
   }, []);
 
   const applyAccent = (hex: string) => {

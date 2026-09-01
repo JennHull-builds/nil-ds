@@ -27,4 +27,9 @@ describe('Ring', () => {
     render(<Ring value={42} />);
     expect(screen.getByText('42%')).toBeInTheDocument();
   });
+
+  it('uses the semantic text token for the percentage colour', () => {
+    render(<Ring value={42} />);
+    expect(screen.getByText('42%')).toHaveStyle({ color: 'var(--nil-color-text)' });
+  });
 });

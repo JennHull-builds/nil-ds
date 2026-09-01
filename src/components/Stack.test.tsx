@@ -33,4 +33,11 @@ describe('Stack', () => {
       expect(layer).toHaveAttribute('aria-hidden');
     });
   });
+
+  it('paints the top layer with semantic text colour', () => {
+    const { container } = render(<Stack>content</Stack>);
+    expect(container.querySelector('.nil-stack__top')).toHaveStyle({
+      color: 'var(--nil-color-text)',
+    });
+  });
 });

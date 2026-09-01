@@ -60,6 +60,7 @@
   font-weight: 600;
   line-height: 1.2;
   margin-bottom: var(--nil-spacing-md);
+  color: var(--nil-color-text);
 }
 
 .nil-demo-scene-grid {
@@ -103,6 +104,7 @@
   font-family: var(--nil-font-mono);
   font-size: var(--nil-type-scale-xs);
   letter-spacing: 0.06em;
+  color: var(--nil-color-text);
 }
 
 .nil-demo-pagination-dots {
@@ -118,8 +120,8 @@
 }
 
 .nil-demo-pagination-dot.is-active {
-  background: var(--nil-color-accent);
-  border-color: var(--nil-color-accent);
+  background: var(--nil-color-text);
+  border-color: var(--nil-color-text);
 }
 
 .nil-demo-swatch-grid {

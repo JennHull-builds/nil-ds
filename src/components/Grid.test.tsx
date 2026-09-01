@@ -16,7 +16,7 @@ describe('Grid', () => {
   it('defaults to 3 columns and lg gap', () => {
     const { container } = render(<Grid>content</Grid>);
     const grid = container.querySelector('.nil-component-grid') as HTMLElement;
-    expect(grid).toHaveStyle({ gap: 'var(--nil-spacing-lg)' });
+    expect(grid).toHaveStyle({ gap: 'var(--nil-spacing-lg)', color: 'var(--nil-color-text)' });
     expect(grid.style.getPropertyValue('--nil-grid-columns')).toBe('3');
   });
 

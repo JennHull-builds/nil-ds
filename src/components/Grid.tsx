@@ -14,6 +14,7 @@ export function Grid({ children, columns = 3, gap = 'var(--nil-spacing-lg)', sty
       className={['nil-component-grid', className].filter(Boolean).join(' ')}
       style={{
         gap,
+        color: 'var(--nil-color-text)',
         ['--nil-grid-columns' as string]: String(columns),
         ...style,
       }}

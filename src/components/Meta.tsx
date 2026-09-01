@@ -24,6 +24,9 @@ export function Meta({ label, children, tone = 'neutral', style, ...rest }: Meta
   const brackets = toneColor[tone];
   const labelColor =
     tone === 'neutral' ? 'var(--nil-color-text-muted)' : toneColor[tone];
+  const emphasisWeight = 'var(--nil-type-weight-mono-emphasis)';
+  const baseWeight = 'var(--nil-type-weight-mono)';
+  const labelWeight = tone === 'neutral' ? baseWeight : emphasisWeight;
 
   return (
     <span
@@ -34,7 +37,7 @@ export function Meta({ label, children, tone = 'neutral', style, ...rest }: Meta
         gap: '0.35em',
         fontFamily: 'var(--nil-font-mono)',
         fontSize: 'var(--nil-type-scale-xs)',
-        fontWeight: 400,
+        fontWeight: baseWeight,
         letterSpacing: '0.04em',
         lineHeight: 1.45,
         textTransform: 'uppercase',
@@ -46,12 +49,20 @@ export function Meta({ label, children, tone = 'neutral', style, ...rest }: Meta
         ...style,
       }}
     >
-      <span aria-hidden className="nil-bracket" style={{ color: brackets }}>
+      <span
+        aria-hidden
+        className="nil-bracket"
+        style={{ color: brackets, fontWeight: labelWeight }}
+      >
         [
       </span>
-      <span style={{ color: labelColor }}>{label}:</span>
+      <span style={{ color: labelColor, fontWeight: labelWeight }}>{label}:</span>
       <span style={{ overflowWrap: 'anywhere' }}>{children}</span>
-      <span aria-hidden className="nil-bracket" style={{ color: brackets }}>
+      <span
+        aria-hidden
+        className="nil-bracket"
+        style={{ color: brackets, fontWeight: labelWeight }}
+      >
         ]
       </span>
     </span>

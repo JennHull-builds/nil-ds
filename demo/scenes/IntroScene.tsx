@@ -67,7 +67,7 @@ export function IntroScene({
                         <span className="nil-demo-pagination-dot" />
                         <span className="nil-demo-pagination-dot" />
                       </div>
-                      <a href="#climate" className="nil-label" style={{ textDecoration: 'none', color: 'var(--nil-color-accent)' }}>
+                      <a href="#climate" className="nil-label nil-label--accent" style={{ textDecoration: 'none' }}>
                         Next →
                       </a>
                     </div>
