@@ -35,7 +35,7 @@ export function IntroScene({
               NIL DS
               <span className="nil-cursor-blink" aria-hidden>_</span>
             </Heading>
-            <Text muted>Machine-readable token primitives — agent-ready UI infrastructure.</Text>
+            <Text muted>Machine-readable token primitives. Agent-ready UI infrastructure.</Text>
           </div>
           <ThemeToggle theme={theme} onThemeChange={onThemeChange} />
         </div>
