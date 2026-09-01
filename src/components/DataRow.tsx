@@ -1,21 +1,20 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
 
-export interface DataRowProps {
+export interface DataRowProps extends HTMLAttributes<HTMLDivElement> {
   label: string;
   value?: ReactNode;
   detail?: ReactNode;
   active?: boolean;
-  className?: string;
-  style?: CSSProperties;
 }
 
 /**
  * Schedule/table row — label, value, optional right detail.
  * Active row: full-bleed highlight + edge-to-edge rules above and below.
  */
-export function DataRow({ label, value, detail, active = false, className, style }: DataRowProps) {
+export function DataRow({ label, value, detail, active = false, className, style, ...rest }: DataRowProps) {
   return (
     <div
+      {...rest}
       className={['nil-data-row', active ? 'nil-data-row--active' : '', className].filter(Boolean).join(' ')}
       style={{
         display: 'grid',

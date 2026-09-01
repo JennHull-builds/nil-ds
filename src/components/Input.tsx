@@ -10,6 +10,11 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
  * New for this kit — Mothership's foundations didn't need a form input, but a
  * general-purpose primitive layer does. Follows the same token-only styling
  * rule as the extracted components.
+ *
+ * Shell/label/input/error styling lives in core.css (`.nil-input-group`,
+ * `.nil-input-label`, `.nil-input`, `.nil-input-error`). The error border
+ * colour is driven by the `aria-invalid` attribute already set below, so no
+ * extra modifier class is needed.
  */
 export function Input({ label, error, id, style, className, ...rest }: InputProps) {
   const generatedId = useId();
@@ -17,15 +22,8 @@ export function Input({ label, error, id, style, className, ...rest }: InputProp
   const errorId = error ? `${inputId}-error` : undefined;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--nil-spacing-xs)' }}>
-      <label
-        htmlFor={inputId}
-        style={{
-          fontFamily: 'var(--nil-font-body)',
-          fontSize: 'var(--nil-type-scale-sm)',
-          color: 'var(--nil-color-text)',
-        }}
-      >
+    <div className="nil-input-group">
+      <label htmlFor={inputId} className="nil-input-label">
         {label}
       </label>
       <input
@@ -34,26 +32,10 @@ export function Input({ label, error, id, style, className, ...rest }: InputProp
         aria-invalid={Boolean(error)}
         aria-describedby={errorId}
         className={['nil-input', className].filter(Boolean).join(' ')}
-        style={{
-          fontFamily: 'var(--nil-font-body)',
-          fontSize: 'var(--nil-type-scale-base)',
-          padding: 'var(--nil-spacing-sm)',
-          borderRadius: 'var(--nil-radius-default)',
-          border: `var(--nil-border-width) solid ${error ? 'var(--nil-color-danger)' : 'var(--nil-color-border)'}`,
-          background: 'var(--nil-color-surface)',
-          color: 'var(--nil-color-text)',
-          ...style,
-        }}
+        style={style}
       />
       {error && (
-        <span
-          id={errorId}
-          style={{
-            fontFamily: 'var(--nil-font-body)',
-            fontSize: 'var(--nil-type-scale-xs)',
-            color: 'var(--nil-color-danger)',
-          }}
-        >
+        <span id={errorId} className="nil-input-error">
           {error}
         </span>
       )}

@@ -1,10 +1,8 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
 
-export interface CardProps {
+export interface CardProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   padding?: string;
-  style?: CSSProperties;
-  className?: string;
 }
 
 /**
@@ -12,9 +10,10 @@ export interface CardProps {
  * surface cell for grid layouts) with the padding override kept as a prop
  * since callers reach for that most often.
  */
-export function Card({ children, padding = 'var(--nil-spacing-md)', style, className }: CardProps) {
+export function Card({ children, padding = 'var(--nil-spacing-md)', style, className, ...rest }: CardProps) {
   return (
     <div
+      {...rest}
       className={className}
       style={{
         backgroundColor: 'var(--nil-color-surface)',

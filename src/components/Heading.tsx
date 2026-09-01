@@ -1,6 +1,6 @@
-import type { ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
 
-export interface HeadingProps {
+export interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
   children: ReactNode;
   level?: 1 | 2 | 3;
 }
@@ -12,15 +12,18 @@ const levelStyle: Record<NonNullable<HeadingProps['level']>, React.CSSProperties
 };
 
 /** Extracted from mothership-stable's SectionHeading, generalised to h1–h3 via the level prop. */
-export function Heading({ children, level = 2 }: HeadingProps) {
+export function Heading({ children, level = 2, style, className, ...rest }: HeadingProps) {
   const Tag = `h${level}` as 'h1' | 'h2' | 'h3';
   return (
     <Tag
+      {...rest}
+      className={className}
       style={{
         fontFamily: 'var(--nil-font-body)',
         color: 'var(--nil-color-text)',
         margin: 0,
         ...levelStyle[level],
+        ...style,
       }}
     >
       {children}

@@ -475,6 +475,92 @@ pre,
   }
 }
 
+/* ─── Badge ───────────────────────────────────────────────────────────────── */
+
+.nil-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--nil-spacing-xs);
+  padding: var(--nil-spacing-xs) var(--nil-spacing-sm);
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: var(--nil-radius-default);
+  border: var(--nil-border-width) solid currentColor;
+}
+
+.nil-badge--neutral {
+  color: var(--nil-color-text-muted);
+}
+
+.nil-badge--accent {
+  color: var(--nil-color-accent);
+}
+
+.nil-badge--danger {
+  color: var(--nil-color-danger);
+}
+
+.nil-badge--success {
+  color: var(--nil-color-success);
+}
+
+/* ─── Text ────────────────────────────────────────────────────────────────── */
+
+.nil-text {
+  font-family: var(--nil-font-body);
+  line-height: 1.6;
+  color: var(--nil-color-text);
+  margin: 0;
+}
+
+.nil-text--sm {
+  font-size: var(--nil-type-scale-sm);
+}
+
+.nil-text--base {
+  font-size: var(--nil-type-scale-base);
+}
+
+.nil-text--muted {
+  color: var(--nil-color-text-muted);
+}
+
+/* ─── Input ───────────────────────────────────────────────────────────────── */
+
+.nil-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nil-spacing-xs);
+}
+
+.nil-input-label {
+  font-family: var(--nil-font-body);
+  font-size: var(--nil-type-scale-sm);
+  color: var(--nil-color-text);
+}
+
+.nil-input {
+  font-family: var(--nil-font-body);
+  font-size: var(--nil-type-scale-base);
+  padding: var(--nil-spacing-sm);
+  border-radius: var(--nil-radius-default);
+  border: var(--nil-border-width) solid var(--nil-color-border);
+  background: var(--nil-color-surface);
+  color: var(--nil-color-text);
+}
+
+.nil-input[aria-invalid='true'] {
+  border-color: var(--nil-color-danger);
+}
+
+.nil-input-error {
+  font-family: var(--nil-font-body);
+  font-size: var(--nil-type-scale-xs);
+  color: var(--nil-color-danger);
+}
+
 /* ─── DataRow ─────────────────────────────────────────────────────────────── */
 
 .nil-data-row {

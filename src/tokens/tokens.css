@@ -13,7 +13,7 @@
   --nil-primitive-color-neutral-500: #8a8a8a;
   --nil-primitive-color-neutral-700: #eae9e5;
   --nil-primitive-color-neutral-900: #f3f2ee;
-  --nil-primitive-color-accent: #1752eb;
+  --nil-primitive-color-accent: #3b6ef5;
   --nil-primitive-color-accent-contrast: #ffffff;
   --nil-primitive-color-danger: #c0392b;
   --nil-primitive-color-success: #2e7d4f;
@@ -129,7 +129,7 @@
   --nil-color-text: #0a0a0a;
   --nil-color-text-muted: #4a4a4a;
   --nil-color-border: #0a0a0a;
-  --nil-color-accent: #1752eb;
+  --nil-color-accent: #3b6ef5;
   --nil-color-accent-contrast: #ffffff;
   --nil-color-danger: #c0392b;
   --nil-color-success: #2e7d4f;
@@ -141,7 +141,7 @@
   --nil-color-text: #f3f2ee;
   --nil-color-text-muted: #8a8a8a;
   --nil-color-border: #eae9e5;
-  --nil-color-accent: #1752eb;
+  --nil-color-accent: #3b6ef5;
   --nil-color-accent-contrast: #ffffff;
   --nil-color-danger: #c0392b;
   --nil-color-success: #2e7d4f;

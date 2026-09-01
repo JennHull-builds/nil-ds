@@ -1,11 +1,9 @@
-import type { CSSProperties } from 'react';
+import type { HTMLAttributes } from 'react';
 
-export interface RingProps {
+export interface RingProps extends HTMLAttributes<HTMLDivElement> {
   value: number;
   label?: string;
   size?: 'sm' | 'md';
-  className?: string;
-  style?: CSSProperties;
 }
 
 const SIZE_MAP = {
@@ -16,7 +14,7 @@ const SIZE_MAP = {
 /**
  * Compact circular % indicator — thin track + thick progress stroke.
  */
-export function Ring({ value, label, size = 'sm', className, style }: RingProps) {
+export function Ring({ value, label, size = 'sm', className, style, ...rest }: RingProps) {
   const dim = SIZE_MAP[size];
   const pct = Math.min(100, Math.max(0, value));
   const r = 42;
@@ -25,6 +23,7 @@ export function Ring({ value, label, size = 'sm', className, style }: RingProps)
 
   return (
     <div
+      {...rest}
       className={['nil-ring', className].filter(Boolean).join(' ')}
       style={{
         display: 'flex',

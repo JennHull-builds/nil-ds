@@ -7,20 +7,14 @@ describe('Badge', () => {
     expect(screen.getByText('Active')).toBeInTheDocument();
   });
 
-  it('defaults to the neutral tone colour', () => {
+  it('defaults to the neutral tone class', () => {
     render(<Badge>Neutral</Badge>);
-    expect(screen.getByText('Neutral')).toHaveStyle({
-      color: 'var(--nil-color-text-muted)',
-    });
+    expect(screen.getByText('Neutral')).toHaveClass('nil-badge', 'nil-badge--neutral');
   });
 
-  it.each([
-    ['accent', 'var(--nil-color-accent)'],
-    ['danger', 'var(--nil-color-danger)'],
-    ['success', 'var(--nil-color-success)'],
-  ] as const)('applies the %s tone colour', (tone, expected) => {
+  it.each(['accent', 'danger', 'success'] as const)('applies the %s tone class', (tone) => {
     render(<Badge tone={tone}>{tone}</Badge>);
-    expect(screen.getByText(tone)).toHaveStyle({ color: expected });
+    expect(screen.getByText(tone)).toHaveClass(`nil-badge--${tone}`);
   });
 
   it('renders as an inline span', () => {

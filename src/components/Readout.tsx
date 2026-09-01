@@ -1,23 +1,21 @@
-import type { CSSProperties } from 'react';
+import type { HTMLAttributes } from 'react';
 
-export interface ReadoutProps {
+export interface ReadoutProps extends HTMLAttributes<HTMLDivElement> {
   label?: string;
   value: string | number;
   unit?: string;
   sublabel?: string;
   size?: 'md' | 'lg';
-  className?: string;
-  style?: CSSProperties;
 }
 
 /**
  * Oversized numeric/stat display with mono label row.
  */
-export function Readout({ label, value, unit, sublabel, size = 'lg', className, style }: ReadoutProps) {
+export function Readout({ label, value, unit, sublabel, size = 'lg', className, style, ...rest }: ReadoutProps) {
   const valueSize = size === 'lg' ? 'var(--nil-type-scale-3xl)' : 'var(--nil-type-scale-2xl)';
 
   return (
-    <div className={['nil-readout', className].filter(Boolean).join(' ')} style={style}>
+    <div {...rest} className={['nil-readout', className].filter(Boolean).join(' ')} style={style}>
       {label ? (
         <div
           style={{

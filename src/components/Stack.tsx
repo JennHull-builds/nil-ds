@@ -1,11 +1,9 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
 
-export interface StackProps {
+export interface StackProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   /** Number of peek layers behind top card (1–3) */
   depth?: number;
-  className?: string;
-  style?: CSSProperties;
 }
 
 /** 8px offset per back layer — depth from geometry, not box-shadow. */
@@ -16,12 +14,13 @@ const STACK_OFFSET = 8;
  * with bg vs surface contrast. No box-shadow — stacked offsets read cleaner than
  * competing hard shadows on every layer.
  */
-export function Stack({ children, depth = 2, className, style }: StackProps) {
+export function Stack({ children, depth = 2, className, style, ...rest }: StackProps) {
   const layers = Math.min(3, Math.max(1, depth));
   const peek = `${layers * STACK_OFFSET}px`;
 
   return (
     <div
+      {...rest}
       className={['nil-stack', className].filter(Boolean).join(' ')}
       style={{
         position: 'relative',

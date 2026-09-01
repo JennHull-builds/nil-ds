@@ -1,6 +1,6 @@
-import type { CSSProperties } from 'react';
+import type { HTMLAttributes } from 'react';
 
-export interface DialProps {
+export interface DialProps extends HTMLAttributes<HTMLDivElement> {
   value: string | number;
   unit?: string;
   sublabel?: string;
@@ -9,8 +9,6 @@ export interface DialProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   label?: string;
   variant?: 'default' | 'solid';
-  className?: string;
-  style?: CSSProperties;
 }
 
 const SIZE_MAP = {
@@ -33,6 +31,7 @@ export function Dial({
   variant = 'default',
   className,
   style,
+  ...rest
 }: DialProps) {
   const dim = SIZE_MAP[size];
   const pct = Math.min(100, Math.max(0, progress));
@@ -44,6 +43,7 @@ export function Dial({
 
   return (
     <div
+      {...rest}
       className={['nil-dial', className].filter(Boolean).join(' ')}
       style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--nil-spacing-sm)', ...style }}
       role="img"

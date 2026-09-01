@@ -1,19 +1,18 @@
-import type { CSSProperties } from 'react';
+import type { HTMLAttributes } from 'react';
 
-export interface PromptProps {
+export interface PromptProps extends HTMLAttributes<HTMLParagraphElement> {
   children: string;
   prefix?: string;
   showCursor?: boolean;
-  className?: string;
-  style?: CSSProperties;
 }
 
 /**
  * Terminal prompt line — prefix + text + optional blink cursor.
  */
-export function Prompt({ children, prefix = '>', showCursor = true, className, style }: PromptProps) {
+export function Prompt({ children, prefix = '>', showCursor = true, className, style, ...rest }: PromptProps) {
   return (
     <p
+      {...rest}
       className={['nil-prompt', className].filter(Boolean).join(' ')}
       style={{
         fontFamily: 'var(--nil-font-mono)',

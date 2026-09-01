@@ -1,19 +1,18 @@
-import type { CSSProperties } from 'react';
+import type { HTMLAttributes } from 'react';
 
-export interface TabStripProps {
+export interface TabStripProps extends HTMLAttributes<HTMLDivElement> {
   tabs: string[];
   activeIndex: number;
   onTabChange: (index: number) => void;
-  className?: string;
-  style?: CSSProperties;
 }
 
 /**
  * Horizontal nav tabs — active = thick underline.
  */
-export function TabStrip({ tabs, activeIndex, onTabChange, className, style }: TabStripProps) {
+export function TabStrip({ tabs, activeIndex, onTabChange, className, style, ...rest }: TabStripProps) {
   return (
     <div
+      {...rest}
       role="tablist"
       className={['nil-tab-strip', className].filter(Boolean).join(' ')}
       style={{

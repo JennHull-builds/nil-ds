@@ -1,26 +1,23 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
 
-export interface TextProps {
+export interface TextProps extends HTMLAttributes<HTMLParagraphElement> {
   children: ReactNode;
   size?: 'sm' | 'base';
   muted?: boolean;
-  className?: string;
-  style?: CSSProperties;
 }
 
-/** Extracted from mothership-stable's BodyText, generalised to a two-step size scale. */
-export function Text({ children, size = 'base', muted = false, className, style }: TextProps) {
+/**
+ * Extracted from mothership-stable's BodyText, generalised to a two-step size scale.
+ *
+ * Base look lives in `.nil-text` (core.css); `size` and `muted` toggle the
+ * `.nil-text--sm|base` and `.nil-text--muted` modifiers.
+ */
+export function Text({ children, size = 'base', muted = false, className, style, ...rest }: TextProps) {
   return (
     <p
-      className={className}
-      style={{
-        fontFamily: 'var(--nil-font-body)',
-        fontSize: size === 'sm' ? 'var(--nil-type-scale-sm)' : 'var(--nil-type-scale-base)',
-        lineHeight: 1.6,
-        color: muted ? 'var(--nil-color-text-muted)' : 'var(--nil-color-text)',
-        margin: 0,
-        ...style,
-      }}
+      {...rest}
+      className={['nil-text', `nil-text--${size}`, muted ? 'nil-text--muted' : '', className].filter(Boolean).join(' ')}
+      style={style}
     >
       {children}
     </p>

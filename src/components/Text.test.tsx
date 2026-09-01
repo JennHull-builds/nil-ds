@@ -8,26 +8,20 @@ describe('Text', () => {
     expect(el.tagName).toBe('P');
   });
 
-  it('defaults to base size and non-muted colour', () => {
+  it('defaults to base size and non-muted classes', () => {
     render(<Text>Default</Text>);
-    expect(screen.getByText('Default')).toHaveStyle({
-      fontSize: 'var(--nil-type-scale-base)',
-      color: 'var(--nil-color-text)',
-    });
+    expect(screen.getByText('Default')).toHaveClass('nil-text', 'nil-text--base');
+    expect(screen.getByText('Default')).not.toHaveClass('nil-text--muted');
   });
 
-  it('applies the sm size scale', () => {
+  it('applies the sm size class', () => {
     render(<Text size="sm">Small</Text>);
-    expect(screen.getByText('Small')).toHaveStyle({
-      fontSize: 'var(--nil-type-scale-sm)',
-    });
+    expect(screen.getByText('Small')).toHaveClass('nil-text--sm');
   });
 
-  it('applies muted colour when muted is true', () => {
+  it('applies the muted class when muted is true', () => {
     render(<Text muted>Muted</Text>);
-    expect(screen.getByText('Muted')).toHaveStyle({
-      color: 'var(--nil-color-text-muted)',
-    });
+    expect(screen.getByText('Muted')).toHaveClass('nil-text--muted');
   });
 
   it('forwards className', () => {
@@ -39,6 +33,6 @@ describe('Text', () => {
     render(<Text style={{ marginTop: 'var(--nil-spacing-xs)' }}>Styled</Text>);
     const el = screen.getByText('Styled');
     expect(el.style.marginTop).toBe('var(--nil-spacing-xs)');
-    expect(el).toHaveStyle({ fontFamily: 'var(--nil-font-body)' });
+    expect(el).toHaveClass('nil-text');
   });
 });

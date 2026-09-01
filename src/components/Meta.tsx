@@ -1,6 +1,6 @@
-import type { ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
 
-export interface MetaProps {
+export interface MetaProps extends HTMLAttributes<HTMLSpanElement> {
   /** Key shown before the value, e.g. "ROLE". Rendered uppercase. */
   label: string;
   /** Value after the label, e.g. "Design Engineer". */
@@ -20,13 +20,14 @@ const toneColor: Record<NonNullable<MetaProps['tone']>, string> = {
  * token — compose several in a flex wrap for a strip. Restores the CLI
  * `[ KEY: value ]` vocabulary that Badge left behind. Not case-study chrome.
  */
-export function Meta({ label, children, tone = 'neutral' }: MetaProps) {
+export function Meta({ label, children, tone = 'neutral', style, ...rest }: MetaProps) {
   const brackets = toneColor[tone];
   const labelColor =
     tone === 'neutral' ? 'var(--nil-color-text-muted)' : toneColor[tone];
 
   return (
     <span
+      {...rest}
       style={{
         display: 'inline-flex',
         alignItems: 'baseline',
@@ -42,6 +43,7 @@ export function Meta({ label, children, tone = 'neutral' }: MetaProps) {
         whiteSpace: 'nowrap',
         minWidth: 0,
         maxWidth: '100%',
+        ...style,
       }}
     >
       <span aria-hidden className="nil-bracket" style={{ color: brackets }}>

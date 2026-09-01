@@ -1,14 +1,12 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
 
-export interface PanelProps {
+export interface PanelProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   /** Header label — mono uppercase */
   title?: string;
   /** Right side of header row */
   headerRight?: ReactNode;
   variant?: 'default' | 'inverse';
-  className?: string;
-  style?: CSSProperties;
 }
 
 /**
@@ -22,11 +20,13 @@ export function Panel({
   variant = 'default',
   className,
   style,
+  ...rest
 }: PanelProps) {
   const isInverse = variant === 'inverse';
 
   return (
     <div
+      {...rest}
       className={['nil-panel', isInverse ? 'nil-panel--inverse' : '', className].filter(Boolean).join(' ')}
       style={{
         border: 'var(--nil-border-width) solid var(--nil-color-border)',
