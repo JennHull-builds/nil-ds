@@ -30,11 +30,8 @@ const SEMANTIC_COLORS = [
   'color-border',
   'color-accent',
   'color-accent-contrast',
-  'color-accent-text',
   'color-danger',
-  'color-danger-text',
   'color-success',
-  'color-success-text',
 ] as const;
 
 export function TokenLabScene({ band }: { band?: boolean }) {
@@ -133,6 +130,7 @@ export function TokenLabScene({ band }: { band?: boolean }) {
         <Button variant="primary">Primary</Button>
         <Dial value="68" unit="%" progress={68} size="sm" />
         <Meta label="Accent" tone="accent">Live</Meta>
+        <Meta label="Alert" tone="danger">Fault</Meta>
       </div>
 
       <div style={{ marginTop: 'var(--nil-spacing-lg)' }}>

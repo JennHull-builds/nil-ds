@@ -23,9 +23,9 @@ describe('Meta', () => {
   });
 
   it.each([
-    ['accent', 'var(--nil-color-accent-text)'],
-    ['danger', 'var(--nil-color-danger-text)'],
-    ['success', 'var(--nil-color-success-text)'],
+    ['accent', 'var(--nil-color-accent)'],
+    ['danger', 'var(--nil-color-danger)'],
+    ['success', 'var(--nil-color-success)'],
   ] as const)('applies the %s tone to brackets and label', (tone, expected) => {
     render(
       <Meta label="TONE" tone={tone}>

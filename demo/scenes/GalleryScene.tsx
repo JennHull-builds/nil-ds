@@ -83,6 +83,8 @@ export function GalleryScene() {
           <div style={{ display: 'flex', gap: 'var(--nil-spacing-md)', flexWrap: 'wrap', marginTop: 'var(--nil-spacing-sm)' }}>
             <Meta label="Role">Design Engineer</Meta>
             <Meta label="Status" tone="accent">Active</Meta>
+            <Meta label="Alert" tone="danger">Fault</Meta>
+            <Meta label="Health" tone="success">OK</Meta>
           </div>
         </Card>
 
@@ -90,6 +92,7 @@ export function GalleryScene() {
           <Heading level={3}>Input</Heading>
           <div style={{ marginTop: 'var(--nil-spacing-sm)' }}>
             <Input label="Name" placeholder="Your name" />
+            <Input label="Device ID" placeholder="Required" error="Invalid ID — check format" style={{ marginTop: 'var(--nil-spacing-md)' }} />
           </div>
         </Card>
 

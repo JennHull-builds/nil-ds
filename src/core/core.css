@@ -465,7 +465,7 @@ pre,
 }
 
 .nil-label--accent {
-  color: var(--nil-color-accent-text);
+  color: var(--nil-color-accent);
   font-weight: var(--nil-type-weight-mono-emphasis);
 }
 
@@ -522,15 +522,15 @@ pre,
 }
 
 .nil-badge--accent {
-  color: var(--nil-color-accent-text);
+  color: var(--nil-color-accent);
 }
 
 .nil-badge--danger {
-  color: var(--nil-color-danger-text);
+  color: var(--nil-color-danger);
 }
 
 .nil-badge--success {
-  color: var(--nil-color-success-text);
+  color: var(--nil-color-success);
 }
 
 /* ─── Text ────────────────────────────────────────────────────────────────── */
