@@ -30,8 +30,11 @@ const SEMANTIC_COLORS = [
   'color-border',
   'color-accent',
   'color-accent-contrast',
+  'color-accent-text',
   'color-danger',
+  'color-danger-text',
   'color-success',
+  'color-success-text',
 ] as const;
 
 export function TokenLabScene({ band }: { band?: boolean }) {

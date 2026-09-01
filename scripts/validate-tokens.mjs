@@ -68,20 +68,20 @@ function getVarFromBlock(block, cssVar) {
 }
 
 for (const [key, val] of Object.entries(tokens.semantic.light)) {
-  const resolved = resolveRef(val.ref, tokens);
   const cssVar = `--nil-${key}`;
   const got = getVarFromBlock(rootBlock, cssVar);
-  if (got && got !== resolved) {
-    errors.push(`Light ${cssVar}: expected ${resolved}, got ${got}`);
+  const expected = val.value ?? resolveRef(val.ref, tokens);
+  if (got && got !== expected) {
+    errors.push(`Light ${cssVar}: expected ${expected}, got ${got}`);
   }
 }
 
 for (const [key, val] of Object.entries(tokens.semantic.dark)) {
-  const resolved = resolveRef(val.ref, tokens);
   const cssVar = `--nil-${key}`;
   const got = getVarFromBlock(darkBlock, cssVar);
-  if (got && got !== resolved) {
-    errors.push(`Dark ${cssVar}: expected ${resolved}, got ${got}`);
+  const expected = val.value ?? resolveRef(val.ref, tokens);
+  if (got && got !== expected) {
+    errors.push(`Dark ${cssVar}: expected ${expected}, got ${got}`);
   }
 }
 

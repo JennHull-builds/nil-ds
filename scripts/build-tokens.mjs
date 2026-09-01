@@ -66,7 +66,9 @@ function semanticAliasVars(semantic) {
 function themeColorVars(themeName, themeObj, data) {
   const vars = [];
   for (const [key, val] of Object.entries(themeObj)) {
-    if (val.ref) {
+    if (val.value !== undefined) {
+      vars.push({ key: `--nil-${key}`, value: val.value });
+    } else if (val.ref) {
       const resolved = resolveRef(val.ref, data);
       vars.push({ key: `--nil-${key}`, value: resolved });
     }

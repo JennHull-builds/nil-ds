@@ -15,8 +15,8 @@
   --nil-primitive-color-neutral-900: #f3f2ee;
   --nil-primitive-color-accent: #3b6ef5;
   --nil-primitive-color-accent-contrast: #ffffff;
-  --nil-primitive-color-danger: #c0392b;
-  --nil-primitive-color-success: #2e7d4f;
+  --nil-primitive-color-danger: #c62832;
+  --nil-primitive-color-success: #1a7359;
   --nil-primitive-color-overlay: rgba(10, 10, 10, 0.92);
   --nil-primitive-color-overlay-fg: #f5f5f4;
   --nil-primitive-color-overlay-border: rgba(245, 245, 244, 0.4);
@@ -135,8 +135,11 @@
   --nil-color-border: #0a0a0a;
   --nil-color-accent: #3b6ef5;
   --nil-color-accent-contrast: #ffffff;
-  --nil-color-danger: #c0392b;
-  --nil-color-success: #2e7d4f;
+  --nil-color-accent-text: color-mix(in srgb, var(--nil-color-accent) 88%, var(--nil-color-text));
+  --nil-color-danger: #c62832;
+  --nil-color-danger-text: color-mix(in srgb, var(--nil-color-danger) 88%, var(--nil-color-text));
+  --nil-color-success: #1a7359;
+  --nil-color-success-text: color-mix(in srgb, var(--nil-color-success) 88%, var(--nil-color-text));
 }
 
 [data-theme='dark'] {
@@ -147,6 +150,9 @@
   --nil-color-border: #eae9e5;
   --nil-color-accent: #3b6ef5;
   --nil-color-accent-contrast: #ffffff;
-  --nil-color-danger: #c0392b;
-  --nil-color-success: #2e7d4f;
+  --nil-color-accent-text: color-mix(in srgb, var(--nil-color-accent) 88%, var(--nil-color-text));
+  --nil-color-danger: #c62832;
+  --nil-color-danger-text: color-mix(in srgb, var(--nil-color-danger) 88%, var(--nil-color-text));
+  --nil-color-success: #1a7359;
+  --nil-color-success-text: color-mix(in srgb, var(--nil-color-success) 88%, var(--nil-color-text));
 }
