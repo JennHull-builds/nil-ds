@@ -128,7 +128,7 @@ export function TokenLabScene({ band }: { band?: boolean }) {
 
       <div className="nil-demo-mini-preview nil-enter is-visible">
         <Button variant="primary">Primary</Button>
-        <Dial value="68" unit="%" progress={68} size="sm" />
+        <Dial value="42" unit="%" progress={42} size="sm" />
         <Meta label="Accent" tone="accent">Live</Meta>
         <Meta label="Alert" tone="danger">Fault</Meta>
       </div>

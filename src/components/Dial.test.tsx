@@ -43,7 +43,7 @@ describe('Dial', () => {
   });
 
   it('uses the semantic text token for the default value colour', () => {
-    const { container } = render(<Dial value={18.5} unit="°C" />);
+    const { container } = render(<Dial value={21.4} unit="°C" />);
     expect(container.querySelector('.nil-dial')).toHaveStyle({ color: 'var(--nil-color-text)' });
   });
 });

@@ -10,7 +10,7 @@ import {
 import { useReveal } from '../hooks/useReveal';
 import { DemoScene } from '../DemoScene';
 
-const ROOMS = ['Living room', 'Bedroom', 'Bathroom', 'Kitchen'];
+const ZONES = ['Studio', 'Dock', 'Archive', 'Mezzanine'];
 const BAR_HEIGHTS = [40, 55, 35, 70, 48, 62, 38];
 const STEP_HEIGHTS = [12, 28, 20, 36, 24, 40, 16, 32];
 
@@ -22,7 +22,7 @@ export function AnalyticsScene() {
     <DemoScene id="analytics" ref={ref}>
       <div className={`nil-enter${visible ? ' is-visible' : ''}`}>
         <Heading level={2}>Lighting</Heading>
-        <TabStrip tabs={ROOMS} activeIndex={tab} onTabChange={setTab} style={{ marginTop: 'var(--nil-spacing-md)' }} />
+        <TabStrip tabs={ZONES} activeIndex={tab} onTabChange={setTab} style={{ marginTop: 'var(--nil-spacing-md)' }} />
       </div>
 
       <div
@@ -34,15 +34,15 @@ export function AnalyticsScene() {
             <line x1="24" y1="4" x2="24" y2="16" stroke="currentColor" strokeWidth="2" />
             <path d="M12 28 Q24 20 36 28 L36 40 L12 40 Z" stroke="currentColor" strokeWidth="2" fill="none" />
           </svg>
-          <DataRow label="Living room" value="ON" />
-          <DataRow label="Bedroom" value="ON" />
-          <DataRow label="Kitchen" value="OFF" />
+          <DataRow label="Studio" value="ON" />
+          <DataRow label="Dock" value="ON" />
+          <DataRow label="Archive" value="OFF" />
           <div style={{ marginTop: 'var(--nil-spacing-lg)' }}>
-            <Dial value="75.4" unit="%" sublabel="Warm 2400k" progress={75} size="md" />
+            <Dial value="62.8" unit="%" sublabel="Cool 4000k" progress={63} size="md" />
           </div>
         </Panel>
 
-        <Panel title="Analytics" headerRight={<span className="nil-label">Solar panels ▾</span>}>
+        <Panel title="Analytics" headerRight={<span className="nil-label">Array B ▾</span>}>
           <div className="nil-demo-chart-bars" aria-hidden>
             {BAR_HEIGHTS.map((h, i) => (
               <div
@@ -60,7 +60,7 @@ export function AnalyticsScene() {
               <div key={i} className="nil-demo-step-bar" style={{ height: `${h}px` }} />
             ))}
           </div>
-          <DataRow label="Live" value="2.4 kW" detail="14:41" />
+          <DataRow label="Live" value="3.1 kW" detail="09:17" />
         </Panel>
       </div>
     </DemoScene>

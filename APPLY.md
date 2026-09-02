@@ -39,7 +39,7 @@ import { Button, Panel, Dial } from 'nil-ds';
 export function Example() {
   return (
     <Panel title="Status">
-      <Dial value="19.0" unit="°C" progress={62} />
+      <Dial value="21.4" unit="°C" progress={71} />
       <Button variant="primary">Park</Button>
     </Panel>
   );
