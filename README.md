@@ -11,11 +11,7 @@ component architecture with agent-readable `tokens.json` + `registry.json`.
 
 ![NIL DS showroom intro — hero and climate dials](docs/showroom-intro.png)
 
-*Intro scene: machine-readable tokens, composed showroom (not a flat catalog).*
-
-![Climate console — dials, rings, schedule density](docs/showroom-climate.png)
-
-*Climate console: Dial · Ring · schedule density primitives in a real layout.*
+*Intro + climate: composed showroom, not a flat catalog.*
 
 ![Token Lab — swap primitives, semantics follow](docs/showroom-token-lab.png)
 
