@@ -51,7 +51,7 @@ export function IntroScene({
               >
                 <Stack depth={3}>
                   <div className="nil-demo-hero-inner">
-                    <div className="nil-demo-brand">Designer Soul. Developer Brain.</div>
+                    <div className="nil-demo-brand">Human taste. Machine grammar.</div>
                     <Prompt>READY TO EXECUTE</Prompt>
                     <div style={{ display: 'flex', gap: 'var(--nil-spacing-md)', flexWrap: 'wrap', marginTop: 'var(--nil-spacing-md)' }}>
                       <Meta label="Kit">NIL DS</Meta>
