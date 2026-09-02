@@ -2,7 +2,7 @@
   "name": "nil-ds",
   "version": "0.1.0",
   "private": true,
-  "description": "NIL DS — token + primitive kit (brutalist CLI lineage). Private until public flip. See PLAN.md.",
+  "description": "NIL DS — token + primitive kit (brutalist CLI lineage). Live demo: https://nil-ds.vercel.app. See PLAN.md.",
   "type": "module",
   "main": "src/index.ts",
   "types": "src/index.ts",

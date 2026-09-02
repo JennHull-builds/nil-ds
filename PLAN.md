@@ -1,7 +1,7 @@
 # NIL DS — PLAN
 
 **Name:** NIL DS · repo/folder `nil-ds` · npm org target `@nilds/*`  
-**Status:** Private GitHub until Jen flips to public. Kit #1 active.  
+**Status:** Public GitHub + live demo (`nil-ds.vercel.app`). Kit #1 active.  
 **Lineage:** Token + primitive extract from `mothership-stable` (brutalist CLI),
 neutral surfaces + swappable accent — not Soft Bento (console → dx-grid).
 
@@ -67,11 +67,11 @@ with tokens + primitives + Vite demo. Grow into packages when a split earns it.
 | Tailwind v4 `@theme` preset as mandatory | Fine as a later `@nilds/core` export; kit must work without forcing TW |
 | Soft Bento chrome | Wrong system — kit #5 |
 
-### Near-term slices (after private remote is live)
+### Near-term slices
 
 1. ~~Storybook stub (or keep demo until Storybook earns the cost)~~ **parked** — Vite demo stays
 2. Figma variables path (document + sync plan — not Code Connect day one)
-3. npm publish readiness under `@nilds/*` (still private or gated until Jen says public)
+3. npm publish readiness under `@nilds/*` (gated until Jen says publish)
 4. ~~Start `--nil-*` token rename when touching tokens next~~ **done 2026-08-21**
 
 ---
@@ -111,7 +111,8 @@ nil-ds/
 ## Version control
 
 - **Local git:** yes
-- **Remote:** **private** GitHub until Jen switches to public
+- **Remote:** **public** GitHub — https://github.com/JennHull-builds/nil-ds
+- **Demo:** https://nil-ds.vercel.app
 - Commits from here on
 
 ---
@@ -126,7 +127,7 @@ Docs/component names that still fuse them need a dedicated cleanup pass.
 ## Open questions
 
 - [x] Real name → **NIL DS**
-- [x] Remote → **private GitHub** until public flip
+- [x] Remote → **public GitHub** (flipped 2026-09-02)
 - [x] Accent vs neutral-only for v0.1 → **accent kept** (swappable `--nil-color-accent`; not a grey-only slice)
 - [x] Mothership light base + accent lock → **light semantic from `colours.light`; accent `#0241e3` (Jen)**
 - [x] Storybook vs Vite demo → **park Storybook**; keep Vite demo for polish
@@ -154,6 +155,8 @@ reinjection, brand lime/mint/pork, Soft Bento, page/print chrome.
 
 ## Log
 
+- 2026-09-02: **Public flip** — GitHub visibility public; Vercel SSO off;
+  demo https://nil-ds.vercel.app shareable without auth.
 - 2026-08-20: Scaffold as `design-foundry` (tokens, primitives, demo).
 - 2026-08-21: Taxonomy fix (brutalist CLI ≠ Soft Bento). Local git init.
 - 2026-08-21: Renamed **NIL DS** / `nil-ds`. Private GitHub. Gemini monorepo

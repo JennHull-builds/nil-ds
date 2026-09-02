@@ -1,5 +1,5 @@
-> **NIL DS** — private until Jen flips public. See `PLAN.md` for architecture
-> north star (`@nilds/*`).
+> **NIL DS** — public kit. Live demo: [nil-ds.vercel.app](https://nil-ds.vercel.app).
+> Architecture north star (`@nilds/*`): see `PLAN.md`.
 
 # NIL DS
 
