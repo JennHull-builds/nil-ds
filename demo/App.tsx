@@ -7,6 +7,7 @@ import { GalleryScene } from './scenes/GalleryScene';
 import { InstrumentScene } from './scenes/InstrumentScene';
 import { IntroScene } from './scenes/IntroScene';
 import { TokenLabScene } from './scenes/TokenLabScene';
+import { Analytics } from '@vercel/analytics/react';
 
 const SCENES = [
   { id: 'intro', label: 'Intro' },
@@ -36,6 +37,7 @@ export function App() {
       <AnalyticsScene />
       <TokenLabScene band />
       <GalleryScene />
+      <Analytics />
     </div>
   );
 }
