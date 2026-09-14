@@ -14,6 +14,9 @@ import {
 } from '../../src';
 import { useReveal } from '../hooks/useReveal';
 import { DemoScene } from '../DemoScene';
+import tokensJson from '../../src/tokens/tokens.json';
+
+const ACCENT = tokensJson.primitive.color.accent.value;
 
 const DEMO_LIGHTBOX: LightboxImage = {
   src:
@@ -23,7 +26,7 @@ const DEMO_LIGHTBOX: LightboxImage = {
         <rect width="800" height="500" fill="#0a0a0a"/>
         <rect x="40" y="40" width="720" height="420" fill="none" stroke="#f5f5f4" stroke-width="2"/>
         <text x="60" y="100" fill="#f5f5f4" font-family="monospace" font-size="28">NIL DS / SPEC</text>
-        <line x1="60" y1="140" x2="740" y2="140" stroke="#1752eb" stroke-width="2"/>
+        <line x1="60" y1="140" x2="740" y2="140" stroke="${ACCENT}" stroke-width="2"/>
       </svg>`,
     ),
   alt: 'Sample technical drawing',

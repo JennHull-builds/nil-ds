@@ -24,8 +24,8 @@ to an agent, which is the actual pitch.
 ## Before committing
 
 ```bash
-npm run tokens:validate   # fails on hardcoded hex and raw px
-npm run typecheck
+npm run tokens:validate   # JSON/CSS parity + stale-hex guard
+npm run typecheck         # runs tokens:validate, then tsc
 npm test
 ```
 
@@ -34,6 +34,31 @@ capability ledger stops being true.
 
 ## Visual system
 
-Brutalist CLI: zero border radius, 2px borders, Inter plus JetBrains Mono, warm
-off-white and dark. **Not Soft Bento** — that belongs to dx-grid-inspector. Do not merge
-the two systems; they are deliberately separate.
+Brutalist CLI: 4px default radius (soft brutalist, `radius-default`), 2px borders, IBM
+Plex Sans and IBM Plex Mono, warm off-white and dark. **Not Soft Bento** — that belongs
+to dx-grid-inspector. Do not merge the two systems; they are deliberately separate.
+
+**Never restate a token value in prose, here or in any doc.** Name the token and let the
+reader open `tokens.json`. See the gotcha below for what restating cost us.
+
+## Gotcha: prose drifts, the generated CSS does not
+
+Found 2026-09-14. The accent moved three times in eleven days (`#3b6ef5` to `#0241e3` to
+`#1752eb` and back to `#3b6ef5`). `tokens.css` followed every time, because it is
+generated. Eight hand-written files did not, and `tokens:validate` stayed green the whole
+way, correctly: before today it only compared `tokens.json` against `tokens.css`.
+
+The stale value reached `README.md`, `ARCHITECTURE.md`, `FIGMA.md`, three demo scenes, the
+`_readme` key inside `tokens.json` itself, and this file. Nothing errored. Same family as
+any plausible-output bug: the docs were well-formed and wrong.
+
+`tokens:validate` now carries a stale-hex guard. Any hex in a doc, demo scene or component
+must be a value `tokens.json` currently holds, or be allowlisted in `ALLOWED_HEX` with a
+reason. Demo scenes read the accent from `tokens.json` rather than typing it.
+
+Still not caught: raw pixel values, and components reaching for `--nil-primitive-*`
+directly. `AGENTS.md` forbids both in prose, and prose is exactly what this gotcha is
+about.
+
+`PLAN.md` is exempt and must stay exempt. Its hexes are dated decision entries recording
+what was true that day; correcting them into the present would falsify the log.

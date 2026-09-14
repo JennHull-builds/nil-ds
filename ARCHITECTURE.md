@@ -56,8 +56,9 @@ capability ledger stops being true — it is the evidence, not a linter.
 
 ## The visual line
 
-Brutalist CLI lineage: 2px borders, 4px radius (soft brutalist), Inter and JetBrains
-Mono, light canvas `#F3F2EE`, accent `#1752eb`.
+Brutalist CLI lineage: 2px borders, 4px radius (soft brutalist), IBM Plex Sans and IBM
+Plex Mono, warm off-white canvas, swappable accent. Values live in `primitive.color`
+and `primitive.type` in `tokens.json`, never in this file.
 
 **Not Soft Bento** — 16px radius, ambient glow, deep-space canvas. That belongs to
 `dx-grid-inspector` and `mothership-console`. The two systems stay separate on purpose;

@@ -31,7 +31,7 @@ component architecture with agent-readable `tokens.json` + `registry.json`.
 
 - Source: `src/tokens/tokens.json` (edit this)
 - CSS: `src/tokens/tokens.json` → `npm run tokens:build` → `tokens.css`
-- Accent: `#1752eb` · Canvas: `#F3F2EE` · Ink: `#0A0A0A`
+- Values: see `primitive.color` in `tokens.json`. Do not restate hexes here.
 - Namespace: `--nil-*` (consumer) · `--nil-primitive-*` (raw)
 
 ## Quick start

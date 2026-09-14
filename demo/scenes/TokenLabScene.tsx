@@ -10,8 +10,11 @@ import tokensJson from '../../src/tokens/tokens.json';
 import { useReveal } from '../hooks/useReveal';
 import { DemoScene } from '../DemoScene';
 
+const LIVE_ACCENT = tokensJson.primitive.color.accent.value;
+
 const ACCENT_PRESETS = [
-  { label: '#1752eb', value: '#1752eb' },
+  // First preset is always the kit's current accent, read from tokens.json.
+  { label: LIVE_ACCENT, value: LIVE_ACCENT },
   { label: '#0241e3', value: '#0241e3' },
   { label: '#2563eb', value: '#2563eb' },
 ];

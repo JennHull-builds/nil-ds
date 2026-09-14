@@ -2,7 +2,7 @@
  * Validate tokens.json ↔ tokens.css parity.
  * Run: npm run tokens:validate (or via typecheck)
  */
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execSync } from 'node:child_process';
@@ -83,6 +83,73 @@ for (const [key, val] of Object.entries(tokens.semantic.dark)) {
   if (got && got !== expected) {
     errors.push(`Dark ${cssVar}: expected ${expected}, got ${got}`);
   }
+}
+
+/**
+ * Stale-hex guard.
+ *
+ * Added 2026-09-14 after the accent moved three times in eleven days
+ * (#3b6ef5 -> #0241e3 -> #1752eb -> #3b6ef5) and eight files kept describing a
+ * value that had stopped being true. The JSON/CSS parity checks above stayed
+ * green throughout, correctly: they only read tokens.json and tokens.css.
+ *
+ * Rule: any hex literal in docs, demo scenes or components must be a value
+ * tokens.json currently holds, or be allowlisted here with a reason.
+ */
+const SCAN_FILES = ['README.md', 'ARCHITECTURE.md', 'FIGMA.md'];
+const SCAN_DIRS = ['demo', 'src'];
+const SCAN_EXT = /\.(tsx|ts|md)$/;
+// PLAN.md is a dated decision log. Its hexes record what was true on the day
+// and must not be "corrected" into the present.
+const SKIP = /(^|\/)(node_modules|dist-demo|tokens)(\/|$)|PLAN\.md$/;
+
+const ALLOWED_HEX = new Map([
+  ['#0241e3', 'TokenLab alternative accent preset, deliberately not the live token'],
+  ['#2563eb', 'TokenLab alternative accent preset, deliberately not the live token'],
+  ['#edece8', 'TokenLab alternative canvas preset (Mothership base)'],
+  ['#e2e1dc', 'TokenLab alternative canvas preset, paired surface'],
+  ['#f5f4f0', 'TokenLab alternative canvas preset'],
+  ['#ecebe7', 'TokenLab alternative canvas preset, paired surface'],
+  ['#c7f300', 'Mermaid diagram chrome in ARCHITECTURE.md, not a NIL value'],
+  ['#111', 'Mermaid diagram chrome in ARCHITECTURE.md, not a NIL value'],
+]);
+
+const liveHex = new Set();
+(function collect(node) {
+  if (!node || typeof node !== 'object') return;
+  if (typeof node.value === 'string' && node.value.startsWith('#')) {
+    liveHex.add(node.value.toLowerCase());
+  }
+  Object.values(node).forEach(collect);
+})(tokens);
+
+function walk(dir, out = []) {
+  for (const entry of readdirSync(dir)) {
+    const full = join(dir, entry);
+    if (SKIP.test(full)) continue;
+    if (statSync(full).isDirectory()) walk(full, out);
+    else if (SCAN_EXT.test(full)) out.push(full);
+  }
+  return out;
+}
+
+const targets = [
+  ...SCAN_FILES.map((f) => join(root, f)),
+  ...SCAN_DIRS.flatMap((d) => walk(join(root, d))),
+];
+
+for (const file of targets) {
+  const rel = file.replace(`${root}/`, '');
+  readFileSync(file, 'utf8').split('\n').forEach((line, i) => {
+    for (const match of line.matchAll(/#[0-9A-Fa-f]{3,8}\b/g)) {
+      const hex = match[0].toLowerCase();
+      if (liveHex.has(hex) || ALLOWED_HEX.has(hex)) continue;
+      errors.push(
+        `${rel}:${i + 1} hex ${match[0]} is not a current tokens.json value. ` +
+        `Read it from tokens.json, or allowlist it in ALLOWED_HEX with a reason.`,
+      );
+    }
+  });
 }
 
 if (errors.length) {

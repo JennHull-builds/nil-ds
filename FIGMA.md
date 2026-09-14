@@ -17,7 +17,7 @@ No Code Connect day one. Manual sync until the kit earns automation.
 | Canvas | `#F3F2EE` (`neutral-900`) |
 | Surface | `#EAE9E5` (`neutral-700`) |
 | Ink | `#0A0A0A` |
-| Accent | `#1752eb` |
+| Accent | `#3b6ef5` (`accent`) |
 
 ## Workflow
 

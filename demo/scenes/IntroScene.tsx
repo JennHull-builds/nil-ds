@@ -7,8 +7,11 @@ import {
   ThemeToggle,
   type Theme,
 } from '../../src';
+import tokensJson from '../../src/tokens/tokens.json';
 import { useReveal } from '../hooks/useReveal';
 import { DemoScene } from '../DemoScene';
+
+const ACCENT = tokensJson.primitive.color.accent.value;
 
 export function IntroScene({
   theme,
@@ -56,7 +59,7 @@ export function IntroScene({
                     <div style={{ display: 'flex', gap: 'var(--nil-spacing-md)', flexWrap: 'wrap', marginTop: 'var(--nil-spacing-md)' }}>
                       <Meta label="Kit">NIL DS</Meta>
                       <Meta label="Version">0.1</Meta>
-                      <Meta label="Accent" tone="accent">#1752eb</Meta>
+                      <Meta label="Accent" tone="accent">{ACCENT}</Meta>
                       <Meta label="Status" tone="success">Active</Meta>
                     </div>
                     <div className="nil-demo-pagination">
