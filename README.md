@@ -1,5 +1,5 @@
 > **NIL DS** — public kit. Live demo: [nil-ds.vercel.app](https://nil-ds.vercel.app).
-> Architecture north star (`@nilds/*`): see `PLAN.md`.
+> Architecture: see `ARCHITECTURE.md`. North star (`@nilds/*`): see `PLAN.md`.
 
 # NIL DS
 
