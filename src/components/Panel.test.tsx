@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { Panel } from './Panel';
+import { axe } from 'vitest-axe';
 
 describe('Panel', () => {
   it('renders children in the body', () => {
@@ -43,5 +44,19 @@ describe('Panel', () => {
       background: 'var(--nil-color-text)',
       color: 'var(--nil-color-bg)',
     });
+  });
+
+  it('has no axe violations', async () => {
+    const { container } = render(
+      <>
+        <Panel title="Panel title">
+          <p>Panel body copy.</p>
+        </Panel>
+        <Panel title="Inverse panel" variant="inverse">
+          <p>Panel body copy.</p>
+        </Panel>
+      </>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

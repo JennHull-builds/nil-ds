@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Toggle } from './Toggle';
+import { axe } from 'vitest-axe';
 
 describe('Toggle', () => {
   it('renders as a switch reflecting the checked state', () => {
@@ -49,5 +50,12 @@ describe('Toggle', () => {
     const toggle = screen.getByRole('switch');
     expect(toggle).toHaveClass('nil-toggle', 'nil-toggle--off', 'extra');
     expect(toggle).toBeDisabled();
+  });
+
+  it('has no axe violations', async () => {
+    const { container } = render(
+      <Toggle checked={false} onCheckedChange={() => {}} />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

@@ -616,3 +616,48 @@ pre,
 [data-theme='dark'] .nil-data-row--active {
   background: color-mix(in srgb, var(--nil-color-surface) 88%, var(--nil-color-text));
 }
+
+/*
+ * Reduced motion: the part tokens cannot do.
+ *
+ * `tokens.css` already collapses every --nil-motion-duration-* to 1ms under this same
+ * media query, which handles every transition in the system at once because components
+ * read the token rather than a literal.
+ *
+ * It does the opposite of helping for a LOOPING animation. The cursor blink at 1100ms
+ * becomes a 1ms strobe, roughly a thousand flashes a second, aimed squarely at the people
+ * who asked for less motion. A shorter duration is not a kill switch, so the loop is
+ * stopped here explicitly.
+ *
+ * Kept visible rather than hidden: the cursor is a real affordance in a CLI-lineage kit,
+ * so it stays on screen at full opacity and simply stops moving.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .nil-cursor-blink {
+    animation: none;
+    opacity: 1;
+  }
+
+  /* Finite, so a 1ms duration would be harmless. Switched off anyway: an element that
+     fades in over 1ms is a flicker, and `both` holds the start frame until it runs. */
+  .nil-lightbox-backdrop {
+    animation: none;
+  }
+
+  /*
+   * The third leak, and the least obvious. `--nil-anim-delay` is a stagger applied as a
+   * transition-delay (core.css:181, :192), and it is NOT a duration token, so the
+   * generated block above never touches it. Without this, reduced motion still marches
+   * elements onto the screen one after another, each snapping in 1ms. The stagger IS the
+   * motion. Zero it.
+   */
+  .nil-enter,
+  .nil-enter-fade {
+    --nil-anim-delay: 0ms;
+  }
+
+  /* Arrive in place rather than sliding up. */
+  .nil-enter {
+    transform: none;
+  }
+}

@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import { Divider } from './Divider';
+import { axe } from 'vitest-axe';
 
 describe('Divider', () => {
   it('renders an hr element', () => {
@@ -19,5 +20,12 @@ describe('Divider', () => {
     const { container } = render(<Divider spacing="var(--nil-spacing-2xl)" />);
     const hr = container.querySelector('hr') as HTMLHRElement;
     expect(hr.style.margin).toBe('var(--nil-spacing-2xl) 0');
+  });
+
+  it('has no axe violations', async () => {
+    const { container } = render(
+      <Divider />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Input } from './Input';
+import { axe } from 'vitest-axe';
 
 describe('Input', () => {
   it('renders a labelled textbox associated via htmlFor/id', () => {
@@ -47,5 +48,15 @@ describe('Input', () => {
     await user.type(input, 'Alex');
     expect(input).toHaveValue('Alex');
     expect(onChange).toHaveBeenCalled();
+  });
+
+  it('has no axe violations', async () => {
+    const { container } = render(
+      <>
+        <Input label="Email address" />
+        <Input label="Display name" error="This field is required" />
+      </>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

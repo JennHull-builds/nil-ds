@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { Text } from './Text';
+import { axe } from 'vitest-axe';
 
 describe('Text', () => {
   it('renders children inside a paragraph', () => {
@@ -34,5 +35,15 @@ describe('Text', () => {
     const el = screen.getByText('Styled');
     expect(el.style.marginTop).toBe('var(--nil-spacing-xs)');
     expect(el).toHaveClass('nil-text');
+  });
+
+  it('has no axe violations', async () => {
+    const { container } = render(
+      <>
+        <Text>Body copy.</Text>
+        <Text muted>Muted copy.</Text>
+      </>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

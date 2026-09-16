@@ -64,6 +64,41 @@ and `primitive.type` in `tokens.json`, never in this file.
 `dx-grid-inspector` and `mothership-console`. The two systems stay separate on purpose;
 fusing them produces a third thing that is neither.
 
+## Motion
+
+Motion is tokenised on the same two layers as everything else. Durations are named by
+role, not by number: `motion-duration-fast`, `-base`, `-slow`, `-enter`, `-blink`, plus
+`-instant` for reduced motion. Easings are `motion-easing-standard`, `-out-expo` and
+`-step`. Values live in `primitive.motion` in `tokens.json`, never in this file.
+
+**Components reference the token, never a literal.** That is what makes the next paragraph
+a single block rather than an audit.
+
+### Reduced motion
+
+`prefers-reduced-motion: reduce` collapses **every** duration token to
+`motion-duration-instant`, in one generated block emitted by `scripts/build-tokens.mjs`.
+It is derived from the semantic tokens, so a duration added later is covered without
+anyone remembering this section exists. Easings are untouched: at `instant` the curve is
+unobservable.
+
+`instant` is deliberately not zero. `0s` can skip `transitionend`, which silently breaks
+anything waiting on one.
+
+**A duration is not a kill switch, and this is the trap.** Collapsing durations fixes every
+transition and makes a *looping* animation worse: the cursor blink would strobe roughly a
+thousand times a second, aimed precisely at the people who asked for less motion. Two things
+must therefore be handled by hand in `core.css`, and they are:
+
+| Leak | Why the token block misses it |
+|---|---|
+| Infinite animations (`nil-cursor-blink`) | A shorter duration makes a loop faster, not calmer. Set `animation: none` |
+| `--nil-anim-delay` stagger | It is a delay, not a duration, so nothing above touches it. Elements would still march in one by one. Zeroed |
+
+`src/tokens/reduced-motion.test.ts` enforces all of it, including a check that **no**
+infinite animation in `core.css` survives without an explicit `animation: none`. Verified
+by breaking it: shortening the blink instead of stopping it fails two tests.
+
 ## Out of scope
 
 This is a showroom and a dogfood kit, **not kit-SaaS**. No pricing page, no registry

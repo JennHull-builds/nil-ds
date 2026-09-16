@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { TabStrip } from './TabStrip';
+import { axe } from 'vitest-axe';
 
 describe('TabStrip', () => {
   const tabs = ['Overview', 'Schedule', 'Settings'];
@@ -40,5 +41,12 @@ describe('TabStrip', () => {
     const rendered = screen.getAllByRole('tab').map((el) => el.textContent);
     expect(rendered).toEqual(tabs);
     screen.getAllByRole('tab').forEach((tab) => expect(tab).toHaveAttribute('type', 'button'));
+  });
+
+  it('has no axe violations', async () => {
+    const { container } = render(
+      <TabStrip tabs={['Overview', 'Tokens']} activeIndex={0} onTabChange={() => {}} />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

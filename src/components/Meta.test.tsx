@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { Meta } from './Meta';
+import { axe } from 'vitest-axe';
 
 describe('Meta', () => {
   it('renders the label and value wrapped in brackets', () => {
@@ -53,5 +54,12 @@ describe('Meta', () => {
     render(<Meta label="STATUS">Idle</Meta>);
     expect(screen.getByText('STATUS:')).toHaveStyle({ fontWeight: 'var(--nil-type-weight-mono)' });
     expect(screen.getByText('[')).toHaveStyle({ fontWeight: 'var(--nil-type-weight-mono)' });
+  });
+
+  it('has no axe violations', async () => {
+    const { container } = render(
+      <Meta label="Status">Online</Meta>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

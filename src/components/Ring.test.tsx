@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { Ring } from './Ring';
+import { axe } from 'vitest-axe';
 
 describe('Ring', () => {
   it('exposes an img role with a percentage aria-label', () => {
@@ -31,5 +32,12 @@ describe('Ring', () => {
   it('uses the semantic text token for the percentage colour', () => {
     render(<Ring value={42} />);
     expect(screen.getByText('42%')).toHaveStyle({ color: 'var(--nil-color-text)' });
+  });
+
+  it('has no axe violations', async () => {
+    const { container } = render(
+      <Ring value={0.6} label="Load" />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

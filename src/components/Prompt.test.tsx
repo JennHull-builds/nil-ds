@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { Prompt } from './Prompt';
+import { axe } from 'vitest-axe';
 
 describe('Prompt', () => {
   it('renders the text content with the default ">" prefix', () => {
@@ -27,5 +28,12 @@ describe('Prompt', () => {
     const p = container.querySelector('p');
     expect(p).toBeInTheDocument();
     expect(p).toHaveClass('nil-prompt', 'extra');
+  });
+
+  it('has no axe violations', async () => {
+    const { container } = render(
+      <Prompt>npm run build</Prompt>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

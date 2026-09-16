@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { Card } from './Card';
+import { axe } from 'vitest-axe';
 
 describe('Card', () => {
   it('renders children', () => {
@@ -31,5 +32,14 @@ describe('Card', () => {
   it('forwards className', () => {
     render(<Card className="custom-card">Classy</Card>);
     expect(screen.getByText('Classy')).toHaveClass('custom-card');
+  });
+
+  it('has no axe violations', async () => {
+    const { container } = render(
+      <Card>
+        <p>Card body copy.</p>
+      </Card>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

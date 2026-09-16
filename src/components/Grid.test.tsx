@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { Grid } from './Grid';
+import { axe } from 'vitest-axe';
 
 describe('Grid', () => {
   it('renders children', () => {
@@ -29,5 +30,16 @@ describe('Grid', () => {
     const grid = container.querySelector('.nil-component-grid') as HTMLElement;
     expect(grid).toHaveStyle({ gap: 'var(--nil-spacing-sm)' });
     expect(grid.style.getPropertyValue('--nil-grid-columns')).toBe('5');
+  });
+
+  it('has no axe violations', async () => {
+    const { container } = render(
+      <Grid columns={3}>
+        <div>One</div>
+        <div>Two</div>
+        <div>Three</div>
+      </Grid>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

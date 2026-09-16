@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { DataRow } from './DataRow';
+import { axe } from 'vitest-axe';
 
 describe('DataRow', () => {
   it('renders the label', () => {
@@ -31,5 +32,12 @@ describe('DataRow', () => {
     const { container } = render(<DataRow label="THU" />);
     const row = container.querySelector('.nil-data-row');
     expect(row?.children).toHaveLength(3);
+  });
+
+  it('has no axe violations', async () => {
+    const { container } = render(
+      <DataRow label="Latency" value="42ms" detail="p95" />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });
