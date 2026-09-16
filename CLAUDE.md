@@ -63,6 +63,25 @@ about.
 `PLAN.md` is exempt and must stay exempt. Its hexes are dated decision entries recording
 what was true that day; correcting them into the present would falsify the log.
 
+## This kit now has a downstream consumer, and it holds a COPY
+
+Added 2026-09-16. `~/tetherlog` consumes this kit, but it does **not** read these files at
+build time. It vendors `src/tokens/tokens.css` and `src/core/core.css` into its own
+`src/nil-ds/` via `scripts/sync-nil-ds.sh`, because Vercel only checks out one repo and a
+relative path to a sibling directory does not exist there. That failed a preview build the
+first time the branch was pushed.
+
+**So a change here does not reach TetherLog until someone reruns that script.** Nothing
+errors. TetherLog keeps building, keeps deploying, and quietly serves the old tokens. It is
+the stale-hex gotcha below, one repo further out, where `tokens:validate` cannot see it.
+
+Verified 2026-09-16: the vendored copies are byte-identical to this repo's HEAD (`d1434e5`)
+by sha256, and carry the reduced-motion block.
+
+**If you change `tokens.json`, `tokens.css` or `core.css`, say so in the commit message and
+tell whoever owns TetherLog to run `npm run sync-nil-ds`.** This kit is no longer only its
+own consumer.
+
 ## Gotcha: a green axe test does not mean contrast passes
 
 Added 2026-09-16, the same day the axe assertions landed. Every component test now ends
