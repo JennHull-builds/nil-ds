@@ -41,6 +41,7 @@
   --nil-primitive-motion-duration-slow: 360ms;
   --nil-primitive-motion-duration-enter: 650ms;
   --nil-primitive-motion-duration-blink: 1100ms;
+  --nil-primitive-motion-duration-instant: 1ms;
   --nil-primitive-motion-easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
   --nil-primitive-motion-easing-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --nil-primitive-motion-easing-step: step-end;
@@ -149,4 +150,14 @@
   --nil-color-accent-contrast: #ffffff;
   --nil-color-danger: #c62832;
   --nil-color-success: #22a06b;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --nil-motion-duration-fast: var(--nil-primitive-motion-duration-instant);
+    --nil-motion-duration-base: var(--nil-primitive-motion-duration-instant);
+    --nil-motion-duration-slow: var(--nil-primitive-motion-duration-instant);
+    --nil-motion-duration-enter: var(--nil-primitive-motion-duration-instant);
+    --nil-motion-duration-blink: var(--nil-primitive-motion-duration-instant);
+  }
 }

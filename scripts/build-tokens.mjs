@@ -85,6 +85,33 @@ function emitBlock(selector, vars, indent = '  ') {
   return `${selector} {\n${vars.map((v) => `${indent}${v.key}: ${v.value};`).join('\n')}\n}`;
 }
 
+/**
+ * Collapse every motion duration to `duration-instant` when the reader has asked for
+ * reduced motion.
+ *
+ * This is derived from the semantic tokens rather than a hand-written list, so a duration
+ * added later is covered without anyone remembering to come back here. Easings are left
+ * alone on purpose: at 1ms the curve is unobservable, and `step-end` is already instant.
+ *
+ * It works at all because every component reads `--nil-motion-duration-*` instead of a
+ * literal. That is the token layer paying for itself.
+ *
+ * WHAT THIS DOES NOT COVER, and it matters: an infinite animation gets *worse* here, not
+ * better. `nil-blink` at 1100ms becomes a 1ms strobe, roughly a thousand flashes a second,
+ * which is actively harmful to exactly the people the media query exists to protect.
+ * Infinite animations must be switched off explicitly in `core.css`. A duration is not a
+ * kill switch.
+ */
+function reducedMotionSection(semantic) {
+  const durations = Object.keys(semantic).filter((k) => k.startsWith('motion-duration-'));
+  const vars = durations.map((key) => ({
+    key: `--nil-${key}`,
+    value: 'var(--nil-primitive-motion-duration-instant)',
+  }));
+  const lines = vars.map((v) => `    ${v.key}: ${v.value};`).join('\n');
+  return `@media (prefers-reduced-motion: reduce) {\n  :root {\n${lines}\n  }\n}`;
+}
+
 const header = `/**
  * Generated from tokens.json — DO NOT EDIT BY HAND.
  * Regenerate: npm run tokens:build
@@ -97,8 +124,16 @@ const primitiveSection = emitBlock(':root', primitiveVars);
 const semanticSection = emitBlock(':root', semanticVars);
 const lightSection = emitBlock(':root', lightVars);
 const darkSection = emitBlock("[data-theme='dark']", darkVars);
+const reducedSection = reducedMotionSection(tokens.semantic);
 
-const css = [header, '', primitiveSection, '', semanticSection, '', lightSection, '', darkSection, ''].join('\n');
+const css = [
+  header, '',
+  primitiveSection, '',
+  semanticSection, '',
+  lightSection, '',
+  darkSection, '',
+  reducedSection, '',
+].join('\n');
 
 writeFileSync(cssPath, css);
 console.log(`Built ${cssPath} (${primitiveVars.length} primitive + ${semanticVars.length} semantic aliases)`);
