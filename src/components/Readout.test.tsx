@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { Readout } from './Readout';
+import { axe } from 'vitest-axe';
 
 describe('Readout', () => {
   it('renders the value', () => {
@@ -33,5 +34,12 @@ describe('Readout', () => {
   it('accepts string values', () => {
     render(<Readout value="N/A" />);
     expect(screen.getByText('N/A')).toBeInTheDocument();
+  });
+
+  it('has no axe violations', async () => {
+    const { container } = render(
+      <Readout label="Uptime" value={99} unit="%" sublabel="last 30 days" />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

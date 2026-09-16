@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Lightbox } from './Lightbox';
+import { axe } from 'vitest-axe';
 
 describe('Lightbox', () => {
   const image = { src: '/photo.jpg', alt: 'A scenic photo' };
@@ -62,5 +63,12 @@ describe('Lightbox', () => {
     expect(document.body.style.overflow).toBe('hidden');
     rerender(<Lightbox image={null} onClose={vi.fn()} />);
     expect(document.body.style.overflow).toBe('auto');
+  });
+
+  it('has no axe violations', async () => {
+    const { container } = render(
+      <Lightbox image={{ src: 'panel.png', alt: 'A NIL DS panel' }} onClose={() => {}} />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

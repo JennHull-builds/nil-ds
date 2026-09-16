@@ -62,3 +62,27 @@ about.
 
 `PLAN.md` is exempt and must stay exempt. Its hexes are dated decision entries recording
 what was true that day; correcting them into the present would falsify the log.
+
+## Gotcha: a green axe test does not mean contrast passes
+
+Added 2026-09-16, the same day the axe assertions landed. Every component test now ends
+with `expect(await axe(container)).toHaveNoViolations()`, and all 20 pass.
+
+**That covers roles, ARIA, labelling and semantic structure. It does not cover colour
+contrast.** `vitest.config.ts` sets `css: false`, so jsdom computes no styles and axe
+reports `color-contrast` as **incomplete** rather than passing. `toHaveNoViolations` only
+fails on `violations`, never on `incomplete`, so the rule is silently not evaluated.
+Verified by introspecting a result: 9 rules passed, `color-contrast` incomplete, 78
+inapplicable.
+
+Same family as the stale-hex gotcha above: nothing errors, the output is well-formed, and
+it is only wrong if you believe it says more than it does.
+
+**So: never write "accessibility tested" in the ledger, the README or public copy.** Write
+what is true — semantics and ARIA are asserted per component. Contrast is a token-level
+property and the honest home for it is `tokens:validate`, computing WCAG ratios over the
+semantic colour pairs in `tokens.json`. Not built yet.
+
+**Verify the matcher before trusting a green run.** These assertions were confirmed real by
+rendering an image with no `alt` and a link with no text, and watching the suite fail. An
+axe assertion that cannot fail is the same as no assertion.

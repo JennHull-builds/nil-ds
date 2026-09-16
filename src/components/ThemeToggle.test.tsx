@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ThemeToggle } from './ThemeToggle';
+import { axe } from 'vitest-axe';
 
 describe('ThemeToggle', () => {
   it('renders a labelled group with light and dark segments', () => {
@@ -73,5 +74,12 @@ describe('ThemeToggle', () => {
     // how a disabled <button> simply never dispatches a click.
     fireEvent.click(screen.getByRole('button', { name: 'Dark mode' }));
     expect(onThemeChange).not.toHaveBeenCalled();
+  });
+
+  it('has no axe violations', async () => {
+    const { container } = render(
+      <ThemeToggle theme="light" onThemeChange={() => {}} />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

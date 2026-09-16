@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { Stack } from './Stack';
+import { axe } from 'vitest-axe';
 
 describe('Stack', () => {
   it('renders children in the top layer', () => {
@@ -39,5 +40,14 @@ describe('Stack', () => {
     expect(container.querySelector('.nil-stack__top')).toHaveStyle({
       color: 'var(--nil-color-text)',
     });
+  });
+
+  it('has no axe violations', async () => {
+    const { container } = render(
+      <Stack depth={2}>
+        <div>Stacked content</div>
+      </Stack>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

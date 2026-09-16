@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { axe } from 'vitest-axe';
 import { Button } from './Button';
 
 describe('Button', () => {
@@ -61,5 +62,17 @@ describe('Button', () => {
     const button = screen.getByRole('button', { name: 'Submit form' });
     expect(button).toHaveAttribute('type', 'submit');
     expect(button).toHaveClass('extra-class');
+  });
+
+  it('has no axe violations in any variant', async () => {
+    const { container } = render(
+      <>
+        <Button variant="primary">Primary</Button>
+        <Button variant="secondary">Secondary</Button>
+        <Button variant="ghost">Ghost</Button>
+        <Button disabled>Disabled</Button>
+      </>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

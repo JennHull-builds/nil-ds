@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { Dial } from './Dial';
+import { axe } from 'vitest-axe';
 
 describe('Dial', () => {
   it('exposes an img role with value and unit in the aria-label', () => {
@@ -45,5 +46,12 @@ describe('Dial', () => {
   it('uses the semantic text token for the default value colour', () => {
     const { container } = render(<Dial value={21.4} unit="°C" />);
     expect(container.querySelector('.nil-dial')).toHaveStyle({ color: 'var(--nil-color-text)' });
+  });
+
+  it('has no axe violations', async () => {
+    const { container } = render(
+      <Dial value={42} unit="ms" label="Latency" progress={0.4} />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });
