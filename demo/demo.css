@@ -29,6 +29,12 @@
   border-bottom: var(--nil-border-width) solid var(--nil-color-border);
 }
 
+/* Closing bar — same canvas and rule as the nav bar, but not sticky. Reuses .nil-demo-nav links. */
+.nil-demo-footer {
+  background: var(--nil-color-bg);
+  border-top: var(--nil-border-width) solid var(--nil-color-border);
+}
+
 /* Grid band — full viewport width, only behind the stacked hero cards. */
 .nil-demo-intro-hero {
   padding-block: var(--nil-spacing-2xl);

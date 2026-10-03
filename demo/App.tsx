@@ -37,6 +37,19 @@ export function App() {
       <AnalyticsScene />
       <TokenLabScene band />
       <GalleryScene />
+      <footer className="nil-demo-footer">
+        <div className="nil-container">
+          <nav className="nil-demo-nav" aria-label="About this kit">
+            {/* No noreferrer, so the portfolio's analytics can see the visit came from here. */}
+            <a href="https://jenniferhull.co.za" rel="noopener">
+              By Jennifer Hull
+            </a>
+            <a href="https://github.com/JennHull-builds/nil-ds" rel="noopener noreferrer">
+              GitHub
+            </a>
+          </nav>
+        </div>
+      </footer>
       <Analytics />
     </div>
   );

@@ -1,4 +1,4 @@
-> **NIL DS** — public kit. Live demo: [nil-ds.vercel.app](https://nil-ds.vercel.app).
+> **NIL DS** — public kit by [Jennifer Hull](https://jenniferhull.co.za). Live demo: [nil-ds.vercel.app](https://nil-ds.vercel.app).
 > Architecture: see `ARCHITECTURE.md`. North star (`@nilds/*`): see `PLAN.md`.
 
 # NIL DS
