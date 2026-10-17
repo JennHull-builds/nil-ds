@@ -1,11 +1,11 @@
 /**
- * Validate tokens.json ↔ tokens.css parity.
+ * Validate tokens.json ↔ tokens.css parity, and DESIGN.md.
  * Run: npm run tokens:validate (or via typecheck)
  */
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { execSync } from 'node:child_process';
+import { execFileSync, execSync } from 'node:child_process';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const jsonPath = join(root, 'src/tokens/tokens.json');
@@ -150,6 +150,87 @@ for (const file of targets) {
       );
     }
   });
+}
+
+/**
+ * DESIGN.md guards.
+ *
+ * DESIGN.md is generated (scripts/build-design-md.mjs), so the same two things that can
+ * go wrong with tokens.css can go wrong with it: someone edits it by hand, or someone
+ * changes tokens.json and forgets to rebuild. Parity catches both, the same way.
+ *
+ * The prose is the part that can still go stale, so it gets a guard of its own: no value
+ * of any kind in the hand-written text. That is the stale-hex gotcha in CLAUDE.md, applied
+ * before it can happen instead of after eight files have drifted.
+ *
+ * The linter runs here and in `typecheck`, never in `build:demo`. TetherLog put checks
+ * into its Vercel build and broke eight deployments in a row; the lesson is that a lint
+ * result must never be able to stop a deploy. Warnings are printed on every run and do not
+ * fail it. Only errors do.
+ */
+const designPath = join(root, 'DESIGN.md');
+let designBefore = null;
+try {
+  designBefore = readFileSync(designPath, 'utf8');
+} catch {
+  errors.push('DESIGN.md is missing. Run npm run tokens:build and commit it.');
+}
+execSync('node scripts/build-design-md.mjs', { cwd: root, stdio: 'pipe' });
+if (designBefore !== null && designBefore !== readFileSync(designPath, 'utf8')) {
+  errors.push('DESIGN.md was out of sync with tokens.json and design-md/ — regenerated. Commit the updated file.');
+}
+
+const PROSE_VALUES = [
+  [/#[0-9A-Fa-f]{3,8}\b/, 'a hex colour'],
+  [/\b\d+(\.\d+)?\s?(px|rem|em|ms|s|vh|vw)\b|\d+%/, 'a measurement'],
+  [/\b(rgba?|hsla?|oklch|cubic-bezier)\(/, 'a colour or easing function'],
+  [/—/, 'an em dash (voice.md: none in public copy)'],
+];
+const structure = JSON.parse(readFileSync(join(root, 'design-md/structure.json'), 'utf8'));
+const registry = JSON.parse(readFileSync(join(root, 'registry.json'), 'utf8'));
+const proseSources = [
+  ['design-md/prose.md', readFileSync(join(root, 'design-md/prose.md'), 'utf8')],
+  ['design-md/structure.json', JSON.stringify(structure, null, 2)],
+];
+for (const [rel, text] of proseSources) {
+  text.split('\n').forEach((line, i) => {
+    for (const [re, what] of PROSE_VALUES) {
+      if (re.test(line)) {
+        errors.push(`${rel}:${i + 1} contains ${what}. Name the token and let DESIGN.md's generated front matter hold the value.`);
+      }
+    }
+  });
+}
+
+for (const { name } of registry.components) {
+  if (!structure.components[name]) {
+    errors.push(`registry.json has ${name} but design-md/structure.json has no group for it, so DESIGN.md would omit it.`);
+  }
+}
+
+const lintPkg = JSON.parse(readFileSync(join(root, 'node_modules/@google/design.md/package.json'), 'utf8'));
+let lintRaw = '';
+try {
+  lintRaw = execFileSync(join(root, 'node_modules/.bin/designmd'), ['lint', 'DESIGN.md', '--format', 'json'], {
+    cwd: root,
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
+} catch (e) {
+  // The linter exits non-zero when it finds errors but still prints its JSON.
+  lintRaw = e.stdout?.toString() ?? '';
+}
+try {
+  const lint = JSON.parse(lintRaw);
+  const { errors: nErr, warnings: nWarn, infos: nInfo } = lint.summary;
+  console.log(`DESIGN.md lint (@google/design.md ${lintPkg.version}): ${nErr} errors, ${nWarn} warnings, ${nInfo} info`);
+  for (const f of lint.findings) {
+    if (f.severity === 'info') continue;
+    console.log(`  ${f.severity} [${f.rule}] ${f.path ?? ''}: ${f.message}`);
+    if (f.severity === 'error') errors.push(`DESIGN.md lint [${f.rule}] ${f.path ?? ''}: ${f.message}`);
+  }
+} catch {
+  errors.push(`designmd lint produced no readable result: ${lintRaw.slice(0, 200) || '(empty output)'}`);
 }
 
 if (errors.length) {

@@ -10,7 +10,7 @@
     "dev": "vite",
     "build:demo": "npm run tokens:build && vite build",
     "preview": "vite preview",
-    "tokens:build": "node scripts/build-tokens.mjs",
+    "tokens:build": "node scripts/build-tokens.mjs && node scripts/build-design-md.mjs",
     "tokens:validate": "node scripts/validate-tokens.mjs",
     "typecheck": "npm run tokens:validate && tsc --noEmit",
     "test": "vitest run",
@@ -22,6 +22,7 @@
     "react-dom": ">=18"
   },
   "devDependencies": {
+    "@google/design.md": "0.4.0",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.6.6",

@@ -155,6 +155,29 @@ reinjection, brand lime/mint/pork, Soft Bento, page/print chrome.
 
 ## Log
 
+- 2026-10-17: **Dark mode in DESIGN.md: a `-dark` suffix, nothing else.** The DESIGN.md format
+  (Google Labs, spec version `alpha`) has no theme concept: `designmd spec --rules`, read in full
+  and grepped the same day, never mentions dark or mode, and uses "theme" once, for Tailwind theme
+  configs. Chosen: light is the default and keeps the plain
+  token names; a colour whose dark value differs gets a twin named with a `-dark` suffix (`bg`,
+  `bg-dark`); a component whose colours differ gets a `-dark` variant, which is the spec's own
+  related-key convention for states. Both use only names the spec says it accepts, so the linter
+  raises nothing about the names and the contrast rule runs on the dark pairs too.
+  Rejected: two files (the spec calls a DESIGN.md self-contained); a custom `themes:` key (probed:
+  the linter warns `token-like-ignored` and every export drops it); dark in prose only (the prose
+  may not state values). Cost, said in the file: no tool knows `-dark` means dark.
+- 2026-10-17: **DESIGN.md is generated, and the rest of the mapping.** `scripts/build-design-md.mjs`
+  writes it from `tokens.json`, `registry.json` and `design-md/`; `tokens:validate` fails on drift,
+  checks that the hand-written prose states no value, and runs `designmd lint` (pinned to exact
+  0.4.0). The linter never runs in `build:demo`. Calls made, each probed against the linter and
+  the three export formats rather than assumed: the accent is named `primary` in this file
+  because the linter warns without one; only the semantic layer is exposed; motion, border widths
+  and breakpoints are generated tables in the body, because a custom top-level key is warned and
+  dropped on export while an unknown `##` section is preserved; layout and grid values sit in
+  `spacing` as `layout-*`; dial and ring sizes are component `size` entries; a font stack is
+  reduced to its first family because a stack in `fontFamily` exports as one quoted name.
+  No token value changed. Contrast findings are reported by `tokens:validate` and are Jen's to
+  decide.
 - 2026-09-02: **Public flip** — GitHub visibility public; Vercel SSO off;
   demo https://nil-ds.vercel.app shareable without auth.
 - 2026-08-20: Scaffold as `design-foundry` (tokens, primitives, demo).

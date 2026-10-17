@@ -55,6 +55,21 @@ See **[APPLY.md](APPLY.md)** — link, CSS import order, Tailwind `@theme`, ui w
 - **[FIGMA.md](FIGMA.md)** — variables sync path
 - `src/core/tailwind-theme.css` — ready Tailwind v4 alias block
 
+## DESIGN.md
+
+[DESIGN.md](DESIGN.md) describes NIL DS in Google Labs' open [DESIGN.md format](https://github.com/google-labs-code/design.md) (spec version `alpha`), so a coding agent or a tool that reads the format gets the whole system in one file.
+
+It's generated, not written by hand. Every value comes from `src/tokens/tokens.json`, and the rationale prose lives in `design-md/`. Edit those, then rebuild and lint:
+
+```bash
+npm run tokens:build          # regenerates tokens.css and DESIGN.md
+npx designmd lint DESIGN.md   # the format's own linter
+```
+
+`npm run tokens:validate` fails if `DESIGN.md` has drifted from its sources, and it runs the linter too. Lint errors fail it. Warnings are printed and don't, so the contrast findings show up on every run. The linter isn't part of `build:demo`, so it can't block a deploy.
+
+Honest state: the format is at spec version `alpha`, and it has no concept of themes, motion or borders. How NIL DS handles each is written up in the file itself and in `PLAN.md`.
+
 ## Showroom
 
 Five composed scenes (Intro, Climate, Instrument, Analytics, Token Lab) + Gallery appendix — not a flat component catalog.

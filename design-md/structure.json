@@ -1,0 +1,82 @@
+{
+  "_readme": "Hand-written structure for DESIGN.md. It names which tokens each component uses; it never holds a value. Every value comes from src/tokens/tokens.json at build time (scripts/build-design-md.mjs). Token names here are the semantic keys in tokens.json (color-bg, radius-default, type-scale-xs). A component painted on a transparent background is listed on color-bg, the canvas it sits on by default, so the linter has a real pair to check. Pairings were read from src/core/core.css and src/components/*.tsx; a pairing that code does not make does not belong here.",
+  "meta": {
+    "name": "NIL DS",
+    "description": "Brutalist CLI token and primitive kit: monospaced instrument UI on a warm canvas, light and dark, one accent."
+  },
+  "typography": {
+    "heading-1": { "font": "font-body", "size": "type-scale-2xl" },
+    "heading-2": { "font": "font-body", "size": "type-scale-xl" },
+    "heading-3": { "font": "font-body", "size": "type-scale-lg" },
+    "body-md": { "font": "font-body", "size": "type-scale-base" },
+    "body-sm": { "font": "font-body", "size": "type-scale-sm" },
+    "label": { "font": "font-mono", "size": "type-scale-xs", "weight": "type-weight-mono" },
+    "label-emphasis": { "font": "font-mono", "size": "type-scale-xs", "weight": "type-weight-mono-emphasis" },
+    "button-sm": { "font": "font-mono", "size": "type-scale-xs" },
+    "button-md": { "font": "font-mono", "size": "type-scale-sm" },
+    "prompt": { "font": "font-mono", "size": "type-scale-base" },
+    "readout-lg": { "font": "font-display", "size": "type-scale-3xl" },
+    "readout-md": { "font": "font-display", "size": "type-scale-2xl" },
+    "readout-unit": { "font": "font-display", "size": "type-scale-lg" }
+  },
+  "components": {
+    "Button": {
+      "button-primary": { "backgroundColor": "color-accent", "textColor": "color-accent-contrast", "typography": "button-md", "rounded": "radius-default" },
+      "button-secondary": { "backgroundColor": "color-bg", "textColor": "color-text", "typography": "button-md", "rounded": "radius-default" },
+      "button-ghost": { "backgroundColor": "color-bg", "textColor": "color-text", "typography": "button-md", "rounded": "radius-default" },
+      "button-disabled": { "backgroundColor": "color-surface", "textColor": "color-text-muted", "typography": "button-md", "rounded": "radius-default" },
+      "button-sm": { "typography": "button-sm" }
+    },
+    "Panel": {
+      "panel": { "backgroundColor": "color-surface", "textColor": "color-text", "rounded": "radius-default", "padding": "spacing-md" },
+      "panel-header": { "typography": "label" },
+      "panel-inverse": { "backgroundColor": "color-text", "textColor": "color-bg", "rounded": "radius-default", "padding": "spacing-md" }
+    },
+    "Stack": {
+      "stack": { "backgroundColor": "color-bg", "textColor": "color-text", "rounded": "radius-default" },
+      "stack-layer": { "backgroundColor": "color-surface", "rounded": "radius-default" }
+    },
+    "Dial": {
+      "dial": { "backgroundColor": "color-bg", "textColor": "color-text" },
+      "dial-solid": { "backgroundColor": "color-text", "textColor": "color-bg" },
+      "dial-sm": { "size": "size-dial-sm" },
+      "dial-md": { "size": "size-dial-md" },
+      "dial-lg": { "size": "size-dial-lg" },
+      "dial-xl": { "size": "size-dial-xl" }
+    },
+    "Ring": {
+      "ring": { "backgroundColor": "color-bg", "textColor": "color-text" },
+      "ring-label": { "backgroundColor": "color-bg", "textColor": "color-text-muted", "typography": "label" },
+      "ring-sm": { "size": "size-ring-sm" },
+      "ring-md": { "size": "size-ring-md" }
+    },
+    "Toggle": {
+      "toggle": { "backgroundColor": "color-bg", "textColor": "color-text", "typography": "label", "rounded": "radius-full" },
+      "toggle-on": { "backgroundColor": "color-text", "textColor": "color-bg", "typography": "label", "rounded": "radius-full" }
+    },
+    "DataRow": {
+      "data-row": { "backgroundColor": "color-bg", "textColor": "color-text-muted", "typography": "label" },
+      "data-row-active": { "textColor": "color-text", "typography": "label" }
+    },
+    "TabStrip": {
+      "tab-strip-tab": { "backgroundColor": "color-bg", "textColor": "color-text-muted", "typography": "label" },
+      "tab-strip-tab-active": { "backgroundColor": "color-bg", "textColor": "color-text", "typography": "label" }
+    },
+    "Meta": {
+      "meta": { "backgroundColor": "color-bg", "textColor": "color-text", "typography": "label" },
+      "meta-neutral": { "backgroundColor": "color-bg", "textColor": "color-text-muted", "typography": "label" },
+      "meta-accent": { "backgroundColor": "color-bg", "textColor": "color-accent", "typography": "label-emphasis" },
+      "meta-danger": { "backgroundColor": "color-bg", "textColor": "color-danger", "typography": "label-emphasis" },
+      "meta-success": { "backgroundColor": "color-bg", "textColor": "color-success", "typography": "label-emphasis" }
+    },
+    "Readout": {
+      "readout-lg": { "backgroundColor": "color-bg", "textColor": "color-text", "typography": "readout-lg" },
+      "readout-md": { "backgroundColor": "color-bg", "textColor": "color-text", "typography": "readout-md" },
+      "readout-unit": { "typography": "readout-unit" }
+    },
+    "Prompt": {
+      "prompt": { "backgroundColor": "color-bg", "textColor": "color-text", "typography": "prompt" },
+      "prompt-prefix": { "backgroundColor": "color-bg", "textColor": "color-text-muted", "typography": "prompt" }
+    }
+  }
+}

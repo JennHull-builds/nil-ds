@@ -99,9 +99,40 @@ it is only wrong if you believe it says more than it does.
 
 **So: never write "accessibility tested" in the ledger, the README or public copy.** Write
 what is true — semantics and ARIA are asserted per component. Contrast is a token-level
-property and the honest home for it is `tokens:validate`, computing WCAG ratios over the
-semantic colour pairs in `tokens.json`. Not built yet.
+property and the honest home for it is `tokens:validate`.
+
+**Partly built 2026-10-17, as a report and not a gate.** `tokens:validate` now runs the DESIGN.md
+linter, which computes WCAG ratios on the background and text pairs mapped in
+`design-md/structure.json` and prints failures as warnings on every run. That covers only the
+pairs someone mapped, only the registered components, and it never fails the run. It is not
+"contrast tested" either. Read the warnings before saying anything about contrast.
 
 **Verify the matcher before trusting a green run.** These assertions were confirmed real by
 rendering an image with no `alt` and a link with no text, and watching the suite fail. An
 axe assertion that cannot fail is the same as no assertion.
+
+## Gotcha: DESIGN.md is generated, and its lint stays out of the build
+
+Added 2026-10-17, with the DESIGN.md work on branch `design-md`.
+
+- **Do not edit `DESIGN.md` by hand.** `scripts/build-design-md.mjs` writes it from `tokens.json`,
+  `registry.json` and the two files in `design-md/` (`structure.json` names which tokens each
+  component uses, `prose.md` is the hand-written rationale). Change those, run `npm run
+  tokens:build`. A hand edit fails `tokens:validate` and is overwritten.
+- **The prose and structure files state no value.** `tokens:validate` fails on a hex, a
+  measurement, a colour function or an em dash in them. It is the stale-hex gotcha above, guarded
+  before it happens. Name the token; the generated front matter holds the value.
+- **`designmd lint` runs in `tokens:validate` and `typecheck` only. Never put it, or any other
+  check, in `build:demo`.** TetherLog put checks into its build and every Vercel deployment
+  errored for eight in a row (`areas/products-tetherlog.md` in the brain, 2026-09-18); the
+  mechanism was never found, and a green local build proved nothing. `build:demo` does run the
+  *generator*, through `tokens:build`, and that has **not** been seen to build on Vercel yet. If a
+  preview of this branch errors, change `build:demo` to call `scripts/build-tokens.mjs` directly.
+- **The linter is pinned to exactly 0.4.0, no caret.** The format is at spec version `alpha`. Bump it
+  on purpose, after reading the new rules, because a rule change can turn a clean run into errors.
+- **`registry.json` is not a complete record, and DESIGN.md inherits that.** Checked 2026-10-17
+  against the components: it lists 11 of the 20 files in `src/components`; it leaves out tokens
+  components read (Button reads `bg` and `text-muted`, neither listed); it lists one nothing reads
+  (Stack's `shadow-stack`); and it gives Dial sizes as `sm|md|lg` while the component also accepts
+  `xl`. The pairings in `design-md/structure.json` were therefore read from the component source and
+  `core.css`, not from the registry. Do the same when adding one.
