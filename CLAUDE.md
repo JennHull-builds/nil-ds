@@ -9,7 +9,7 @@ source of truth. Architecture north star is `PLAN.md` (`@nilds/*`).
 ## What this repo is for
 
 It is **kit #1** and a showroom of taste, not a product. Per
-`~/chappie/chappie/memory/kit-market-verdict.md`: kits are showroom plus dogfood, **not
+`~/mothership/brain/chappie/memory/kit-market-verdict.md`: kits are showroom plus dogfood, **not
 kit-SaaS**. Do not propose monetising it, adding a pricing page, or productising the
 registry. Note ideas, do not build them.
 
@@ -65,7 +65,7 @@ what was true that day; correcting them into the present would falsify the log.
 
 ## This kit now has a downstream consumer, and it holds a COPY
 
-Added 2026-09-16. `~/tetherlog` consumes this kit, but it does **not** read these files at
+Added 2026-09-16. `~/mothership/build/tetherlog` consumes this kit, but it does **not** read these files at
 build time. It vendors `src/tokens/tokens.css` and `src/core/core.css` into its own
 `src/nil-ds/` via `scripts/sync-nil-ds.sh`, because Vercel only checks out one repo and a
 relative path to a sibling directory does not exist there. That failed a preview build the
