@@ -126,7 +126,21 @@ A green result means nothing until the check has been seen to fail.
   off by making the rule report `na` instead of `pass`.
 - **Stub subjects** (`--subject stub:good | stub:bad-R3 | stub:none | stub:limit`) run the whole
   pipeline without spending usage. Their output goes to `eval/results-stub/`, which is gitignored.
-- `npm test` runs the fixture tests (about 11 seconds on top of the kit's own suite).
+- `npm test` runs the fixture tests as well (about 12 seconds on top of the kit's own suite).
+
+### Test counts, kept separable
+
+When the eval merges into the kit, the kit's component tests have to stay countable on their own.
+Every checker test file lives under `eval/` and matches `eval/**/*.test.ts`. As of 2 November 2026:
+
+| | Tests | Files |
+|---|---|---|
+| The kit's own (`src/`) | 156 | 21 |
+| The eval checker's (`eval/`: `check.test.ts` 171, `guards.test.ts` 14) | 185 | 2 |
+| `npm test` runs both | 341 | 23 |
+
+`npm run eval:count` recounts both from the test files, so these numbers can be checked, not trusted.
+`npm run eval:test` runs only the eval's.
 
 ### The DOM shim (test-only)
 
@@ -146,10 +160,11 @@ fixtures (`role="menu"` and a native popover) pass, and the bad ones still fail.
 
 ## The subject, and keeping it isolated
 
-`claude -p --model sonnet --output-format stream-json --verbose --setting-sources project`, run with
-the temp kit as its working directory, sequentially, never in parallel. Tools: Read, Write, Edit,
-Glob, Grep. No Bash, no web. Permission mode `dontAsk`, so anything not allowed is denied. Capped at
-30 turns and 10 minutes. Probed on CLI 2.1.316 (`eval/isolation.mjs`):
+`claude -p --model sonnet --output-format stream-json --verbose --setting-sources project`, plus
+`--strict-mcp-config --mcp-config '{"mcpServers":{}}' --disable-slash-commands`, run with the temp
+kit as its working directory, sequentially, never in parallel. Tools: Read, Write, Edit, Glob, Grep.
+No Bash, no web. Permission mode `dontAsk`, so anything not allowed is denied. Capped at 30 turns and
+10 minutes. Probed on CLI 2.1.316 (`eval/isolation.mjs`, `eval/calibrate.mjs`):
 
 - **`--max-turns` is accepted but not listed in `--help`.** A cap of 1 ended a 3-step task with
   `error_max_turns`, and the CLI counted 2 turns, so the cap stops a session once the count
@@ -157,14 +172,53 @@ Glob, Grep. No Bash, no web. Permission mode `dontAsk`, so anything not allowed 
 - **Permission rules.** Allowing `Read`, `Glob` and `Grep` with no path let the subject read, grep
   and glob a file outside its folder. `Read(./**)` alone confines all three to the temp kit, and
   `Write(eval-output/**)` and `Edit(eval-output/**)` confine writes. That is what the runner uses.
-- **`--setting-sources project`** keeps the user's `CLAUDE.md`, memory index and hooks out. The
-  gate proves this with a positive control (the same probe without that flag does see them) and a
-  hook-event count. It reports only whether a canary came back, never its value.
-- **Every run guards itself.** The runner reads the session's own `init` event and refuses to score
-  a run whose tools are not exactly the five, or that shows an MCP server or a non-built-in plugin.
-  Such a run is recorded as not run and the round stops. `meta.json` also records the first-turn
-  prompt size, and `summary.md` flags a run whose size differs from its siblings, or an arm B whose
-  prompt is not larger than arm A's, because that would mean the guidance did not load.
+- **`--setting-sources project`** keeps the user's `CLAUDE.md`, memory index and hooks out.
+- **The empty MCP config** is there because a claude.ai connector (8 tools) appeared once in the
+  first probe call and never again in 21 later samples. It could not be shown to remove anything,
+  because nothing was there to remove. **`--disable-slash-commands`** empties the registry of skills
+  and commands and changes the model's first prompt by 0 to 2 tokens: the model could not see them.
+- **The gate** (`npm run eval:isolation`) reports only whether a canary came back, never its value.
+  Its main test is the size of the session's first prompt: with the project `CLAUDE.md` it is a known
+  small amount above a folder with none, and a user `CLAUDE.md` or memory index adds thousands (the
+  positive control, run without `--setting-sources project`, came in about 13,000 tokens higher). The
+  model's recall of a planted nonce is reported but is not a pass condition: it missed in samples
+  where the prompt size showed the file had loaded.
+
+### Every run guards itself
+
+1. **The init event.** Exactly the five tools, no MCP server, no non-built-in plugin. Checked the
+   moment the session starts, so a bad session is stopped before it costs anything.
+2. **The first-turn prompt size.** For one arm and one task the first prompt should be almost the same
+   size every run. `eval/band.json` holds the size measured for each of the ten task and arm cells
+   (`node eval/calibrate.mjs band`), and a run must land within 100 tokens of it. Measured noise is a
+   few tokens; arm B's prompt is about 3,800 tokens larger than arm A's; a connector is worth thousands.
+   Outside the band means something different loaded: arm B without its guidance, or something extra in
+   either arm. The band records the CLI version and the runner refuses to run on a different one.
+3. **What happens on a breach.** That attempt is excluded and counted by reason, and the run is retried
+   once. Two breaches in a row stop the round. A clean scored run resets the count, so one blip at
+   01:00 does not cost the night.
+
+### Usage, and what counts as a failed run
+
+The subject signs in with a Claude plan, not an API key (the runner refuses to start if
+`ANTHROPIC_API_KEY` is set), so runs draw on the same limits as chat. `total_cost_usd` is an
+API-price equivalent, not a bill. The stream carries a `rate_limit_event` with the five-hour and
+seven-day utilisation and their reset times; the runner reads it before every run and records it.
+
+- **Five-hour window above 85%:** wait for its reset time from the event, then carry on, as long as
+  that is before `--stop-at`. At night nobody else is using it.
+- **Seven-day window above 60%:** stop. The remaining runs are recorded as not run, resumable, with the
+  reset time in `not-run.json`. The week also has to carry other work.
+- **A usage-limit error is not a failed run.** The round stops and the remaining runs are `not run`,
+  never zeros, left out of every mean. `--resume` skips runs that already have a `score.json`. The text
+  of a real limit error has not been seen; `stub:limit` exercises the path and `isUsageLimit()` in
+  `eval/lib/claude.mjs` is the one place to fix if the real text differs.
+- **Other infrastructure failures** are retried once, then recorded as `not run`.
+- **A timeout** is retried once, then scored on whatever was written (0 if nothing), with
+  `ended: "timeout"`. Hitting the turn cap is scored the same way, with `ended: "max_turns"`. The
+  summary counts completed, max-turns and timeout endings separately, so a 0 from a timeout never
+  reads like a 0 from bad code.
+- Not-run runs and excluded attempts are counted in the summary by reason.
 
 Run the gate yourself: `npm run eval:isolation`. It spends a little usage.
 
@@ -172,42 +226,29 @@ Run the gate yourself: `npm run eval:isolation`. It spends a little usage.
 
 ```bash
 npm ci
-npm test                     # includes the checker's fixture tests
+npm test                     # the kit's own tests plus the checker's
 npm run eval:mutate          # switch each rule off in turn, about 3 minutes
-npm run eval:isolation       # the gate, about 5 minutes, a little usage
+npm run eval:isolation       # the gate, about 2 minutes, a little usage
+node eval/calibrate.mjs band # measure the first-prompt size of all ten cells, about 2 minutes
 
 # rehearse the pipeline without spending usage
 node eval/run.mjs --subject stub:good --round stub-demo --tasks T3 --runs 1
 
 # a real round: 5 tasks x 2 arms x 3 runs = 30 runs, sequential, overnight, Mac plugged in and open
 mkdir -p eval/logs
-nohup caffeinate -is node eval/run.mjs --round 1 --runs 3 --stop-at 07:00 > eval/logs/round-1.log 2>&1 &
+nohup caffeinate -is node eval/run.mjs --round 1 --runs 3 --stop-at 04:00 > eval/logs/round-1.log 2>&1 &
 
 node eval/run.mjs --round 1 --runs 3 --resume   # carry on after any stop
 node eval/summarise.mjs --round 1               # summary.json and summary.md
 ```
 
 Per run, `eval/results/round-N/<task>/<arm>/run-<k>/` holds `Result.tsx` (or `NO_RESULT.txt`),
-`score.json`, `trace.json` (tool names and paths, never the transcript) and `meta.json`. The raw
-stream goes to `raw/`, which is gitignored. `meta.json` records the resolved model ID, turns,
-duration, cost as the CLI reports it, input, output, cache read and cache write tokens, the usage
-windows the stream reports, any edit Claude made outside `eval-output/`, and whether it put a `ref`
-on a kit component.
-
-### Usage and what counts as a failed run
-
-The subject signs in with a Claude plan, not an API key, so runs draw on the same limits as chat.
-`total_cost_usd` is an API-price equivalent, not a bill. The stream carries a `rate_limit_event` with
-the five-hour and seven-day utilisation; the runner records it per run.
-
-- A **usage-limit error is not a failed run.** The round stops, the remaining runs are recorded as
-  `not run`, never as zeros, and they are left out of every mean. `--resume` skips runs that already
-  have a `score.json`. The text of a real limit error has not been seen; `stub:limit` exercises the
-  path and `isUsageLimit()` in `eval/lib/claude.mjs` is the one place to fix if the real text differs.
-- Other infrastructure failures are retried once, then recorded as `not run`. So are an isolation
-  breach and a `--stop-at` stop. Only a session that completed and wrote nothing scores 0.
-- A session that ends by hitting the turn cap, or the 10-minute timeout with something written, is
-  scored on what it wrote.
+`score.json`, `trace.json` (tool names and paths, never the transcript), `meta.json` and, if any
+attempt was excluded, `attempts.json`. The raw stream goes to `raw/`, which is gitignored.
+`meta.json` records the resolved model ID, turns, duration, cost as the CLI reports it, input, output,
+cache read and cache write tokens, the usage windows before, at the start of and at the end of the
+run, the first-turn prompt size against its band, any edit Claude made outside `eval-output/`, and
+whether it put a `ref` on a kit component.
 
 ## What this does not measure
 

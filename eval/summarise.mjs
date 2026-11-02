@@ -63,8 +63,16 @@ export function summarise({ round, stub = false, unseal = false }) {
   // Visible tasks only. T5 is never opened here unless --unseal.
   const visible = collect(roundDir, (t) => !SEALED_TASKS.includes(t));
   for (const r of visible) if (r.scored) { r.score = read(join(r.dir, 'score.json')); r.meta = read(join(r.dir, 'meta.json')); r.trace = read(join(r.dir, 'trace.json')); }
+  for (const r of visible) if (existsSync(join(r.dir, 'attempts.json'))) r.attempts = read(join(r.dir, 'attempts.json'));
   const scored = visible.filter((r) => r.scored);
   const notRun = visible.filter((r) => r.notRun && !r.scored);
+  const countBy = (xs) => Object.fromEntries([...xs.reduce((m, x) => m.set(x, (m.get(x) ?? 0) + 1), new Map())].sort());
+  const notRunByReason = countBy(notRun.map((r) => r.notRun.reason));
+  // Every attempt that produced no score, including ones that were retried and then succeeded.
+  const excludedAttempts = countBy(visible.flatMap((r) => (r.attempts ?? []).map((a) => a.outcome)));
+  // How each scored run ended. A 0 from a timeout must never read like a 0 from bad code.
+  const endedBy = Object.fromEntries(['A', 'B'].map((a) => [a, countBy(scored.filter((r) => r.arm === a).map((r) => r.score.ended ?? 'completed'))]));
+  const zeroRuns = scored.filter((r) => r.score.score === 0).map((r) => ({ task: r.task, arm: r.arm, run: r.run, ended: r.score.ended ?? 'completed' }));
 
   const sealedRecs = collect(sealedDir, (t) => SEALED_TASKS.includes(t));
   const sealedDone = sealedRecs.filter((r) => r.scored).length; // existence only, no parsing
@@ -87,24 +95,15 @@ export function summarise({ round, stub = false, unseal = false }) {
   const ref = Object.fromEntries(armIds.map((a) => [a, byArm[a].filter((r) => (r.meta.refOnKitComponent ?? []).length > 0).length]));
   const kitEdited = scored.filter((r) => (r.meta.kitEditsOutsideEvalOutput ?? []).length > 0).length;
 
-  // Validity: the first-turn prompt of the same task and arm should be near-identical every run,
-  // and arm B's should be larger than arm A's by about the size of the guidance. A mismatch means
-  // the guidance may not have loaded, or something extra did.
+  // Validity. Runs whose first-turn prompt is outside its cell's band are excluded while the round
+  // runs (see run.mjs), so everything scored here is in band. The gap below is observational: how
+  // much larger arm B's first prompt is than arm A's, which is the guidance that did load.
   const groups = new Map();
   for (const r of scored) if (r.meta.firstTurnPromptTokens > 0) { const k = `${r.task}|${r.arm}`; groups.set(k, [...(groups.get(k) ?? []), r]); }
-  const flagged = [];
   const gaps = [];
-  for (const [k, rs] of groups) {
-    if (rs.length < 3) continue;
-    const med = median(rs.map((r) => r.meta.firstTurnPromptTokens));
-    for (const r of rs) if (Math.abs(r.meta.firstTurnPromptTokens - med) > 100) flagged.push({ task: r.task, arm: r.arm, run: r.run, firstTurnPromptTokens: r.meta.firstTurnPromptTokens, groupMedian: med, why: 'first-turn prompt size differs from its siblings by more than 100 tokens' });
-  }
   for (const t of taskIds) {
     const a = groups.get(`${t}|A`), b = groups.get(`${t}|B`);
-    if (!a || !b) continue;
-    const gap = median(b.map((r) => r.meta.firstTurnPromptTokens)) - median(a.map((r) => r.meta.firstTurnPromptTokens));
-    gaps.push({ task: t, medianGap: gap });
-    if (gap < 1000) flagged.push({ task: t, arm: 'B', why: `arm B's first-turn prompt is only ${gap} tokens larger than arm A's: the guidance may not have loaded` });
+    if (a && b) gaps.push({ task: t, medianGap: median(b.map((r) => r.meta.firstTurnPromptTokens)) - median(a.map((r) => r.meta.firstTurnPromptTokens)) });
   }
 
   const sum = (f) => scored.reduce((n, r) => n + (f(r) ?? 0), 0);
@@ -124,7 +123,8 @@ export function summarise({ round, stub = false, unseal = false }) {
     models, arms: armStats, perTask, perRule: rules, inventedTokens: invented,
     guidanceOpened: opened, refOnKitComponent: ref, runsWithKitEdits: kitEdited,
     notRun: notRun.map((r) => ({ task: r.task, arm: r.arm, run: r.run, reason: r.notRun.reason, detail: r.notRun.detail })),
-    validity: { promptSizeGapBToA: gaps, flaggedRuns: flagged }, usage,
+    notRunByReason, excludedAttempts, endedBy, zeroScoreRuns: zeroRuns,
+    validity: { promptSizeGapBToA: gaps }, usage,
   };
 
   // Held-out T5: only on request, and only after round 2 exists.
@@ -165,11 +165,15 @@ function render(j, { roundDir }) {
   for (const a of arms) L.push(`- **${a}:** ${j.inventedTokens[a].length ? j.inventedTokens[a].map((t) => `\`${t.name}\` (${t.runs})`).join(', ') : 'none'}`);
   L.push('', '## Did arm B open the files that are not auto-loaded?', '', `Of ${j.guidanceOpened.runs} arm B runs: DESIGN.md opened in ${j.guidanceOpened['DESIGN.md']}, registry.json in ${j.guidanceOpened['registry.json']}, AGENTS.md in ${j.guidanceOpened['AGENTS.md']} (AGENTS.md arrives through CLAUDE.md without being opened; DESIGN.md and registry.json arrive only if Claude reads them).`);
   L.push('', '## Ref on a kit component', '', `Runs where Claude put a ref on a kit component (the kit's Button does not forward refs): A ${j.refOnKitComponent.A}, B ${j.refOnKitComponent.B}.`);
-  L.push('', '## Not run', '', j.notRun.length ? j.notRun.map((r) => `- ${r.task} ${r.arm} run-${r.run}: ${r.reason}`).join('\n') : 'None.', '', 'Runs that were not run are excluded from every mean above.');
+  L.push('', '## How runs ended', '', 'A run that hit the turn cap or the ten-minute timeout is scored on what it wrote. These are counted apart so a 0 from a timeout never reads like a 0 from bad code.', '', '| Arm | completed | max_turns | timeout | turn-cap-runner |', '|---|---|---|---|---|');
+  for (const a of arms) L.push(`| ${a} | ${['completed', 'max_turns', 'timeout', 'turn-cap-runner'].map((k) => j.endedBy[a][k] ?? 0).join(' | ')} |`);
+  L.push('', j.zeroScoreRuns.length ? `Runs that scored 0: ${j.zeroScoreRuns.map((z) => `${z.task} ${z.arm} run-${z.run} (ended: ${z.ended})`).join('; ')}.` : 'No run scored 0.');
+  const byReason = (o) => (Object.keys(o).length ? Object.entries(o).map(([k, v]) => `${k}: ${v}`).join(', ') : 'none');
+  L.push('', '## Not run, and excluded attempts', '', `Runs not run, by reason: ${byReason(j.notRunByReason)}.`, '', `Attempts excluded, by reason (counts every attempt that produced no score, including ones that were retried and then succeeded): ${byReason(j.excludedAttempts)}.`);
+  L.push('', j.notRun.length ? j.notRun.map((r) => `- ${r.task} ${r.arm} run-${r.run}: ${r.reason}`).join('\n') : '', '', 'Runs that were not run are excluded from every mean above.');
   L.push('', '## Validity checks', '');
   L.push(`- Runs where Claude changed a kit file outside eval-output/: ${j.runsWithKitEdits}.`);
-  L.push(`- Arm B first-turn prompt larger than arm A's, median gap in tokens per task: ${j.validity.promptSizeGapBToA.length ? j.validity.promptSizeGapBToA.map((g) => `${g.task} ${g.medianGap}`).join(', ') : 'not enough runs to compare'}.`);
-  L.push(`- Runs flagged: ${j.validity.flaggedRuns.length ? '\n' + j.validity.flaggedRuns.map((f) => `  - ${f.task} ${f.arm}${f.run ? ` run-${f.run}` : ''}: ${f.why}`).join('\n') : 'none.'}`);
+  L.push(`- Arm B first-turn prompt larger than arm A's, median gap in tokens per task: ${j.validity.promptSizeGapBToA.length ? j.validity.promptSizeGapBToA.map((g) => `${g.task} ${g.medianGap}`).join(', ') : 'not enough runs to compare'}. A run whose first prompt was outside its cell's calibrated size was excluded as it happened.`);
   L.push('', '## Cost and usage', '');
   L.push(`${j.usage.runs} runs: ${j.usage.totalWallSeconds} s of wall-clock time, $${j.usage.totalCostUsd.toFixed(2)} as the CLI reports it (an API-price equivalent, not a bill; the runs draw on a Claude plan). Tokens: ${j.usage.inputTokens} input, ${j.usage.outputTokens} output, ${j.usage.cacheReadTokens} cache read, ${j.usage.cacheWriteTokens} cache write.`);
   L.push(`Plan usage windows as reported in the stream, first to last run: five-hour ${j.usage.fiveHourUtilizationFirstToLast.map((x) => (x == null ? 'n/a' : `${Math.round(x * 100)}%`)).join(' to ')}, seven-day ${j.usage.sevenDayUtilizationFirstToLast.map((x) => (x == null ? 'n/a' : `${Math.round(x * 100)}%`)).join(' to ')}.`);

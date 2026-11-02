@@ -1,6 +1,6 @@
 {
-  "when": "2026-11-02T07:36:21.461Z",
-  "cliVersion": null,
+  "when": "2026-11-02T08:27:45.684Z",
+  "cliVersion": "2.1.316",
   "steps": {
     "canaries": {
       "control": {
@@ -9,152 +9,58 @@
         "bLeaked": true,
         "nonceSeen": true,
         "hooksRan": false,
-        "hookEvents": 6
+        "hookEvents": 6,
+        "extraTokens": 13080
       },
+      "baselineFirstTurnTokens": 2917,
       "real": [
         {
           "answeredAll": true,
           "aLeaked": false,
           "bLeaked": false,
-          "nonceSeen": true,
+          "nonceSeen": false,
           "hooksRan": false,
-          "hookEvents": 0
+          "hookEvents": 0,
+          "firstTurnTokens": 3100,
+          "extraTokens": 183,
+          "nonceFileLoaded": true,
+          "userContentLeaked": false
         },
         {
           "answeredAll": true,
           "aLeaked": false,
           "bLeaked": false,
-          "nonceSeen": true,
+          "nonceSeen": false,
           "hooksRan": false,
-          "hookEvents": 0
+          "hookEvents": 0,
+          "firstTurnTokens": 3100,
+          "extraTokens": 183,
+          "nonceFileLoaded": true,
+          "userContentLeaked": false
         },
         {
           "answeredAll": true,
           "aLeaked": false,
           "bLeaked": false,
-          "nonceSeen": true,
+          "nonceSeen": false,
           "hooksRan": false,
-          "hookEvents": 0
+          "hookEvents": 0,
+          "firstTurnTokens": 3100,
+          "extraTokens": 183,
+          "nonceFileLoaded": true,
+          "userContentLeaked": false
         }
       ],
-      "pass": true,
-      "hookCheckSensitive": true
+      "nonceAnswers": [
+        "NONE",
+        "NONE",
+        "NONE"
+      ],
+      "pass": true
     },
     "inventory": [
       {
-        "label": "as configured",
-        "tools": [
-          "Edit",
-          "Glob",
-          "Grep",
-          "Read",
-          "Write"
-        ],
-        "mcpServers": [],
-        "plugins": [
-          "cc-plugin-agents-md [builtin]",
-          "cc-plugin-telemetry [builtin]",
-          "cc-plugin-plugin-authoring [builtin]"
-        ],
-        "skills": [
-          "design",
-          "design-sync",
-          "dataviz",
-          "update-config",
-          "verify",
-          "debug",
-          "code-review",
-          "simplify",
-          "batch",
-          "fewer-permission-prompts",
-          "doctor",
-          "loop",
-          "schedule",
-          "send-to-project",
-          "claude-api",
-          "run",
-          "run-skill-generator",
-          "plugin-authoring"
-        ],
-        "agents": [
-          "claude",
-          "Explore",
-          "general-purpose",
-          "Plan",
-          "statusline-setup"
-        ],
-        "slashCommandCount": 54,
-        "autoMemory": true,
-        "modelSelfReport": {
-          "tools": 5,
-          "skills": 0,
-          "plugins": 0,
-          "mcp": 0
-        },
-        "exactlyFiveTools": true,
-        "nonBuiltinPlugins": 0,
-        "modelSeesNothingExtra": true,
-        "clean": true,
-        "strictClean": false
-      },
-      {
-        "label": "plus --strict-mcp-config with an empty MCP config",
-        "tools": [
-          "Edit",
-          "Glob",
-          "Grep",
-          "Read",
-          "Write"
-        ],
-        "mcpServers": [],
-        "plugins": [
-          "cc-plugin-agents-md [builtin]",
-          "cc-plugin-telemetry [builtin]",
-          "cc-plugin-plugin-authoring [builtin]"
-        ],
-        "skills": [
-          "design",
-          "design-sync",
-          "dataviz",
-          "update-config",
-          "verify",
-          "debug",
-          "code-review",
-          "simplify",
-          "batch",
-          "fewer-permission-prompts",
-          "doctor",
-          "loop",
-          "schedule",
-          "send-to-project",
-          "claude-api",
-          "run",
-          "run-skill-generator",
-          "plugin-authoring"
-        ],
-        "agents": [
-          "claude",
-          "Explore",
-          "general-purpose",
-          "Plan",
-          "statusline-setup"
-        ],
-        "slashCommandCount": 54,
-        "autoMemory": true,
-        "modelSelfReport": {
-          "tools": 5,
-          "skills": 0,
-          "plugins": 0,
-          "mcp": 0
-        },
-        "exactlyFiveTools": true,
-        "nonBuiltinPlugins": 0,
-        "modelSeesNothingExtra": true,
-        "clean": true,
-        "strictClean": false
-      },
-      {
-        "label": "plus the above and --disable-slash-commands",
+        "label": "final flags",
         "tools": [
           "Edit",
           "Glob",
@@ -229,14 +135,154 @@
   "window": {
     "status": "allowed",
     "fiveHour": {
-      "utilization": 0.03,
+      "utilization": 0.37,
       "resetsAt": 1793622600,
       "status": "allowed"
     },
     "sevenDay": {
-      "utilization": 0.21,
+      "utilization": 0.24,
       "resetsAt": 1794124800,
       "status": "allowed"
     }
-  }
+  },
+  "gateRuns": [
+    {
+      "when": "2026-11-02T08:21:09.856Z",
+      "flags": [
+        "--strict-mcp-config",
+        "--mcp-config",
+        "{\"mcpServers\":{}}",
+        "--disable-slash-commands"
+      ],
+      "clean": true,
+      "verdicts": {
+        "canaries": true,
+        "inventory": true,
+        "arms": true
+      }
+    },
+    {
+      "when": "2026-11-02T08:22:00.773Z",
+      "flags": [
+        "--strict-mcp-config",
+        "--mcp-config",
+        "{\"mcpServers\":{}}",
+        "--disable-slash-commands"
+      ],
+      "clean": false,
+      "verdicts": {
+        "canaries": false,
+        "inventory": true,
+        "arms": true
+      }
+    },
+    {
+      "when": "2026-11-02T08:22:35.692Z",
+      "flags": [
+        "--strict-mcp-config",
+        "--mcp-config",
+        "{\"mcpServers\":{}}",
+        "--disable-slash-commands"
+      ],
+      "clean": false,
+      "verdicts": {
+        "canaries": false,
+        "inventory": true,
+        "arms": true
+      }
+    },
+    {
+      "when": "2026-11-02T08:24:04.278Z",
+      "flags": [
+        "--strict-mcp-config",
+        "--mcp-config",
+        "{\"mcpServers\":{}}",
+        "--disable-slash-commands"
+      ],
+      "clean": true,
+      "verdicts": {
+        "canaries": true,
+        "inventory": true,
+        "arms": true
+      }
+    },
+    {
+      "when": "2026-11-02T08:24:50.082Z",
+      "flags": [
+        "--strict-mcp-config",
+        "--mcp-config",
+        "{\"mcpServers\":{}}",
+        "--disable-slash-commands"
+      ],
+      "clean": true,
+      "verdicts": {
+        "canaries": true,
+        "inventory": true,
+        "arms": true
+      }
+    },
+    {
+      "when": "2026-11-02T08:25:30.219Z",
+      "flags": [
+        "--strict-mcp-config",
+        "--mcp-config",
+        "{\"mcpServers\":{}}",
+        "--disable-slash-commands"
+      ],
+      "clean": false,
+      "verdicts": {
+        "canaries": false,
+        "inventory": true,
+        "arms": true
+      }
+    },
+    {
+      "when": "2026-11-02T08:26:28.959Z",
+      "criterion": "v3: project file judged by prompt size, model recall of the nonce is information only, a and b must be answered",
+      "flags": [
+        "--strict-mcp-config",
+        "--mcp-config",
+        "{\"mcpServers\":{}}",
+        "--disable-slash-commands"
+      ],
+      "clean": true,
+      "verdicts": {
+        "canaries": true,
+        "inventory": true,
+        "arms": true
+      }
+    },
+    {
+      "when": "2026-11-02T08:27:02.345Z",
+      "criterion": "v3: project file judged by prompt size, model recall of the nonce is information only, a and b must be answered",
+      "flags": [
+        "--strict-mcp-config",
+        "--mcp-config",
+        "{\"mcpServers\":{}}",
+        "--disable-slash-commands"
+      ],
+      "clean": true,
+      "verdicts": {
+        "canaries": true,
+        "inventory": true,
+        "arms": true
+      }
+    },
+    {
+      "when": "2026-11-02T08:27:45.684Z",
+      "criterion": "v3: project file judged by prompt size, model recall of the nonce is information only, a and b must be answered",
+      "flags": [
+        "--strict-mcp-config",
+        "--mcp-config",
+        "{\"mcpServers\":{}}",
+        "--disable-slash-commands"
+      ],
+      "clean": true,
+      "verdicts": {
+        "canaries": true,
+        "inventory": true,
+        "arms": true
+      }
+    }
+  ]
 }

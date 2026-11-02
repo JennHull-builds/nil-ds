@@ -41,6 +41,28 @@ export const SUBJECT = {
    * Write/Edit(eval-output/**) confines writes. Glob and Grep need no rule of their own.
    */
   allowed: ['Read(./**)', 'Write(eval-output/**)', 'Edit(eval-output/**)'],
+  /**
+   * Added after the first gate (2 November 2026): an empty MCP config, strict, so no claude.ai
+   * connector can attach (one did, once, in the first probe call), and no slash commands or skills
+   * (eval/calibrate.mjs compare shows what that does to the first-turn prompt).
+   */
+  extraFlags: ['--strict-mcp-config', '--mcp-config', '{"mcpServers":{}}', '--disable-slash-commands'],
+};
+
+/**
+ * Guards (track lead, 2 November 2026).
+ *  - promptBand: a run's first-turn prompt must be within this many tokens of its cell's calibrated
+ *    size (eval/band.json). Noise measured at about 6 tokens; the smallest thing we care about
+ *    (a missing AGENTS.md, an MCP connector) moves it by thousands.
+ *  - usage: read from the stream's rate_limit_event before every run.
+ */
+export const GUARDS = {
+  promptBandTokens: 100,
+  breachStreakStops: 2,
+  fiveHourWaitAbove: 0.85,
+  sevenDayStopAbove: 0.6,
+  waitSlackMs: 60_000,
+  readingStaleMs: 15 * 60_000,
 };
 
 /**

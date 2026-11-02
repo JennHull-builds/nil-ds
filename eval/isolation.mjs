@@ -22,7 +22,7 @@ import { homedir, tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { EVAL_DIR, SUBJECT } from './config.mjs';
 import { buildArm } from './lib/kit.mjs';
-import { digest, runClaude, subjectFlags, windowSummary } from './lib/claude.mjs';
+import { digest, promptTokens, runClaude, subjectFlags, windowSummary } from './lib/claude.mjs';
 
 const COCKPIT = join(homedir(), 'mothership/briefs/cockpit.html');
 const mtime = () => { try { return statSync(COCKPIT).mtimeMs; } catch { return null; } };
@@ -32,6 +32,10 @@ const NO_TOOLS = [
   '--permission-mode', 'dontAsk', '--tools', '',
   '--disallowedTools', 'Read', 'Glob', 'Grep', 'Write', 'Edit', 'Bash',
 ];
+
+// The flags the real subject runs with, beyond the base probe flags: empty strict MCP config, no slash commands.
+const FINAL = SUBJECT.extraFlags;
+const REAL = [...NO_TOOLS, '--setting-sources', 'project', ...FINAL];
 
 function jsonFrom(text = '') {
   const m = text.match(/\{[\s\S]*\}/);
@@ -63,43 +67,59 @@ async function canaryProbe(dir, flags) {
   report.cliVersion ??= d.init?.claude_code_version ?? null;
   const hookEvents = run.events.filter((e) => e.type === 'system' && /hook/i.test(e.subtype ?? '')).length;
   const ans = jsonFrom(d.result?.result) ?? {};
-  return { answer: ans, answeredAll: answered(ans.a) && answered(ans.b) && answered(ans.c), hooksRan: before !== after, hookEvents, window: lastWindow(d), apiError: d.result?.is_error ?? true };
+  const firstTurnTokens = promptTokens(run.events.find((e) => e.type === 'assistant')?.message?.usage);
+  return { answer: ans, firstTurnTokens, answeredAll: answered(ans.a) && answered(ans.b), hooksRan: before !== after, hookEvents, window: lastWindow(d), apiError: d.result?.is_error ?? true };
 }
 
 const REAL_SAMPLES = 3;
+const verdicts = [];
+const verdict = (name, ok) => { verdicts.push([name, Boolean(ok)]); };
 
 async function gate() {
-  console.log('\n== Gate 1: canary probes (tools disallowed) ==');
+  console.log('\n== Gate 1: canary probes (tools disallowed, final flags) ==');
   const nonce = `NONCE-${randomBytes(8).toString('hex')}`;
   const dir = mkdtempSync(join(tmpdir(), 'nil-gate-'));
+  const bare = mkdtempSync(join(tmpdir(), 'nil-gate-bare-'));
   writeFileSync(join(dir, 'CLAUDE.md'), `# Project notes\n\nThe project nonce is ${nonce}.\n`);
   try {
     const control = await canaryProbe(dir, NO_TOOLS);
+    // A baseline: the same probe in a folder with NO CLAUDE.md. Its first-turn size is what "the nonce file did not load" looks like.
+    const baseline = await canaryProbe(bare, REAL);
     const reals = [];
-    for (let i = 0; i < REAL_SAMPLES; i++) reals.push(await canaryProbe(dir, [...NO_TOOLS, '--setting-sources', 'project']));
+    for (let i = 0; i < REAL_SAMPLES; i++) reals.push(await canaryProbe(dir, REAL));
 
     const ctl = { answeredAll: control.answeredAll, aLeaked: leaked(control.answer.a), bLeaked: leaked(control.answer.b), nonceSeen: control.answer.c === nonce, hooksRan: control.hooksRan, hookEvents: control.hookEvents };
-    const rl = reals.map((r) => ({ answeredAll: r.answeredAll, aLeaked: leaked(r.answer.a), bLeaked: leaked(r.answer.b), nonceSeen: r.answer.c === nonce, hooksRan: r.hooksRan, hookEvents: r.hookEvents }));
-    report.steps.canaries = { control: ctl, real: rl };
-    if (process.env.GATE_DEBUG) console.log('   [debug] nonce', nonce, '| control c:', control.answer.c, '| real c:', reals.map((r) => r.answer.c));
+    const rl = reals.map((r) => ({ answeredAll: r.answeredAll, aLeaked: leaked(r.answer.a), bLeaked: leaked(r.answer.b), nonceSeen: r.answer.c === nonce, hooksRan: r.hooksRan, hookEvents: r.hookEvents, firstTurnTokens: r.firstTurnTokens }));
+    // Judge by SIZE, not by what the model said. The project file adds a known small amount (about
+    // 180 tokens). A user CLAUDE.md or memory index would add thousands. Size is exact; the model's
+    // recall of a nonce is not (it was wrong in 6 samples where the file had demonstrably loaded).
+    const extraOf = (r) => r.firstTurnTokens - baseline.firstTurnTokens;
+    for (const r of rl) { r.extraTokens = extraOf(r); r.nonceFileLoaded = r.extraTokens >= 100; r.userContentLeaked = r.extraTokens > 400; }
+    ctl.extraTokens = extraOf(control);
+    report.steps.canaries = { control: ctl, baselineFirstTurnTokens: baseline.firstTurnTokens, real: rl };
+    const said = (a) => (a.c === nonce ? 'the nonce' : typeof a.c === 'string' && /^NONE$/i.test(a.c.trim()) ? 'NONE' : typeof a.c === 'string' ? `another string (${a.c.length} chars)` : 'nothing');
+    report.steps.canaries.nonceAnswers = reals.map((r) => said(r.answer));
 
     line(ctl.aLeaked || ctl.bLeaked, `positive control (without --setting-sources project): the probe CAN see a leak. a came back: ${ctl.aLeaked}, b came back: ${ctl.bLeaked}`);
-    line(rl.every((r) => r.answeredAll), `real setting: all ${REAL_SAMPLES} samples gave a complete answer (an unanswered probe proves nothing): ${rl.map((r) => r.answeredAll).join(', ')}`);
+    line(rl.every((r) => r.answeredAll), `real setting: all ${REAL_SAMPLES} samples answered both leak questions (a and b): ${rl.map((r) => r.answeredAll).join(', ')}`);
     line(rl.every((r) => !r.aLeaked && !r.bLeaked), `real setting: a came back in ${rl.filter((r) => r.aLeaked).length} of ${REAL_SAMPLES} samples, b in ${rl.filter((r) => r.bLeaked).length} of ${REAL_SAMPLES} (both must be 0)`);
-    line(rl.every((r) => r.nonceSeen), `real setting: the project nonce came back in ${rl.filter((r) => r.nonceSeen).length} of ${REAL_SAMPLES} samples (must be all: project instructions DO load)`);
+    line(rl.every((r) => r.nonceFileLoaded), `real setting: the project CLAUDE.md loaded, judged by prompt size, in ${rl.filter((r) => r.nonceFileLoaded).length} of ${REAL_SAMPLES} samples (must be all)`);
+    line(rl.every((r) => !r.userContentLeaked), `real setting: extra prompt tokens over the no-CLAUDE.md baseline ${rl.map((r) => r.extraTokens).join(', ')} (a user file would add thousands; limit 400)`);
+    line(ctl.extraTokens > 1000, `the size check can see a leak: the control run (user settings loaded) came in ${ctl.extraTokens} tokens over the baseline (must be above 1000)`);
+    line(null, `first-turn prompt tokens: no CLAUDE.md ${baseline.firstTurnTokens}; with the nonce file ${rl.map((r) => r.firstTurnTokens).join(', ')}; control ${control.firstTurnTokens}`);
+    line(null, `information only: the model recalled the nonce in ${rl.filter((r) => r.nonceSeen).length} of ${REAL_SAMPLES} samples (it said: ${report.steps.canaries.nonceAnswers.join(', ')})`);
+    for (const r of rl) if (!r.nonceSeen && r.nonceFileLoaded) console.log('      a miss with the file loaded by size: the model answered wrongly (probe noise)');
     line(null, `hook events in the stream: control ${ctl.hookEvents}, real ${rl.map((r) => r.hookEvents).join('/')}`);
-    line(null, `cockpit.html modified time changed: control ${ctl.hooksRan}, real ${rl.map((r) => r.hooksRan).join('/')}`);
     const hookSensitive = ctl.hookEvents > 0 || ctl.hooksRan;
     line(hookSensitive, `the hook check can see user hooks (the control run showed hook activity): ${hookSensitive}`);
     line(rl.every((r) => r.hookEvents === 0 && !r.hooksRan), 'no user hook ran in any real-setting sample');
-    if (rl.some((r) => r.hooksRan)) console.log('      note: another open chat can also rebuild the cockpit; rerun before concluding.');
-    report.steps.canaries.pass = Boolean(
-      (ctl.aLeaked || ctl.bLeaked) && rl.every((r) => r.answeredAll && !r.aLeaked && !r.bLeaked && r.nonceSeen && r.hookEvents === 0 && !r.hooksRan),
-    );
-    report.steps.canaries.hookCheckSensitive = hookSensitive;
+    const ok = (ctl.aLeaked || ctl.bLeaked) && hookSensitive && ctl.extraTokens > 1000 && rl.every((r) => r.answeredAll && !r.aLeaked && !r.bLeaked && r.nonceFileLoaded && !r.userContentLeaked && r.hookEvents === 0 && !r.hooksRan);
+    report.steps.canaries.pass = Boolean(ok);
+    verdict('canaries', ok);
     report.window = reals[reals.length - 1].window;
   } finally {
     rmSync(dir, { recursive: true, force: true });
+    rmSync(bare, { recursive: true, force: true });
   }
 }
 
@@ -141,30 +161,17 @@ async function inventory(label, extra) {
 }
 
 async function inventories() {
-  console.log('\n== Gate 2: what the subject can see (names only) ==');
-  const scratch = mkdtempSync(join(tmpdir(), 'nil-mcp-'));
-  const emptyMcp = join(scratch, 'empty-mcp.json');
-  writeFileSync(emptyMcp, '{"mcpServers":{}}');
-  const variants = [
-    ['as configured', []],
-    ['plus --strict-mcp-config with an empty MCP config', ['--strict-mcp-config', '--mcp-config', emptyMcp]],
-    ['plus the above and --disable-slash-commands', ['--strict-mcp-config', '--mcp-config', emptyMcp, '--disable-slash-commands']],
-  ];
+  console.log('\n== Gate 2: what the subject can see, with the final flags (names only) ==');
   report.steps.inventory = [];
-  for (const [label, extra] of variants) {
-    const inv = await inventory(label, extra);
-    report.steps.inventory.push(inv);
-    console.log(`\n  [${label}]`);
-    console.log(`    tools (${inv.tools.length}): ${inv.tools.join(', ') || 'none'}`);
-    console.log(`    MCP servers (${inv.mcpServers.length}): ${inv.mcpServers.join('; ') || 'none'}`);
-    console.log(`    plugins (${inv.plugins.length}): ${inv.plugins.join('; ') || 'none'}`);
-    console.log(`    skills (${inv.skills.length}): ${inv.skills.join(', ') || 'none'}`);
-    console.log(`    agents (${inv.agents.length}): ${inv.agents.join(', ') || 'none'} | slash commands: ${inv.slashCommandCount} | auto-memory on: ${inv.autoMemory}`);
-    console.log(`    the model itself listed: ${JSON.stringify(inv.modelSelfReport)} (tools, skills, plugins, mcp)`);
-    line(inv.clean, `five tools, no MCP server, no user plugin, and the model sees nothing extra: ${inv.clean}`);
-    line(null, `strictest reading (also zero built-in plugins and zero registry skills): ${inv.strictClean}`);
-  }
-  rmSync(scratch, { recursive: true, force: true });
+  const inv = await inventory('final flags', SUBJECT.extraFlags);
+  report.steps.inventory.push(inv);
+  console.log(`    tools (${inv.tools.length}): ${inv.tools.join(', ') || 'none'}`);
+  console.log(`    MCP servers (${inv.mcpServers.length}): ${inv.mcpServers.join('; ') || 'none'}`);
+  console.log(`    plugins (${inv.plugins.length}): ${inv.plugins.join('; ') || 'none'}`);
+  console.log(`    skills (${inv.skills.length}): ${inv.skills.join(', ') || 'none'} | agents (${inv.agents.length}) | slash commands: ${inv.slashCommandCount} | auto-memory on: ${inv.autoMemory}`);
+  console.log(`    the model itself listed: ${JSON.stringify(inv.modelSelfReport)} (tools, skills, plugins, mcp)`);
+  line(inv.clean, `five tools, no MCP server, no user plugin, and the model sees nothing extra: ${inv.clean}`);
+  verdict('inventory', inv.clean);
 }
 
 // ---------------------------------------------------------------- (e) arm integrity
@@ -179,7 +186,7 @@ async function armIntegrity() {
         'Answer with one JSON object and nothing else. Use no tools. Keys: ' +
         '"title": the first heading of the project instruction file you were given at the start of this session, or NONE if you were given none. ' +
         '"design_md_or_registry_text_in_context": true if the text of a file named DESIGN.md, or of a file named registry.json, is already in your context without you having read it with a tool, otherwise false.';
-      const run = await runClaude({ prompt, cwd: dir, flags: [...NO_TOOLS, '--setting-sources', 'project'], timeoutMs: 180000 });
+      const run = await runClaude({ prompt, cwd: dir, flags: REAL, timeoutMs: 180000 });
       const ans = jsonFrom(digest(run.events).result?.result) ?? {};
       report.steps.arms[arm] = { title: isNone(ans.title) ? 'NONE' : String(ans.title).replace(/\u2014/g, '-').slice(0, 80), designOrRegistryInContext: ans.design_md_or_registry_text_in_context === true };
       console.log(`  arm ${arm}: instruction file title seen: ${report.steps.arms[arm].title} | DESIGN.md or registry.json text already in context: ${report.steps.arms[arm].designOrRegistryInContext}`);
@@ -188,8 +195,9 @@ async function armIntegrity() {
     }
   }
   const { A, B } = report.steps.arms;
-  line(A.title === 'NONE' && /NIL/i.test(B.title) && !A.designOrRegistryInContext && !B.designOrRegistryInContext,
-    'arm A sees no instruction file, arm B sees AGENTS.md without opening it, and neither has DESIGN.md or registry.json pre-loaded');
+  const armsOk = A.title === 'NONE' && /NIL/i.test(B.title) && !A.designOrRegistryInContext && !B.designOrRegistryInContext;
+  line(armsOk, 'arm A sees no instruction file, arm B sees AGENTS.md without opening it, and neither has DESIGN.md or registry.json pre-loaded');
+  verdict('arms', armsOk);
 }
 
 // ---------------------------------------------------------------- (f) permissions
@@ -285,5 +293,11 @@ mkdirSync(join(EVAL_DIR, 'isolation-scratch'), { recursive: true });
 const reportPath = join(EVAL_DIR, 'isolation-report.json');
 let previous = {};
 try { previous = JSON.parse(readFileSync(reportPath, 'utf8')); } catch { /* first run */ }
-writeFileSync(reportPath, JSON.stringify({ ...previous, ...report, steps: { ...previous.steps, ...report.steps } }, null, 2) + '\n');
-console.log(`\nreport written to eval/isolation-report.json (booleans and names only, no canary values)`);
+const gateRan = which === 'gate' || which === 'all';
+const clean = gateRan ? verdicts.every(([, ok]) => ok) : null;
+const history = [...(previous.gateRuns ?? [])];
+if (gateRan) history.push({ when: report.when, criterion: 'v3: project file judged by prompt size, model recall of the nonce is information only, a and b must be answered', flags: SUBJECT.extraFlags, clean, verdicts: Object.fromEntries(verdicts) });
+writeFileSync(reportPath, JSON.stringify({ ...previous, ...report, steps: { ...previous.steps, ...report.steps }, gateRuns: history }, null, 2) + '\n');
+if (gateRan) console.log(`\nGATE ${clean ? 'CLEAN' : 'NOT CLEAN'}: ${verdicts.map(([n, ok]) => `${n} ${ok ? 'ok' : 'FAILED'}`).join(', ')}`);
+console.log('report written to eval/isolation-report.json (booleans and names only, no canary values)');
+if (gateRan && !clean) process.exit(1);

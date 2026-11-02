@@ -1,0 +1,81 @@
+# Round dry summary (generated)
+
+Generated 2026-11-02T08:31:36.140Z by eval/summarise.mjs. Every number below is computed from the per-run files; none is typed. **This is a probe, not a study: no significance claims.** 2 scored runs. Model: claude-sonnet-5-5. Contrast is not covered anywhere (axe asserts semantics and ARIA only).
+
+## Score per arm
+
+Run score = rules passed / rules that apply. Arm score = mean of its runs.
+
+| Arm | Scored runs | Mean | Min | Max | Not run |
+|---|---|---|---|---|---|
+| A: kit plus its human docs | 1 | 1.00 | 1.00 | 1.00 | 0 |
+| B: kit plus its human docs plus agent guidance | 1 | 1.00 | 1.00 | 1.00 | 0 |
+
+## Mean score per task
+
+| Task | A: kit plus its human docs | B: kit plus its human docs plus agent guidance |
+|---|---|---|
+| T3 | 1.00 (n=1) | 1.00 (n=1) |
+
+## Pass rate per rule
+
+Pass / (pass + fail). A rule that inspected nothing in a run is n/a for that run and is left out.
+
+| Rule | A | B |
+|---|---|---|
+| R1 | n/a, n/a in 1 | n/a, n/a in 1 |
+| R2 | 100% (1/1) | 100% (1/1) |
+| R3 | 100% (1/1) | 100% (1/1) |
+| R4 | 100% (1/1) | 100% (1/1) |
+| R5 | n/a, n/a in 1 | n/a, n/a in 1 |
+| R6 | 100% (1/1) | 100% (1/1) |
+| R7 | 100% (1/1) | 100% (1/1) |
+| R8 | 100% (1/1) | 100% (1/1) |
+| R9 | 100% (1/1) | 100% (1/1) |
+| R10 | 100% (1/1) | 100% (1/1) |
+
+## Invented tokens (R3)
+
+Names written as var(--nil-...) that do not exist in tokens.css, with how many runs used each.
+
+- **A:** none
+- **B:** none
+
+## Did arm B open the files that are not auto-loaded?
+
+Of 1 arm B runs: DESIGN.md opened in 0, registry.json in 1, AGENTS.md in 0 (AGENTS.md arrives through CLAUDE.md without being opened; DESIGN.md and registry.json arrive only if Claude reads them).
+
+## Ref on a kit component
+
+Runs where Claude put a ref on a kit component (the kit's Button does not forward refs): A 0, B 0.
+
+## How runs ended
+
+A run that hit the turn cap or the ten-minute timeout is scored on what it wrote. These are counted apart so a 0 from a timeout never reads like a 0 from bad code.
+
+| Arm | completed | max_turns | timeout | turn-cap-runner |
+|---|---|---|---|---|
+| A | 1 | 0 | 0 | 0 |
+| B | 1 | 0 | 0 | 0 |
+
+No run scored 0.
+
+## Not run, and excluded attempts
+
+Runs not run, by reason: none.
+
+Attempts excluded, by reason (counts every attempt that produced no score, including ones that were retried and then succeeded): none.
+
+
+
+Runs that were not run are excluded from every mean above.
+
+## Validity checks
+
+- Runs where Claude changed a kit file outside eval-output/: 0.
+- Arm B first-turn prompt larger than arm A's, median gap in tokens per task: T3 3783. A run whose first prompt was outside its cell's calibrated size was excluded as it happened.
+
+## Cost and usage
+
+2 runs: 65 s of wall-clock time, $0.14 as the CLI reports it (an API-price equivalent, not a bill; the runs draw on a Claude plan). Tokens: 22 input, 3858 output, 104313 cache read, 21645 cache write.
+Plan usage windows as reported in the stream, first to last run: five-hour 37% to 39%, seven-day 25% to 25%.

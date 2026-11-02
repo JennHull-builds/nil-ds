@@ -16,7 +16,7 @@ import { SUBJECT } from '../config.mjs';
  * Flags that define the subject. `extra` carries anything a decision has added (for example an
  * empty MCP config); it is empty until someone decides.
  */
-export function subjectFlags({ extra = [], tools = SUBJECT.tools, allowed = SUBJECT.allowed, maxTurns = SUBJECT.maxTurns } = {}) {
+export function subjectFlags({ extra = SUBJECT.extraFlags, tools = SUBJECT.tools, allowed = SUBJECT.allowed, maxTurns = SUBJECT.maxTurns } = {}) {
   const flags = [
     '--model', SUBJECT.model,
     '--output-format', 'stream-json', '--verbose',
@@ -31,7 +31,7 @@ export function subjectFlags({ extra = [], tools = SUBJECT.tools, allowed = SUBJ
 }
 
 /** Run one claude session. Resolves (never rejects) with everything that was observed. */
-export function runClaude({ prompt, cwd, flags, env = process.env, timeoutMs = SUBJECT.timeoutMs, maxAssistantTurns = Infinity, rawPath }) {
+export function runClaude({ prompt, cwd, flags, env = process.env, timeoutMs = SUBJECT.timeoutMs, maxAssistantTurns = Infinity, rawPath, earlyStop }) {
   return new Promise((resolve) => {
     const started = Date.now();
     const raw = rawPath ? createWriteStream(rawPath) : null;
@@ -42,6 +42,7 @@ export function runClaude({ prompt, cwd, flags, env = process.env, timeoutMs = S
     let timedOut = false;
     let turnCapHit = false;
     let spawnError = null;
+    let abortedFor = null;
 
     // The prompt goes first so a variadic option such as --allowedTools cannot swallow it.
     const child = spawn('claude', ['-p', prompt, ...flags], { cwd, env, stdio: ['ignore', 'pipe', 'pipe'] });
@@ -58,6 +59,9 @@ export function runClaude({ prompt, cwd, flags, env = process.env, timeoutMs = S
       let ev;
       try { ev = JSON.parse(line); } catch { return; }
       events.push(ev);
+      // earlyStop lets a caller kill the session the moment it is recognised as unusable, so a bad
+      // session costs one turn at most instead of a whole run.
+      if (earlyStop && !abortedFor) { const why = earlyStop(ev, events); if (why) { abortedFor = why; stop(); } }
       // Belt and braces for --max-turns: count distinct assistant messages ourselves.
       if (ev.type === 'assistant' && ev.message?.id) {
         turnIds.add(ev.message.id);
@@ -76,7 +80,7 @@ export function runClaude({ prompt, cwd, flags, env = process.env, timeoutMs = S
       clearTimeout(timer);
       take(buf);
       raw?.end();
-      resolve({ events, stderr, exitCode: code, signal, timedOut, turnCapHit, spawnError, wallMs: Date.now() - started });
+      resolve({ events, stderr, exitCode: code, signal, timedOut, turnCapHit, spawnError, abortedFor, wallMs: Date.now() - started });
     });
   });
 }
@@ -125,4 +129,23 @@ export function isUsageLimit({ result, windows = [], stderr = '' }) {
   if (result?.is_error && /usage limit|limit reached|hit your .{0,30}limit|out of (usage|credits)|rate limit|quota|too many requests/i.test(text)) return true;
   if (result?.is_error && result?.api_error_status === 429) return true;
   return windows.some((w) => w && w.status && w.status !== 'allowed' && w.status !== 'allowed_warning');
+}
+
+/** Prompt size of one API call: every input-side token, whether or not it was served from cache. */
+export function promptTokens(usage = {}) {
+  return (usage.input_tokens ?? 0) + (usage.cache_creation_input_tokens ?? 0) + (usage.cache_read_input_tokens ?? 0);
+}
+
+/**
+ * Read the plan's usage windows with the smallest possible call. The stream's rate_limit_event is
+ * the only source; there is no other way to ask. Costs about one cent of API-equivalent.
+ */
+export async function probeWindows(cwd) {
+  const flags = [
+    '--model', SUBJECT.model, '--output-format', 'stream-json', '--verbose', '--no-session-persistence',
+    '--permission-mode', 'dontAsk', '--tools', '', '--setting-sources', 'project', ...SUBJECT.extraFlags,
+  ];
+  const run = await runClaude({ prompt: 'Reply with the single word OK.', cwd, flags, timeoutMs: 120000 });
+  const d = digest(run.events);
+  return { windows: windowSummary(d.windows[d.windows.length - 1]), isLimit: isUsageLimit({ result: d.result, windows: d.windows, stderr: run.stderr }), run };
 }

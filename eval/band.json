@@ -1,0 +1,96 @@
+{
+  "generatedAt": "2026-11-02T08:21:02.781Z",
+  "kitCommit": "094d15b",
+  "guidanceRound": 1,
+  "cliVersion": "2.1.316",
+  "model": "claude-sonnet-5-5",
+  "flags": [
+    "--strict-mcp-config",
+    "--mcp-config",
+    "{\"mcpServers\":{}}",
+    "--disable-slash-commands"
+  ],
+  "toleranceTokens": 100,
+  "cells": {
+    "T1|A": {
+      "median": 6168,
+      "samples": [
+        6168,
+        6168,
+        6162
+      ]
+    },
+    "T1|B": {
+      "median": 9951,
+      "samples": [
+        9955,
+        9951,
+        9947
+      ]
+    },
+    "T2|A": {
+      "median": 6177,
+      "samples": [
+        6177,
+        6177,
+        6179
+      ]
+    },
+    "T2|B": {
+      "median": 9962,
+      "samples": [
+        9962,
+        9962,
+        9962
+      ]
+    },
+    "T3|A": {
+      "median": 6157,
+      "samples": [
+        6157,
+        6157,
+        6157
+      ]
+    },
+    "T3|B": {
+      "median": 9936,
+      "samples": [
+        9940,
+        9936,
+        9936
+      ]
+    },
+    "T4|A": {
+      "median": 6134,
+      "samples": [
+        6136,
+        6132,
+        6134
+      ]
+    },
+    "T4|B": {
+      "median": 9917,
+      "samples": [
+        9917,
+        9917,
+        9917
+      ]
+    },
+    "T5|A": {
+      "median": 6192,
+      "samples": [
+        6192,
+        6192,
+        6194
+      ]
+    },
+    "T5|B": {
+      "median": 9975,
+      "samples": [
+        9975,
+        9975,
+        9975
+      ]
+    }
+  }
+}
