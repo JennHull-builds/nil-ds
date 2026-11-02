@@ -1,5 +1,5 @@
 {
-  "when": "2026-11-02T08:58:26.904Z",
+  "when": "2026-11-02T13:52:42.237Z",
   "cliVersion": "2.1.316",
   "steps": {
     "canaries": {
@@ -10,7 +10,7 @@
         "nonceSeen": true,
         "hooksRan": false,
         "hookEvents": 6,
-        "extraTokens": 13078
+        "extraTokens": 13082
       },
       "baselineFirstTurnTokens": 2915,
       "real": [
@@ -21,8 +21,20 @@
           "nonceSeen": false,
           "hooksRan": false,
           "hookEvents": 0,
-          "firstTurnTokens": 3096,
-          "extraTokens": 181,
+          "firstTurnTokens": 3101,
+          "extraTokens": 186,
+          "nonceFileLoaded": true,
+          "userContentLeaked": false
+        },
+        {
+          "answeredAll": true,
+          "aLeaked": false,
+          "bLeaked": false,
+          "nonceSeen": false,
+          "hooksRan": false,
+          "hookEvents": 0,
+          "firstTurnTokens": 3101,
+          "extraTokens": 186,
           "nonceFileLoaded": true,
           "userContentLeaked": false
         },
@@ -33,27 +45,15 @@
           "nonceSeen": true,
           "hooksRan": false,
           "hookEvents": 0,
-          "firstTurnTokens": 3096,
-          "extraTokens": 181,
-          "nonceFileLoaded": true,
-          "userContentLeaked": false
-        },
-        {
-          "answeredAll": true,
-          "aLeaked": false,
-          "bLeaked": false,
-          "nonceSeen": true,
-          "hooksRan": false,
-          "hookEvents": 0,
-          "firstTurnTokens": 3096,
-          "extraTokens": 181,
+          "firstTurnTokens": 3101,
+          "extraTokens": 186,
           "nonceFileLoaded": true,
           "userContentLeaked": false
         }
       ],
       "nonceAnswers": [
         "NONE",
-        "the nonce",
+        "NONE",
         "the nonce"
       ],
       "pass": true
@@ -161,14 +161,14 @@
     }
   },
   "window": {
-    "status": "allowed_warning",
+    "status": "allowed",
     "fiveHour": {
-      "utilization": 0.56,
-      "resetsAt": 1793622600,
+      "utilization": 0.61,
+      "resetsAt": 1793640600,
       "status": "allowed"
     },
     "sevenDay": {
-      "utilization": 0.27,
+      "utilization": 0.34,
       "resetsAt": 1794124800,
       "status": "allowed"
     }
@@ -314,6 +314,25 @@
     },
     {
       "when": "2026-11-02T08:58:26.904Z",
+      "criterion": "v3: project file judged by prompt size, model recall of the nonce is information only, a and b must be answered",
+      "flags": [
+        "--strict-mcp-config",
+        "--mcp-config",
+        "{\"mcpServers\":{}}",
+        "--disable-slash-commands",
+        "--settings",
+        "{\"permissions\":{\"blockReadsOutsideWorkingDirectories\":true}}"
+      ],
+      "clean": true,
+      "verdicts": {
+        "canaries": true,
+        "inventory": true,
+        "arms": true
+      }
+    },
+    {
+      "when": "2026-11-02T13:52:42.237Z",
+      "guidanceRound": 2,
       "criterion": "v3: project file judged by prompt size, model recall of the nonce is information only, a and b must be answered",
       "flags": [
         "--strict-mcp-config",

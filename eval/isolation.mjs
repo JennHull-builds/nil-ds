@@ -176,11 +176,16 @@ async function inventories() {
 
 // ---------------------------------------------------------------- (e) arm integrity
 
+// --guidance N builds arm B from eval/guidance/round-N/ (default 1). Only this step reads the guidance
+// files; the canary probes and the inventory use a planted CLAUDE.md of their own.
+const GUIDANCE = Number(process.argv.includes('--guidance') ? process.argv[process.argv.indexOf('--guidance') + 1] : 1);
+if (!Number.isInteger(GUIDANCE) || GUIDANCE < 1) { console.error('--guidance wants a whole number, 1 or more'); process.exit(2); }
+
 async function armIntegrity() {
-  console.log('\n== Gate 3: each arm gets what it should (tools disallowed) ==');
+  console.log(`\n== Gate 3: each arm gets what it should (tools disallowed; arm B from guidance round ${GUIDANCE}) ==`);
   report.steps.arms = {};
   for (const arm of ['A', 'B']) {
-    const dir = buildArm(arm);
+    const dir = buildArm(arm, GUIDANCE);
     try {
       const prompt =
         'Answer with one JSON object and nothing else. Use no tools. Keys: ' +
@@ -300,7 +305,7 @@ try { previous = JSON.parse(readFileSync(reportPath, 'utf8')); } catch { /* firs
 const gateRan = which === 'gate' || which === 'all';
 const clean = gateRan ? verdicts.every(([, ok]) => ok) : null;
 const history = [...(previous.gateRuns ?? [])];
-if (gateRan) history.push({ when: report.when, criterion: 'v3: project file judged by prompt size, model recall of the nonce is information only, a and b must be answered', flags: SUBJECT.extraFlags, clean, verdicts: Object.fromEntries(verdicts) });
+if (gateRan) history.push({ when: report.when, guidanceRound: GUIDANCE, criterion: 'v3: project file judged by prompt size, model recall of the nonce is information only, a and b must be answered', flags: SUBJECT.extraFlags, clean, verdicts: Object.fromEntries(verdicts) });
 writeFileSync(reportPath, JSON.stringify({ ...previous, ...report, steps: { ...previous.steps, ...report.steps }, gateRuns: history }, null, 2) + '\n');
 if (gateRan) console.log(`\nGATE ${clean ? 'CLEAN' : 'NOT CLEAN'}: ${verdicts.map(([n, ok]) => `${n} ${ok ? 'ok' : 'FAILED'}`).join(', ')}`);
 console.log('report written to eval/isolation-report.json (booleans and names only, no canary values)');

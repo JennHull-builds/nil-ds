@@ -34,7 +34,7 @@ import { execFileSync } from 'node:child_process';
 import { basename } from 'node:path';
 import { tmpdir } from 'node:os';
 import { join, relative } from 'node:path';
-import { ARM_LABELS, EVAL_DIR, GUARDS, GUIDANCE_FILES, KIT_COMMIT, SEALED_TASKS, SUBJECT, TASKS, roots, runDir } from './config.mjs';
+import { ARM_LABELS, EVAL_DIR, GUARDS, GUIDANCE_FILES, KIT_COMMIT, SEALED_TASKS, SUBJECT, TASKS, bandFile, roots, runDir } from './config.mjs';
 import { scoreBatch } from './check.mjs';
 import { buildArm, kitEdits } from './lib/kit.mjs';
 import { digest, installedCliVersion, isUsageLimit, probeWindows, promptTokens, runClaude, subjectFlags, windowSummary } from './lib/claude.mjs';
@@ -75,14 +75,31 @@ if (!stub && process.env.ANTHROPIC_API_KEY && !flag('allow-api-key')) {
 
 // ---------------------------------------------------------------- the band (first-turn prompt sizes)
 
+// One band file per guidance round, picked by --guidance (default 1): eval/band-round-N.json. A band that
+// says it was measured for another round is refused, so a round can never be held to the wrong prompt size.
+const bandPath = bandFile(guidanceRound);
+const bandName = relative(EVAL_DIR, bandPath);
 function loadBand() {
-  const file = join(EVAL_DIR, 'band.json');
-  if (existsSync(file)) return JSON.parse(readFileSync(file, 'utf8'));
-  if (stub) return { cliVersion: 'stub', cells: Object.fromEntries(TASKS.flatMap((t) => ['A', 'B'].map((a) => [`${t}|${a}`, { median: a === 'B' ? 6800 : 3000 }]))) };
-  console.error('eval/band.json is missing. Run: node eval/calibrate.mjs band');
+  if (existsSync(bandPath)) {
+    const b = JSON.parse(readFileSync(bandPath, 'utf8'));
+    if (b.guidanceRound !== guidanceRound) {
+      console.error(`eval/${bandName} was measured for guidance round ${b.guidanceRound}, but --guidance is ${guidanceRound}.`);
+      process.exit(2);
+    }
+    return b;
+  }
+  if (stub) return { cliVersion: 'stub', synthetic: true, cells: Object.fromEntries(TASKS.flatMap((t) => ['A', 'B'].map((a) => [`${t}|${a}`, { median: a === 'B' ? 6800 : 3000 }]))) };
+  console.error(`eval/${bandName} is missing. Run: node eval/calibrate.mjs band --guidance ${guidanceRound}`);
   process.exit(2);
 }
 const band = loadBand();
+
+// Arm B needs the four guidance files of the chosen round. Fail at startup, not at the first run.
+const guidanceDir = join(EVAL_DIR, 'guidance', `round-${guidanceRound}`);
+if (arms.includes('B')) {
+  const missing = GUIDANCE_FILES.filter((f) => !existsSync(join(guidanceDir, f)));
+  if (missing.length) { console.error(`eval/guidance/round-${guidanceRound}/ is missing ${missing.join(', ')}.`); process.exit(2); }
+}
 
 // Which harness produced these runs: the commit, and any uncommitted change to it.
 const git = (...a) => execFileSync('git', ['-C', EVAL_DIR, ...a], { encoding: 'utf8' }).replace(/\n+$/, ''); // not .trim(): porcelain lines start with a space
@@ -95,7 +112,7 @@ const cliVersionNow = () => (stub ? (stubCliChangesAfter && runsStarted >= stubC
 if (!stub) {
   const installed = cliVersionNow();
   if (band.cliVersion && installed !== band.cliVersion && !flag('ignore-band-version')) {
-    console.error(`eval/band.json was measured on Claude Code ${band.cliVersion} but ${installed} is installed. The first-turn prompt can change between versions. Run: node eval/calibrate.mjs band`);
+    console.error(`eval/${bandName} was measured on Claude Code ${band.cliVersion} but ${installed} is installed. The first-turn prompt can change between versions. Run: node eval/calibrate.mjs band --guidance ${guidanceRound}`);
     process.exit(2);
   }
 }
@@ -358,7 +375,7 @@ async function attempt(r, n, usageBefore) {
         cache_read_input_tokens: res.usage?.cache_read_input_tokens ?? null, cache_creation_input_tokens: res.usage?.cache_creation_input_tokens ?? null,
       },
       firstTurnPromptTokens: firstTokens,
-      promptBand: { expected: verdict.expected, diff: verdict.diff, toleranceTokens: GUARDS.promptBandTokens },
+      promptBand: { file: bandName, expected: verdict.expected, diff: verdict.diff, toleranceTokens: GUARDS.promptBandTokens },
       usageWindows: { before: usageBefore ?? null, first: windows[0] ?? null, last: windows[windows.length - 1] ?? null },
       permissionDenials: (res.permission_denials ?? []).length,
       init: { tools: d.init?.tools ?? [], mcpServers: (d.init?.mcp_servers ?? []).map((m) => m.name), plugins: (d.init?.plugins ?? []).map((p) => p.name), autoMemory: Boolean(d.init?.memory_paths?.auto) },
@@ -399,7 +416,10 @@ if (stopAtMs && stopAtMs <= startMs) { console.error('The stop time is not after
 // Everything that can fail at startup fails here, before any waiting, so a bug cannot surface at 14:35.
 if (!stub) console.log(`harness fingerprint: ${relative(process.cwd(), snapshotHarness())} (commit ${harness.commit}, ${harness.uncommitted.length} uncommitted path(s))`);
 if (flag('check-only')) {
-  console.log(`pre-flight ok: ${plan.length} runs planned, band.json for Claude Code ${band.cliVersion} matches the installed ${cliVersionNow()}, window and clock resolved. Nothing was run.`);
+  console.log(`guidance round ${guidanceRound}: arm B gets eval/guidance/round-${guidanceRound}/`);
+  if (arms.includes('B')) for (const f of GUIDANCE_FILES) console.log(`  ${f.padEnd(14)} sha256 ${sha256(join(guidanceDir, f))}`);
+  console.log(`band file: eval/${bandName}${band.synthetic ? ' (NOT FOUND: using the synthetic stub band)' : ''} | measured for guidance round ${band.guidanceRound ?? 'n/a'} | cells ${Object.keys(band.cells).length} | ${['A', 'B'].map((a) => `${a}: ${TASKS.map((t) => band.cells[`${t}|${a}`]?.median).join(' ')}`).join(' | ')}`);
+  console.log(`pre-flight ok: ${plan.length} runs planned, ${bandName} for Claude Code ${band.cliVersion} matches the installed ${cliVersionNow()}, window and clock resolved. Nothing was run.`);
   process.exit(0);
 }
 if (startMs > Date.now() + 1000) {
@@ -416,7 +436,7 @@ for (const r of plan) {
   if (flag('resume') && done(r)) { console.log(`${tag}  already scored, skipped`); continue; }
   for (const f of ['not-run.json', 'attempts.json']) if (existsSync(join(dirOf(r), f))) rmSync(join(dirOf(r), f));
   if (!stopped && stopAtMs && Date.now() >= stopAtMs) stopped = { reason: 'stop-at', detail: `--stop-at ${opt('stop-at')} reached` };
-  if (!stopped) { const v = cliVersionNow(); if (band.cliVersion && v !== band.cliVersion && !flag('ignore-band-version')) stopped = { reason: 'cli-version', detail: `Claude Code is ${v} but eval/band.json was measured on ${band.cliVersion}` }; }
+  if (!stopped) { const v = cliVersionNow(); if (band.cliVersion && v !== band.cliVersion && !flag('ignore-band-version')) stopped = { reason: 'cli-version', detail: `Claude Code is ${v} but eval/${bandName} was measured on ${band.cliVersion}` }; }
   if (!stopped) { const g = await usageGate(); if (g) stopped = g; }
   if (stopped) { writeNotRun(r, stopped.reason, stopped.detail); console.log(`${tag}  not run (${stopped.reason})`); continue; }
 

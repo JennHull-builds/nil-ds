@@ -11,6 +11,14 @@ export const EVAL_DIR = join(REPO_ROOT, 'eval');
 /** Every run builds its kit from this commit with `git archive`, never from the working tree. */
 export const KIT_COMMIT = '094d15b';
 
+/**
+ * One first-turn prompt band per guidance round: band-round-1.json, band-round-2.json. The runner and
+ * the calibrator both pick the file from --guidance (default 1), so round 1 can still be rerun exactly
+ * as the README says after round 2's band exists. Arm A has no guidance, so its cells are carried over
+ * unchanged into a later round's file; only arm B's cells are re-measured.
+ */
+export const bandFile = (guidanceRound = 1) => join(EVAL_DIR, `band-round-${guidanceRound}.json`);
+
 /** Arm A removes these from the archive. README and the other human docs stay on purpose. */
 export const GUIDANCE_FILES = ['AGENTS.md', 'CLAUDE.md', 'DESIGN.md', 'registry.json'];
 export const STRIP_FOR_ARM_A = [...GUIDANCE_FILES, 'design-md'];
@@ -56,7 +64,7 @@ export const SUBJECT = {
    * Environment for the subject's spawn ONLY (lib/claude.mjs), never for the scorer, and never
    * written anywhere under ~/.claude or into a shell profile.
    *  - DISABLE_AUTOUPDATER=1: "disable automatic background updates". A mid-round update would
-   *    change the CLI version and invalidate eval/band.json.
+   *    change the CLI version and invalidate the band file (eval/band-round-N.json).
    *  - ENABLE_CLAUDEAI_MCP_SERVERS=false: "stop Claude Code from fetching claude.ai MCP servers".
    *    That is the connector seen once in the first probe. --strict-mcp-config stays as well.
    * Both from code.claude.com/docs/en/env-vars, opened 2 November 2026.
@@ -67,7 +75,7 @@ export const SUBJECT = {
 /**
  * Guards (track lead, 2 November 2026).
  *  - promptBand: a run's first-turn prompt must be within this many tokens of its cell's calibrated
- *    size (eval/band.json). Noise measured at about 6 tokens; the smallest thing we care about
+ *    size (eval/band-round-N.json). Noise measured at about 6 tokens; the smallest thing we care about
  *    (a missing AGENTS.md, an MCP connector) moves it by thousands.
  *  - usage: read from the stream's rate_limit_event before every run.
  */
