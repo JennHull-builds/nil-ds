@@ -10,6 +10,8 @@
  *
  *   node eval/calibrate.mjs compare   what --disable-slash-commands and the empty MCP config do
  *   node eval/calibrate.mjs band      measure all ten task x arm cells, write eval/band.json
+ *   node eval/calibrate.mjs check     measure again (2 samples per cell) and compare with eval/band.json,
+ *                                     without changing it: did a flag or setting move the first prompt?
  *
  * eval/band.json is what run.mjs holds every run's first-turn prompt against.
  */
@@ -87,7 +89,27 @@ async function band() {
   console.log('\nwrote eval/band.json');
 }
 
+async function check() {
+  const banded = JSON.parse(readFileSync(join(EVAL_DIR, 'band.json'), 'utf8'));
+  let worst = 0;
+  const outside = [];
+  for (const task of TASKS) {
+    for (const arm of ['A', 'B']) {
+      const cell = `${task}|${arm}`;
+      const xs = [];
+      for (let i = 0; i < 2; i++) xs.push((await firstTurn({ task, arm, extra: SUBJECT.extraFlags })).tokens);
+      const diffs = xs.map((x) => x - banded.cells[cell].median);
+      worst = Math.max(worst, ...diffs.map(Math.abs));
+      if (diffs.some((d) => Math.abs(d) > GUARDS.promptBandTokens)) outside.push(cell);
+      console.log(`${cell}: band ${banded.cells[cell].median} | now ${xs.join(', ')} | diff ${diffs.map((d) => (d > 0 ? '+' : '') + d).join(', ')}`);
+    }
+  }
+  console.log(`\nlargest difference from the band: ${worst} tokens (tolerance ${GUARDS.promptBandTokens})`);
+  console.log(outside.length ? `OUTSIDE THE BAND: ${outside.join(', ')}. Recalibrate: node eval/calibrate.mjs band` : 'All ten cells are inside the band. The band is unchanged.');
+}
+
 const which = process.argv[2];
 if (which === 'compare') await compare();
 else if (which === 'band') await band();
-else if (process.argv[1].endsWith('calibrate.mjs')) { console.error('usage: node eval/calibrate.mjs compare|band'); process.exit(2); }
+else if (which === 'check') await check();
+else if (process.argv[1].endsWith('calibrate.mjs')) { console.error('usage: node eval/calibrate.mjs compare|band|check'); process.exit(2); }

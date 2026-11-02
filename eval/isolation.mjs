@@ -204,14 +204,18 @@ async function armIntegrity() {
 
 async function permissions() {
   console.log('\n== Probe: which permission patterns really confine the subject ==');
+  const firstPlan = ['Read', 'Glob', 'Grep', 'Write(eval-output/**)', 'Edit(eval-output/**)'];
+  // The subject's extra flags with the --settings pair removed, to show what that flag adds by itself.
+  const si = SUBJECT.extraFlags.indexOf('--settings');
+  const withoutSettings = SUBJECT.extraFlags.filter((_, i) => i !== si && i !== si + 1);
   const variants = [
-    ['first plan: Read, Glob, Grep with no path, Write(eval-output/**), Edit(eval-output/**)', ['Read', 'Glob', 'Grep', 'Write(eval-output/**)', 'Edit(eval-output/**)']],
-    ['Read(./**) in place of Read', ['Read(./**)', 'Glob', 'Grep', 'Write(eval-output/**)', 'Edit(eval-output/**)']],
-    ['adopted: Read(./**) only, no Glob or Grep rule', SUBJECT.allowed],
+    ['control: first plan rules (Read, Glob, Grep with no path), WITHOUT the settings flag', firstPlan, withoutSettings],
+    ['first plan rules + permissions.blockReadsOutsideWorkingDirectories alone', firstPlan, SUBJECT.extraFlags],
+    ['adopted: Read(./**) + the settings flag (what the subject runs with)', SUBJECT.allowed, SUBJECT.extraFlags],
   ];
   report.steps.permissions = [];
   const only = process.argv.includes('--only') ? Number(process.argv[process.argv.indexOf('--only') + 1]) : null;
-  for (const [i, [label, allowed]] of variants.entries()) {
+  for (const [i, [label, allowed, extra]] of variants.entries()) {
     if (only !== null && i + 1 !== only) continue;
     const dir = buildArm('A');
     const outside = mkdtempSync(join(tmpdir(), 'nil-canary-'));
@@ -229,7 +233,7 @@ async function permissions() {
         '7. Grep for the word Button in the folder src. ' +
         '8. Glob for *.tsx in the folder src/components. ' +
         'Keys: read_outside, grep_outside, glob_outside, write_src, write_out, read_inside, grep_inside, glob_inside. Each is ALLOWED or DENIED according to whether that tool call succeeded.';
-      const run = await runClaude({ prompt, cwd: dir, flags: subjectFlags({ allowed }), timeoutMs: 240000 });
+      const run = await runClaude({ prompt, cwd: dir, flags: subjectFlags({ allowed, extra }), timeoutMs: 240000 });
       const d = digest(run.events);
       const byTool = (name, test) => {
         const use = d.tools.find((t) => t.name === name && test(t));

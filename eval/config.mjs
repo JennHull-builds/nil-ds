@@ -46,7 +46,22 @@ export const SUBJECT = {
    * connector can attach (one did, once, in the first probe call), and no slash commands or skills
    * (eval/calibrate.mjs compare shows what that does to the first-turn prompt).
    */
-  extraFlags: ['--strict-mcp-config', '--mcp-config', '{"mcpServers":{}}', '--disable-slash-commands'],
+  extraFlags: [
+    '--strict-mcp-config', '--mcp-config', '{"mcpServers":{}}', '--disable-slash-commands',
+    // Belt and braces over the Read(./**) rule: the file tools refuse reads outside the working
+    // directory in every permission mode. Needs Claude Code 2.1.257 or later (settings docs).
+    '--settings', '{"permissions":{"blockReadsOutsideWorkingDirectories":true}}',
+  ],
+  /**
+   * Environment for the subject's spawn ONLY (lib/claude.mjs), never for the scorer, and never
+   * written anywhere under ~/.claude or into a shell profile.
+   *  - DISABLE_AUTOUPDATER=1: "disable automatic background updates". A mid-round update would
+   *    change the CLI version and invalidate eval/band.json.
+   *  - ENABLE_CLAUDEAI_MCP_SERVERS=false: "stop Claude Code from fetching claude.ai MCP servers".
+   *    That is the connector seen once in the first probe. --strict-mcp-config stays as well.
+   * Both from code.claude.com/docs/en/env-vars, opened 2 November 2026.
+   */
+  env: { DISABLE_AUTOUPDATER: '1', ENABLE_CLAUDEAI_MCP_SERVERS: 'false' },
 };
 
 /**

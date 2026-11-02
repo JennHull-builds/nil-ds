@@ -74,6 +74,13 @@ shows whether the fix generalises. Its run folders go to `eval/results-sealed/` 
 completed". `summarise.mjs --unseal` refuses to run until round 2 has finished, then adds T5 as its
 own held-out line, never folded into the four-task mean.
 
+**A hole found after round 1, and closed.** Round 1's console log printed every run's score line as it
+finished, T5's included, even though the summary files left T5 out. The person who built the harness read
+six T5 pass counts in that log and has not repeated them anywhere. The runner now prints only "T5 sealed"
+for a sealed task (no score, time, turns or cost), a stub run shows it, and the T5 lines were moved out of the
+round 1 log into `eval/results-sealed/round-1/T5/run-log.txt` (both gitignored), counted rather than read. The
+T5 score files were not opened. Nothing else prints a score.
+
 ## The ten rules
 
 Each rule reports how many places it inspected. A rule that inspected nothing is `na`, never
@@ -136,8 +143,8 @@ Every checker test file lives under `eval/` and matches `eval/**/*.test.ts`. As 
 | | Tests | Files |
 |---|---|---|
 | The kit's own (`src/`) | 156 | 21 |
-| The eval checker's (`eval/`: `check.test.ts` 171, `guards.test.ts` 14) | 185 | 2 |
-| `npm test` runs both | 341 | 23 |
+| The eval checker's (`eval/`: `check.test.ts` 171, `guards.test.ts` 22) | 193 | 2 |
+| `npm test` runs both | 349 | 23 |
 
 `npm run eval:count` recounts both from the test files, so these numbers can be checked, not trusted.
 `npm run eval:test` runs only the eval's.
@@ -161,8 +168,9 @@ fixtures (`role="menu"` and a native popover) pass, and the bad ones still fail.
 ## The subject, and keeping it isolated
 
 `claude -p --model sonnet --output-format stream-json --verbose --setting-sources project`, plus
-`--strict-mcp-config --mcp-config '{"mcpServers":{}}' --disable-slash-commands`, run with the temp
-kit as its working directory, sequentially, never in parallel. Tools: Read, Write, Edit, Glob, Grep.
+`--strict-mcp-config --mcp-config '{"mcpServers":{}}' --disable-slash-commands --settings
+'{"permissions":{"blockReadsOutsideWorkingDirectories":true}}'`, with two environment variables set on
+its spawn only (below), run with the temp kit as its working directory, sequentially, never in parallel. Tools: Read, Write, Edit, Glob, Grep.
 No Bash, no web. Permission mode `dontAsk`, so anything not allowed is denied. Capped at 30 turns and
 10 minutes. Probed on CLI 2.1.316 (`eval/isolation.mjs`, `eval/calibrate.mjs`):
 
@@ -183,6 +191,50 @@ No Bash, no web. Permission mode `dontAsk`, so anything not allowed is denied. C
   positive control, run without `--setting-sources project`, came in about 13,000 tokens higher). The
   model's recall of a planted nonce is reported but is not a pass condition: it missed in samples
   where the prompt size showed the file had loaded.
+
+### Three safety settings, and where they come from
+
+Added 2 November 2026, before round 1. Each was read in Claude Code's own documentation the same day.
+
+| Setting | Where it is set | What the docs say | Source |
+|---|---|---|---|
+| `DISABLE_AUTOUPDATER=1` | environment of the subject's spawn only (`SUBJECT.env` in `config.mjs`, applied in `lib/claude.mjs`) | "Set to `1` to disable automatic background updates. Manual `claude update` still works." A mid-round update would change the CLI version and with it the first prompt, so `band.json` would stop being true. | code.claude.com/docs/en/env-vars |
+| `ENABLE_CLAUDEAI_MCP_SERVERS=false` | same | "Set to `false` to stop Claude Code from fetching claude.ai MCP servers. Enabled by default for logged-in users." That is the connector seen once in the first probe call. `--strict-mcp-config` stays as well. | code.claude.com/docs/en/env-vars |
+| `permissions.blockReadsOutsideWorkingDirectories: true` | `--settings` inline JSON (`SUBJECT.extraFlags`) | "Make the file tools refuse reads outside the working directories in every permission mode." Honoured from any scope; needs Claude Code 2.1.257 or later (the subject runs 2.1.316). | code.claude.com/docs/en/settings-reference and /settings |
+
+The two variables are set only on the subject's `claude` process. Nothing is written to `~/.claude`, to a
+shell profile, or to anyone's settings. The setting was also tested alone (`npm run eval:isolation --
+permissions`): with only the old rules `Read`, `Glob` and `Grep` and no path, a file outside the folder
+was readable and its content reached the model; add the setting and all three were refused.
+
+### The gate's pass-line history
+
+The gate's pass line changed twice on 2 November 2026, each time after a run failed on one line while
+everything that mattered passed. Ten gate runs were made with the final flags (the tenth after the three
+safety settings above were added). Seven were clean, and each of the three failures was on the line that
+was being changed.
+
+1. **Recall.** The model had to repeat back a random nonce planted in a project `CLAUDE.md`. In two
+   reruns it did not (0 of 3 each), and in both the session's first prompt showed the file had loaded
+   in every sample (about 3,090 tokens against about 2,915 for a folder with no `CLAUDE.md`, noise
+   about 3). The file was in front of the model and it answered wrongly.
+2. **Prompt size, with the answers still required.** Whether project instructions load is a fact about
+   what the model was given, so it is now judged by the size of the first prompt. The project file adds
+   about 180 tokens; a user `CLAUDE.md` and memory index add thousands (the control run, without
+   `--setting-sources project`, came in about 13,000 tokens higher, which shows the check can see a leak).
+   One run still failed because the model returned no answer to the nonce question.
+3. **Current.** Size is the pass test. Questions `a` and `b`, the two that would reveal a leak, must be
+   answered and must come back NONE. The nonce recall is printed as information only.
+
+This makes the gate stronger, not looser: size is exact and has its own positive control, where recall
+was neither. The cause of the model's missed recall is not known. It missed in some runs and not others,
+with no pattern found.
+
+**Four early misses that cannot be classified.** In the first two gate runs the nonce did not come back in
+4 of 19 real-setting samples. The first-prompt size was not recorded for those four, so they cannot be
+sorted into "did not load" and "loaded but answered wrongly". Across the ten later runs the model recalled
+the nonce in 11 of 30 samples. All 19 misses were sorted by first-prompt size, and in every one the file
+had loaded.
 
 ### Every run guards itself
 
@@ -205,8 +257,9 @@ The subject signs in with a Claude plan, not an API key (the runner refuses to s
 API-price equivalent, not a bill. The stream carries a `rate_limit_event` with the five-hour and
 seven-day utilisation and their reset times; the runner reads it before every run and records it.
 
-- **Five-hour window above 85%:** wait for its reset time from the event, then carry on, as long as
-  that is before `--stop-at`. At night nobody else is using it.
+- **Five-hour window above 85%** (or the line given by `--max-five-hour N`): wait for its reset time from the
+  event, then carry on, as long as that is before `--stop-at`. A round run while someone is using the plan
+  lowers the line, for example `--max-five-hour 50`, so the eval takes at most half the window.
 - **Seven-day window above 60%:** stop. The remaining runs are recorded as not run, resumable, with the
   reset time in `not-run.json`. The week also has to carry other work.
 - **A usage-limit error is not a failed run.** The round stops and the remaining runs are `not run`,
@@ -219,6 +272,14 @@ seven-day utilisation and their reset times; the runner reads it before every ru
   summary counts completed, max-turns and timeout endings separately, so a 0 from a timeout never
   reads like a 0 from bad code.
 - Not-run runs and excluded attempts are counted in the summary by reason.
+- **The CLI version is checked before every run**, not only at the start. A mismatch with `band.json`
+  stops the round, resumable.
+- **Each run gets its own fresh temp folder**, removed afterwards. Claude Code still creates an empty
+  project and memory folder under `~/.claude/projects` for each one; all 129 inspected on 2 November 2026
+  held 0 files, so nothing carries from one run to the next. Auto-memory is left on, as it is by default.
+- **`--start-at HH:MM`** waits until then. **`--stop-at HH:MM`** is read as the next HH:MM after the START,
+  not after now: typed at 02:00 for a 14:35 start, 04:00 means the following morning. Read from now it
+  would be a time already past by the start, and the round would exit at once with zero runs.
 
 Run the gate yourself: `npm run eval:isolation`. It spends a little usage.
 
@@ -230,13 +291,14 @@ npm test                     # the kit's own tests plus the checker's
 npm run eval:mutate          # switch each rule off in turn, about 3 minutes
 npm run eval:isolation       # the gate, about 2 minutes, a little usage
 node eval/calibrate.mjs band # measure the first-prompt size of all ten cells, about 2 minutes
+node eval/calibrate.mjs check # re-measure and compare with band.json without changing it
 
 # rehearse the pipeline without spending usage
 node eval/run.mjs --subject stub:good --round stub-demo --tasks T3 --runs 1
 
 # a real round: 5 tasks x 2 arms x 3 runs = 30 runs, sequential, overnight, Mac plugged in and open
 mkdir -p eval/logs
-nohup caffeinate -is node eval/run.mjs --round 1 --runs 3 --stop-at 04:00 > eval/logs/round-1.log 2>&1 &
+nohup caffeinate -is node eval/run.mjs --round 1 --runs 3 --start-at 14:35 --max-five-hour 50 --stop-at 04:00 > eval/logs/round-1.log 2>&1 &
 
 node eval/run.mjs --round 1 --runs 3 --resume   # carry on after any stop
 node eval/summarise.mjs --round 1               # summary.json and summary.md
@@ -248,7 +310,8 @@ attempt was excluded, `attempts.json`. The raw stream goes to `raw/`, which is g
 `meta.json` records the resolved model ID, turns, duration, cost as the CLI reports it, input, output,
 cache read and cache write tokens, the usage windows before, at the start of and at the end of the
 run, the first-turn prompt size against its band, any edit Claude made outside `eval-output/`, and
-whether it put a `ref` on a kit component.
+whether it put a `ref` on a kit component. It also records the harness commit and any uncommitted change
+to it, the two environment variables and the extra flags the subject ran with, and the name of the run's temp folder.
 
 ## What this does not measure
 

@@ -8,7 +8,7 @@
  * `result` (subtype, is_error, num_turns, duration_ms, total_cost_usd, usage, modelUsage).
  * Fields that were not seen are never guessed at.
  */
-import { spawn } from 'node:child_process';
+import { execFileSync, spawn } from 'node:child_process';
 import { createWriteStream } from 'node:fs';
 import { SUBJECT } from '../config.mjs';
 
@@ -30,8 +30,18 @@ export function subjectFlags({ extra = SUBJECT.extraFlags, tools = SUBJECT.tools
   return flags;
 }
 
+/** The subject's environment: the caller's, plus the two safety variables. Applied to claude's spawn only. */
+export function subjectEnv() {
+  return { ...process.env, ...SUBJECT.env };
+}
+
+/** The installed CLI's version, for example "2.1.316". */
+export function installedCliVersion() {
+  return execFileSync('claude', ['--version'], { encoding: 'utf8' }).trim().split(' ')[0];
+}
+
 /** Run one claude session. Resolves (never rejects) with everything that was observed. */
-export function runClaude({ prompt, cwd, flags, env = process.env, timeoutMs = SUBJECT.timeoutMs, maxAssistantTurns = Infinity, rawPath, earlyStop }) {
+export function runClaude({ prompt, cwd, flags, env = subjectEnv(), timeoutMs = SUBJECT.timeoutMs, maxAssistantTurns = Infinity, rawPath, earlyStop }) {
   return new Promise((resolve) => {
     const started = Date.now();
     const raw = rawPath ? createWriteStream(rawPath) : null;

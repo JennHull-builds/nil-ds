@@ -1,5 +1,5 @@
 {
-  "when": "2026-11-02T08:27:45.684Z",
+  "when": "2026-11-02T08:58:26.904Z",
   "cliVersion": "2.1.316",
   "steps": {
     "canaries": {
@@ -10,9 +10,9 @@
         "nonceSeen": true,
         "hooksRan": false,
         "hookEvents": 6,
-        "extraTokens": 13080
+        "extraTokens": 13078
       },
-      "baselineFirstTurnTokens": 2917,
+      "baselineFirstTurnTokens": 2915,
       "real": [
         {
           "answeredAll": true,
@@ -21,8 +21,8 @@
           "nonceSeen": false,
           "hooksRan": false,
           "hookEvents": 0,
-          "firstTurnTokens": 3100,
-          "extraTokens": 183,
+          "firstTurnTokens": 3096,
+          "extraTokens": 181,
           "nonceFileLoaded": true,
           "userContentLeaked": false
         },
@@ -30,11 +30,11 @@
           "answeredAll": true,
           "aLeaked": false,
           "bLeaked": false,
-          "nonceSeen": false,
+          "nonceSeen": true,
           "hooksRan": false,
           "hookEvents": 0,
-          "firstTurnTokens": 3100,
-          "extraTokens": 183,
+          "firstTurnTokens": 3096,
+          "extraTokens": 181,
           "nonceFileLoaded": true,
           "userContentLeaked": false
         },
@@ -42,19 +42,19 @@
           "answeredAll": true,
           "aLeaked": false,
           "bLeaked": false,
-          "nonceSeen": false,
+          "nonceSeen": true,
           "hooksRan": false,
           "hookEvents": 0,
-          "firstTurnTokens": 3100,
-          "extraTokens": 183,
+          "firstTurnTokens": 3096,
+          "extraTokens": 181,
           "nonceFileLoaded": true,
           "userContentLeaked": false
         }
       ],
       "nonceAnswers": [
         "NONE",
-        "NONE",
-        "NONE"
+        "the nonce",
+        "the nonce"
       ],
       "pass": true
     },
@@ -109,7 +109,35 @@
     },
     "permissions": [
       {
-        "label": "adopted: Read(./**) only, no Glob or Grep rule",
+        "label": "control: first plan rules (Read, Glob, Grep with no path), WITHOUT the settings flag",
+        "readOutside": "allowed",
+        "grepOutside": "allowed",
+        "globOutside": "allowed",
+        "writeSrcCall": "denied",
+        "writeSrcFileExists": false,
+        "writeOutFileExists": true,
+        "readInside": "allowed",
+        "grepInside": "allowed",
+        "globInside": "allowed",
+        "canaryContentReachedTheModel": true,
+        "confined": false
+      },
+      {
+        "label": "first plan rules + permissions.blockReadsOutsideWorkingDirectories alone",
+        "readOutside": "denied",
+        "grepOutside": "denied",
+        "globOutside": "denied",
+        "writeSrcCall": "denied",
+        "writeSrcFileExists": false,
+        "writeOutFileExists": true,
+        "readInside": "allowed",
+        "grepInside": "allowed",
+        "globInside": "allowed",
+        "canaryContentReachedTheModel": false,
+        "confined": true
+      },
+      {
+        "label": "adopted: Read(./**) + the settings flag (what the subject runs with)",
         "readOutside": "denied",
         "grepOutside": "denied",
         "globOutside": "denied",
@@ -133,14 +161,14 @@
     }
   },
   "window": {
-    "status": "allowed",
+    "status": "allowed_warning",
     "fiveHour": {
-      "utilization": 0.37,
+      "utilization": 0.56,
       "resetsAt": 1793622600,
       "status": "allowed"
     },
     "sevenDay": {
-      "utilization": 0.24,
+      "utilization": 0.27,
       "resetsAt": 1794124800,
       "status": "allowed"
     }
@@ -276,6 +304,24 @@
         "--mcp-config",
         "{\"mcpServers\":{}}",
         "--disable-slash-commands"
+      ],
+      "clean": true,
+      "verdicts": {
+        "canaries": true,
+        "inventory": true,
+        "arms": true
+      }
+    },
+    {
+      "when": "2026-11-02T08:58:26.904Z",
+      "criterion": "v3: project file judged by prompt size, model recall of the nonce is information only, a and b must be answered",
+      "flags": [
+        "--strict-mcp-config",
+        "--mcp-config",
+        "{\"mcpServers\":{}}",
+        "--disable-slash-commands",
+        "--settings",
+        "{\"permissions\":{\"blockReadsOutsideWorkingDirectories\":true}}"
       ],
       "clean": true,
       "verdicts": {

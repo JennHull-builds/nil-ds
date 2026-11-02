@@ -1,0 +1,45 @@
+{
+  "note": "Tool calls only: name and path. The transcript is never saved here.",
+  "tools": [
+    {
+      "name": "Glob",
+      "path": "",
+      "pattern": "src/**/*"
+    },
+    {
+      "name": "Read",
+      "path": "src/components/Prompt.tsx"
+    },
+    {
+      "name": "Read",
+      "path": "src/components/Button.tsx"
+    },
+    {
+      "name": "Read",
+      "path": "src/components/Input.tsx"
+    },
+    {
+      "name": "Read",
+      "path": "src/index.ts"
+    },
+    {
+      "name": "Grep",
+      "path": "src/core/core.css",
+      "pattern": "nil-input|textarea"
+    },
+    {
+      "name": "Grep",
+      "path": "src/components/Stack.tsx",
+      "pattern": "export function Stack|interface StackProps"
+    },
+    {
+      "name": "Write",
+      "path": "eval-output/Result.tsx"
+    }
+  ],
+  "opened": {
+    "DESIGN.md": 0,
+    "registry.json": 0,
+    "AGENTS.md": 0
+  }
+}

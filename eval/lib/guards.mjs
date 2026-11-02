@@ -22,9 +22,11 @@ export function promptSizeVerdict(tokens, cell, band, tolerance = GUARDS.promptB
  * Before each run, read the plan's windows (from the latest rate_limit_event) and decide.
  *   seven-day above 60%  -> stop, resumable. Jen's week also carries four component chats.
  *   five-hour above 85%  -> wait for its reset, then carry on, unless the reset is after --stop-at.
+ *                          (--max-five-hour N lowers that line for a round, for example 50 while Jen's
+ *                          chats are running.)
  * Utilisation is a fraction (0.73 means 73%). resetsAt is epoch seconds, as the event gives it.
  */
-export function usageDecision({ windows, nowMs, stopAtMs = null }) {
+export function usageDecision({ windows, nowMs, stopAtMs = null, fiveHourWaitAbove = GUARDS.fiveHourWaitAbove }) {
   if (!windows) return { action: 'go', note: 'no usage reading available' };
   const seven = windows.sevenDay, five = windows.fiveHour;
   if (seven && seven.utilization > GUARDS.sevenDayStopAbove) {
@@ -34,13 +36,13 @@ export function usageDecision({ windows, nowMs, stopAtMs = null }) {
       resetsAt: seven.resetsAt,
     };
   }
-  if (five && five.utilization > GUARDS.fiveHourWaitAbove) {
+  if (five && five.utilization > fiveHourWaitAbove) {
     const untilMs = five.resetsAt * 1000 + GUARDS.waitSlackMs;
     if (untilMs <= nowMs) return { action: 'go', note: 'five-hour reading is stale: its reset time has passed' };
     if (stopAtMs != null && untilMs >= stopAtMs) {
       return { action: 'stop', reason: 'stop-at', detail: `five-hour window at ${Math.round(five.utilization * 100)}% and it resets ${new Date(five.resetsAt * 1000).toISOString()}, after --stop-at`, resetsAt: five.resetsAt };
     }
-    return { action: 'wait', untilMs, detail: `five-hour window at ${Math.round(five.utilization * 100)}% (wait above ${Math.round(GUARDS.fiveHourWaitAbove * 100)}%), resets ${new Date(five.resetsAt * 1000).toISOString()}` };
+    return { action: 'wait', untilMs, detail: `five-hour window at ${Math.round(five.utilization * 100)}% (wait above ${Math.round(fiveHourWaitAbove * 100)}%), resets ${new Date(five.resetsAt * 1000).toISOString()}` };
   }
   return { action: 'go' };
 }

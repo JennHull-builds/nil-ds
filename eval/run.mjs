@@ -8,7 +8,11 @@
  *   node eval/run.mjs --round 1 --runs 3                         the real round (30 runs)
  *   node eval/run.mjs --round dry --tasks T3 --runs 1            the dry run
  *   node eval/run.mjs --round 1 --runs 3 --resume                carry on, skipping runs with a score.json
- *   node eval/run.mjs --round 1 --runs 3 --stop-at 04:00         start no new run after 04:00
+ *   node eval/run.mjs --round 1 --runs 3 --start-at 14:35 --max-five-hour 50 --stop-at 04:00
+ *       --start-at HH:MM       wait until then (the next time the clock reads it)
+ *       --stop-at HH:MM        start no new run after the next HH:MM AFTER THE START (not after now)
+ *       --max-five-hour N      wait for the five-hour reset above N% (default 85); seven-day stops above 60%
+ *       --check-only           validate everything (band, CLI version, clock, harness fingerprint), run nothing
  *   node eval/run.mjs --subject stub:good|stub:bad-R3|stub:none|stub:limit ...   spends no usage
  *       --stub-script "2=size,3=init,5=timeout"   what the Nth subject call does (size, init, timeout)
  *       --stub-windows "0.5:0.2,0.9:0.2"          five-hour:seven-day utilisation each call reports
@@ -27,12 +31,14 @@
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, realpathSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
+import { basename } from 'node:path';
 import { tmpdir } from 'node:os';
 import { join, relative } from 'node:path';
-import { ARM_LABELS, EVAL_DIR, GUARDS, GUIDANCE_FILES, KIT_COMMIT, SUBJECT, TASKS, roots, runDir } from './config.mjs';
+import { ARM_LABELS, EVAL_DIR, GUARDS, GUIDANCE_FILES, KIT_COMMIT, SEALED_TASKS, SUBJECT, TASKS, roots, runDir } from './config.mjs';
 import { scoreBatch } from './check.mjs';
 import { buildArm, kitEdits } from './lib/kit.mjs';
-import { digest, isUsageLimit, probeWindows, promptTokens, runClaude, subjectFlags, windowSummary } from './lib/claude.mjs';
+import { digest, installedCliVersion, isUsageLimit, probeWindows, promptTokens, runClaude, subjectFlags, windowSummary } from './lib/claude.mjs';
+import { resolveWindow } from './lib/clock.mjs';
 import { BreachStreak, promptSizeVerdict, usageDecision } from './lib/guards.mjs';
 import { summarise } from './summarise.mjs';
 
@@ -53,16 +59,12 @@ const R = roots(stub);
 const keepSessions = flag('keep');
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-function parseStopAt(text) {
-  if (!text) return null;
-  const m = /^(\d{1,2}):(\d{2})$/.exec(text);
-  if (!m) { console.error('--stop-at wants HH:MM, for example 04:00'); process.exit(2); }
-  const t = new Date();
-  t.setHours(Number(m[1]), Number(m[2]), 0, 0);
-  if (t.getTime() <= Date.now()) t.setDate(t.getDate() + 1); // the next time that clock reading comes round
-  return t.getTime();
-}
-const stopAtMs = parseStopAt(opt('stop-at'));
+let startMs, stopAtMs;
+try {
+  ({ startMs, stopMs: stopAtMs } = resolveWindow({ startAt: opt('start-at'), stopAt: opt('stop-at'), nowMs: Date.now() }));
+} catch (e) { console.error(e.message); process.exit(2); }
+const fiveHourLine = Number(opt('max-five-hour', GUARDS.fiveHourWaitAbove * 100)) / 100;
+if (!(fiveHourLine > 0 && fiveHourLine <= 1)) { console.error('--max-five-hour wants a percentage between 1 and 100'); process.exit(2); }
 
 // The runs are meant to draw on the Claude plan. With an API key in the environment the CLI would
 // bill that key instead, silently. Refuse, unless it is deliberate.
@@ -81,8 +83,17 @@ function loadBand() {
   process.exit(2);
 }
 const band = loadBand();
+
+// Which harness produced these runs: the commit, and any uncommitted change to it.
+const git = (...a) => execFileSync('git', ['-C', EVAL_DIR, ...a], { encoding: 'utf8' }).replace(/\n+$/, ''); // not .trim(): porcelain lines start with a space
+const harness = (() => { try { return { commit: git('rev-parse', '--short', 'HEAD'), uncommitted: git('status', '--porcelain', '--', '.', '../package.json', '../vitest.config.ts').split('\n').filter(Boolean).map((l) => l.slice(3)) }; } catch { return { commit: null, uncommitted: [] }; } })();
+// The CLI version is checked at the start AND before every run: an update mid-round would change the
+// first-turn prompt, and with it the meaning of every later score. A mismatch stops the round, resumable.
+const stubCliChangesAfter = Number(opt('stub-cli-after', 0));
+let runsStarted = 0;
+const cliVersionNow = () => (stub ? (stubCliChangesAfter && runsStarted >= stubCliChangesAfter ? '9.9.9' : band.cliVersion) : installedCliVersion());
 if (!stub) {
-  const installed = execFileSync('claude', ['--version'], { encoding: 'utf8' }).trim().split(' ')[0];
+  const installed = cliVersionNow();
   if (band.cliVersion && installed !== band.cliVersion && !flag('ignore-band-version')) {
     console.error(`eval/band.json was measured on Claude Code ${band.cliVersion} but ${installed} is installed. The first-turn prompt can change between versions. Run: node eval/calibrate.mjs band`);
     process.exit(2);
@@ -103,6 +114,27 @@ if (!flag('resume')) {
     console.error(`${existing.length} planned run(s) already have a score.json (for example ${relative(EVAL_DIR, dirOf(existing[0]))}). Use --resume to continue, or another --round.`);
     process.exit(2);
   }
+}
+
+// A fingerprint of the exact harness that runs this round, written beside the results. If the code is
+// uncommitted when the round starts, this still ties every score to the files that produced it.
+function snapshotHarness() {
+  const files = {};
+  const walk = (d) => {
+    for (const n of readdirSync(d)) {
+      const f = join(d, n);
+      const rel = relative(EVAL_DIR, f);
+      if (/^(results|results-|logs|isolation-scratch|fixtures)/.test(rel) || n === 'node_modules') continue;
+      if (statSync(f).isDirectory()) walk(f);
+      else if (/\.(mjs|tsx?|json|md)$/.test(n) && n !== 'isolation-report.json') files[rel] = sha256(f);
+    }
+  };
+  walk(EVAL_DIR);
+  const dir = join(R.results, `round-${round}`);
+  mkdirSync(dir, { recursive: true });
+  const file = join(dir, `harness-${new Date().toISOString().replace(/[:.]/g, '-')}.json`);
+  writeFileSync(file, JSON.stringify({ round, harness, kitCommit: KIT_COMMIT, subjectEnv: SUBJECT.env, subjectExtraFlags: SUBJECT.extraFlags, files }, null, 2) + '\n');
+  return file;
 }
 
 // ---------------------------------------------------------------- the subject: real or stub
@@ -218,7 +250,7 @@ async function usageGate() {
   for (;;) {
     const windows = await currentWindows();
     if (windows?.limit) return { reason: 'usage-limit', detail: 'the usage probe itself hit the limit' };
-    const d = usageDecision({ windows, nowMs: Date.now(), stopAtMs });
+    const d = usageDecision({ windows, nowMs: Date.now(), stopAtMs, fiveHourWaitAbove: fiveHourLine });
     if (d.action === 'go') return null;
     if (d.action === 'stop') return { reason: d.reason, detail: d.detail };
     console.log(`        waiting: ${d.detail}`);
@@ -234,7 +266,7 @@ async function usageGate() {
 
 // ---------------------------------------------------------------- one attempt
 
-const sha256 = (p) => createHash('sha256').update(readFileSync(p)).digest('hex');
+function sha256(p) { return createHash('sha256').update(readFileSync(p)).digest('hex'); }
 
 function listFiles(dir) {
   const out = [];
@@ -309,6 +341,10 @@ async function attempt(r, n, usageBefore) {
     const meta = {
       task: r.task, arm: r.arm, armLabel: ARM_LABELS[r.arm], round, run: r.k, subject: subjectName, attempt: n,
       kitCommit: KIT_COMMIT,
+      harness,
+      subjectEnv: SUBJECT.env,
+      subjectExtraFlags: SUBJECT.extraFlags,
+      sessionDirName: basename(session),
       guidance: r.arm === 'B' ? { round: guidanceRound, sha256: Object.fromEntries(GUIDANCE_FILES.map((f) => [f, sha256(join(EVAL_DIR, 'guidance', `round-${guidanceRound}`, f))])) } : null,
       model: { requested: SUBJECT.model, resolved: Object.keys(res.modelUsage ?? {})[0] ?? d.init?.model ?? null },
       cliVersion: d.init?.claude_code_version ?? null,
@@ -357,7 +393,19 @@ function writeAttempts(r, log) {
 // ---------------------------------------------------------------- main loop
 
 console.log(`round ${round} | subject ${subjectName} | ${plan.length} planned runs | ${arms.map((a) => `${a}=${ARM_LABELS[a]}`).join(' ; ')}`);
-if (stopAtMs) console.log(`no new run will start after ${new Date(stopAtMs).toLocaleString()}`);
+const when = (ms) => new Date(ms).toLocaleString('en-ZA', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+console.log(`now ${when(Date.now())} | starts ${when(startMs)} | no new run starts after ${stopAtMs ? when(stopAtMs) : 'never'} | five-hour wait above ${Math.round(fiveHourLine * 100)}%, seven-day stop above ${Math.round(GUARDS.sevenDayStopAbove * 100)}%`);
+if (stopAtMs && stopAtMs <= startMs) { console.error('The stop time is not after the start time, so no run could happen. Check --start-at and --stop-at.'); process.exit(2); }
+// Everything that can fail at startup fails here, before any waiting, so a bug cannot surface at 14:35.
+if (!stub) console.log(`harness fingerprint: ${relative(process.cwd(), snapshotHarness())} (commit ${harness.commit}, ${harness.uncommitted.length} uncommitted path(s))`);
+if (flag('check-only')) {
+  console.log(`pre-flight ok: ${plan.length} runs planned, band.json for Claude Code ${band.cliVersion} matches the installed ${cliVersionNow()}, window and clock resolved. Nothing was run.`);
+  process.exit(0);
+}
+if (startMs > Date.now() + 1000) {
+  console.log(`waiting until ${when(startMs)} to start`);
+  while (Date.now() < startMs) await sleep(Math.min(30_000, startMs - Date.now() + 5));
+}
 
 const streak = new BreachStreak();
 let stopped = null;
@@ -368,9 +416,11 @@ for (const r of plan) {
   if (flag('resume') && done(r)) { console.log(`${tag}  already scored, skipped`); continue; }
   for (const f of ['not-run.json', 'attempts.json']) if (existsSync(join(dirOf(r), f))) rmSync(join(dirOf(r), f));
   if (!stopped && stopAtMs && Date.now() >= stopAtMs) stopped = { reason: 'stop-at', detail: `--stop-at ${opt('stop-at')} reached` };
+  if (!stopped) { const v = cliVersionNow(); if (band.cliVersion && v !== band.cliVersion && !flag('ignore-band-version')) stopped = { reason: 'cli-version', detail: `Claude Code is ${v} but eval/band.json was measured on ${band.cliVersion}` }; }
   if (!stopped) { const g = await usageGate(); if (g) stopped = g; }
   if (stopped) { writeNotRun(r, stopped.reason, stopped.detail); console.log(`${tag}  not run (${stopped.reason})`); continue; }
 
+  runsStarted += 1;
   const usageBefore = reading?.windows ?? null;
   const log = [];
   let out;
@@ -390,7 +440,11 @@ for (const r of plan) {
 
   if (out.status === 'scored') {
     const m = out.meta;
-    console.log(`${tag}  score ${out.score.passed}/${out.score.applicable}  ${(m.wallMs / 1000).toFixed(0)}s  ${m.turns ?? '?'} turns  $${(m.totalCostUsd ?? 0).toFixed(3)}  ended: ${m.ended}`);
+    // A sealed task prints only "T5 sealed": no score, and no time, turns or cost either, because the log
+    // is as readable as the summary and sealing means nobody tuning the guidance sees how T5 did.
+    // (Round 1's first log printed T5's scores; see README.)
+    if (SEALED_TASKS.includes(r.task)) console.log(`${tag}  ${r.task} sealed`);
+    else console.log(`${tag}  score ${out.score.passed}/${out.score.applicable}  ${(m.wallMs / 1000).toFixed(0)}s  ${m.turns ?? '?'} turns  $${(m.totalCostUsd ?? 0).toFixed(3)}  ended: ${m.ended}`);
   } else if (['usage-limit', 'breach-streak'].includes(out.status)) {
     stopped = { reason: out.status, detail: out.detail };
     writeNotRun(r, out.status, out.detail);
