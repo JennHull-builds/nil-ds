@@ -1,0 +1,227 @@
+# NIL DS eval: does the agent guidance make Claude use the system correctly?
+
+This measures one thing. Claude is given a real UI task and the NIL DS kit, once with the kit's
+agent guidance and once without. A deterministic checker then scores what it wrote against the
+kit's own rules. No AI judge anywhere: every score can be recomputed by running the checker again.
+
+It is a probe, not a study. Three runs per task per arm. There are no significance claims.
+
+```
+git archive 094d15b ──▶ fresh temp kit (outside the repo, never the working tree)
+        │ arm A: strip AGENTS.md, CLAUDE.md, DESIGN.md, registry.json, design-md/
+        │ arm B: arm A + the four files from eval/guidance/round-1/
+        ▼
+claude -p  (Sonnet, 5 tools, project settings only) ──writes──▶ eval-output/Result.tsx
+        │ session ends; scoring uses a FRESH copy of the kit plus eval-output/ only
+        ▼
+check.mjs  R1..R10 ──▶ score.json, trace.json, meta.json ──▶ summarise.mjs ──▶ summary.md
+```
+
+## The question, and what the two arms are
+
+Does the agent layer (`CLAUDE.md`, `AGENTS.md`, `DESIGN.md`, `registry.json`) add anything over the
+docs a design system already ships for humans? A real system has human docs, so that is the control.
+
+| Arm | Label everywhere | Contains |
+|---|---|---|
+| A | **kit plus its human docs** | the archived kit minus the four agent files and `design-md/` |
+| B | **kit plus its human docs plus agent guidance** | arm A plus the four files from `eval/guidance/round-1/`, byte-identical to commit `094d15b` |
+
+**Arm A is not guidance-free, on purpose.** These human docs stay in it, and several state the
+token rules in prose. Quoted from the files (checked against `094d15b`):
+
+- `ARCHITECTURE.md` lines 17 to 20: "A component asking for `--nil-primitive-blue-600` is a component
+  that breaks when the brand changes" and "The dotted edge is enforced, not advisory", then
+  "`tokens:validate` fails on a hardcoded hex or a raw px." That covers R1, R2 and R4.
+- `ARCHITECTURE.md` line 74: "**Components reference the token, never a literal.**" (R1, R4)
+- `src/tokens/tokens.json`, the `_readme` key: "Components only reference --nil-\*" (R2, R3) and
+  "4px default radius (soft brutalist), 2px borders" (R5).
+- `README.md` line 35: "Namespace: `--nil-*` (consumer) · `--nil-primitive-*` (raw)" (R2, R3).
+
+So a smaller gap between the arms on R1 to R5 is a finding about how much the human docs already
+carry, not a flaw in the harness. R6 to R10 are barely touched by arm A's prose. Arm A also keeps
+`PLAN.md`, `APPLY.md`, `FIGMA.md`, the component source and tests, `demo/` and `docs/`.
+
+`CLAUDE.md` in arm B is the one line `@AGENTS.md`, so `AGENTS.md` reaches the model without Claude
+opening it. `DESIGN.md` and `registry.json` arrive only if Claude reads them; each run's
+`trace.json` records whether it did.
+
+## Tasks
+
+`eval/tasks/T1.md` to `T5.md`. The same text in both arms. They never mention tokens, rules or any
+guidance file, because that would leak guidance into arm A. Each says what to build, to import from
+`'../src'`, not to install anything, and to write `eval-output/Result.tsx` as a default export.
+
+| Task | What it is |
+|---|---|
+| T1 | Settings panel: heading, three on/off settings, an email field in its error state, Save and Cancel |
+| T2 | Delete-project dialog: a trigger, a destructive confirm, a cancel, keyboard only |
+| T3 | Chat composer: multi-line box, Enter sends, Shift+Enter adds a line, empty does not send |
+| T4 | App shell: sidebar with two sections of links, current page marked, three stats |
+| T5 | Project actions menu: a trigger opening Rename, Duplicate, Delete, keyboard only. **Held out.** |
+
+The kit has no dialog, no textarea and no menu, so T2, T3 and T5 force hand-built parts. Those are
+judged by the token rules like everything else. The kit's `Button` does not forward refs
+(nothing in `src/components` uses `forwardRef`), so a `ref` on it fails R8. The checker does not
+adjust for that, and each run records whether Claude tried one.
+
+### Why T5 is sealed
+
+Round 2 will be scored on the same four tasks the guidance fix is tuned on, and a reader would call
+that overfitting. T5 runs in both rounds and nobody tuning the guidance sees its outputs, so it
+shows whether the fix generalises. Its run folders go to `eval/results-sealed/` (gitignored).
+`summarise.mjs` leaves it out of `summary.json` and `summary.md` and prints only "T5 sealed: N runs
+completed". `summarise.mjs --unseal` refuses to run until round 2 has finished, then adds T5 as its
+own held-out line, never folded into the four-task mean.
+
+## The ten rules
+
+Each rule reports how many places it inspected. A rule that inspected nothing is `na`, never
+`pass`, and is left out of the run's score. Run score = rules passed / rules that apply. R1 to R7
+read the code as a syntax tree with the TypeScript compiler API (literals, template strings, JSX
+attributes, object-literal style props), never bare regex over the file, and also scan any `.css`
+file the subject wrote.
+
+| Rule | What it checks | Source in the kit's `AGENTS.md` |
+|---|---|---|
+| R1 | no raw colour: hex, `rgb()`, `hsl()`, `oklch()`, named colours. `transparent`, `currentColor` and CSS-wide keywords are allowed | token rule 2; Never list |
+| R2 | no `var(--nil-primitive-*)` | token rule 3 |
+| R3 | every `var(--nil-*)` exists in the archived `tokens.css`; invented names are listed | token rule 2 |
+| R4 | no raw px or rem for padding, margin, gap, inset, border width, font size. 0, % and token-only `calc()` are allowed | Never: "Invent magic pixel values" |
+| R5 | border-radius only from `--nil-radius-*` (0 allowed) | Never: "Hardcode corner radius" |
+| R6 | imports only from react, react-dom and the kit. Radix, shadcn, MUI, Chakra, Headless UI, Ariakit, React Aria and anything else fail | Never: "Import Radix/shadcn" |
+| R7 | at least one import from the kit, and no raw `<button>`, checkbox input or `role="switch"` element where Button or Toggle covers it | "When to use what" |
+| R8 | `tsc --noEmit` against the archived kit | (type safety) |
+| R9 | axe, in jsdom, no violations | (accessibility) |
+| R10 | task behaviour, with Testing Library and user-event (below) | (the task text) |
+
+R10 per task: **T1** the email input is `aria-invalid` and its error text is linked by
+`aria-describedby` or `aria-errormessage`. **T2** the trigger opens a dialog with an accessible name,
+focus is inside it, Escape closes it and focus returns to the trigger, confirm calls `onConfirm`.
+**T3** the textbox has an accessible name, "hello" then Enter calls `onSend("hello")`, Shift+Enter
+and Enter on empty do not. **T4** a navigation landmark holds a link with `aria-current="page"`.
+**T5** `aria-expanded` is false then true, focus moves into the list, Duplicate is reachable and
+chosen by keyboard alone, Escape closes and returns focus; if `role="menu"` is used, ArrowDown must
+move focus between items.
+
+**R9 asserts semantics and ARIA only. Contrast is not covered.** With `css: false` jsdom computes
+no styles, so axe reports `color-contrast` as incomplete and `toHaveNoViolations` never looks at
+incomplete results. Every report says so. R9 scans each top-level element in `body` (the render
+container, plus anything portalled out of it), which matches how the kit's own tests call axe on the
+container. Scanning `document.body` as one context adds the page-level `region` rule, which does not
+apply to a component.
+
+## How the checker was broken on purpose
+
+A green result means nothing until the check has been seen to fail.
+
+- **Fixtures** (`eval/fixtures/`): 7 good solutions that must pass all ten rules with places
+  inspected, and 18 bad ones, each breaking exactly one rule (R10 once per task, plus sub-behaviours).
+  `eval/check.test.ts` asserts a bad fixture's own rule equals `fail` (not merely "not pass", so a
+  rule that was switched off and reports `na` cannot slip through) and that no other rule fails.
+  The good fixtures also carry every "allowed" case the rules promise: `transparent`, `currentColor`,
+  `inherit`, `0`, a percentage, a token-only `calc()`, and a radius of `0`.
+- **Mutation**: `CHECKER_DISABLE=R1 npm test` makes the matching fixture tests fail. `npm run
+  eval:mutate` does it for all ten rules and prints one line each. `--as na` switches the detector
+  off by making the rule report `na` instead of `pass`.
+- **Stub subjects** (`--subject stub:good | stub:bad-R3 | stub:none | stub:limit`) run the whole
+  pipeline without spending usage. Their output goes to `eval/results-stub/`, which is gitignored.
+- `npm test` runs the fixture tests (about 11 seconds on top of the kit's own suite).
+
+### The DOM shim (test-only)
+
+jsdom 29.1.1 has `HTMLDialogElement` but no `showModal()`, `show()` or `close()`, no
+`showPopover()`, `hidePopover()` or `togglePopover()`, and Escape fires no `cancel` event. A native
+`<dialog>` or `popover` answer is the modern correct one, so `eval/behaviour/shim.ts` supplies those
+behaviours in the checker's environment, following the HTML spec in outline. It fakes: the dialog
+and popover methods and their events, focus moving in on open and back to the opener on close, Escape
+closing the topmost modal dialog (after a cancelable `cancel` event) or auto popover, click-outside
+light dismiss for popovers, and the `popovertarget` attribute. Because jsdom hides every `[popover]`
+element, an open popover is shown with an inline `display` that is removed on hide.
+
+**Focus containment is not checked in jsdom.** The shim does not trap Tab inside a modal, does not make
+the page behind a modal inert, and has no top layer or `::backdrop`. A dialog that lets focus escape
+passes R10 here. Two good T2 fixtures (a `role="dialog"` div and a native `<dialog>`) and two good T5
+fixtures (`role="menu"` and a native popover) pass, and the bad ones still fail.
+
+## The subject, and keeping it isolated
+
+`claude -p --model sonnet --output-format stream-json --verbose --setting-sources project`, run with
+the temp kit as its working directory, sequentially, never in parallel. Tools: Read, Write, Edit,
+Glob, Grep. No Bash, no web. Permission mode `dontAsk`, so anything not allowed is denied. Capped at
+30 turns and 10 minutes. Probed on CLI 2.1.316 (`eval/isolation.mjs`):
+
+- **`--max-turns` is accepted but not listed in `--help`.** A cap of 1 ended a 3-step task with
+  `error_max_turns`, and the CLI counted 2 turns, so the cap stops a session once the count
+  exceeds N. The runner also counts assistant messages itself.
+- **Permission rules.** Allowing `Read`, `Glob` and `Grep` with no path let the subject read, grep
+  and glob a file outside its folder. `Read(./**)` alone confines all three to the temp kit, and
+  `Write(eval-output/**)` and `Edit(eval-output/**)` confine writes. That is what the runner uses.
+- **`--setting-sources project`** keeps the user's `CLAUDE.md`, memory index and hooks out. The
+  gate proves this with a positive control (the same probe without that flag does see them) and a
+  hook-event count. It reports only whether a canary came back, never its value.
+- **Every run guards itself.** The runner reads the session's own `init` event and refuses to score
+  a run whose tools are not exactly the five, or that shows an MCP server or a non-built-in plugin.
+  Such a run is recorded as not run and the round stops. `meta.json` also records the first-turn
+  prompt size, and `summary.md` flags a run whose size differs from its siblings, or an arm B whose
+  prompt is not larger than arm A's, because that would mean the guidance did not load.
+
+Run the gate yourself: `npm run eval:isolation`. It spends a little usage.
+
+## Rerun it
+
+```bash
+npm ci
+npm test                     # includes the checker's fixture tests
+npm run eval:mutate          # switch each rule off in turn, about 3 minutes
+npm run eval:isolation       # the gate, about 5 minutes, a little usage
+
+# rehearse the pipeline without spending usage
+node eval/run.mjs --subject stub:good --round stub-demo --tasks T3 --runs 1
+
+# a real round: 5 tasks x 2 arms x 3 runs = 30 runs, sequential, overnight, Mac plugged in and open
+mkdir -p eval/logs
+nohup caffeinate -is node eval/run.mjs --round 1 --runs 3 --stop-at 07:00 > eval/logs/round-1.log 2>&1 &
+
+node eval/run.mjs --round 1 --runs 3 --resume   # carry on after any stop
+node eval/summarise.mjs --round 1               # summary.json and summary.md
+```
+
+Per run, `eval/results/round-N/<task>/<arm>/run-<k>/` holds `Result.tsx` (or `NO_RESULT.txt`),
+`score.json`, `trace.json` (tool names and paths, never the transcript) and `meta.json`. The raw
+stream goes to `raw/`, which is gitignored. `meta.json` records the resolved model ID, turns,
+duration, cost as the CLI reports it, input, output, cache read and cache write tokens, the usage
+windows the stream reports, any edit Claude made outside `eval-output/`, and whether it put a `ref`
+on a kit component.
+
+### Usage and what counts as a failed run
+
+The subject signs in with a Claude plan, not an API key, so runs draw on the same limits as chat.
+`total_cost_usd` is an API-price equivalent, not a bill. The stream carries a `rate_limit_event` with
+the five-hour and seven-day utilisation; the runner records it per run.
+
+- A **usage-limit error is not a failed run.** The round stops, the remaining runs are recorded as
+  `not run`, never as zeros, and they are left out of every mean. `--resume` skips runs that already
+  have a `score.json`. The text of a real limit error has not been seen; `stub:limit` exercises the
+  path and `isUsageLimit()` in `eval/lib/claude.mjs` is the one place to fix if the real text differs.
+- Other infrastructure failures are retried once, then recorded as `not run`. So are an isolation
+  breach and a `--stop-at` stop. Only a session that completed and wrote nothing scores 0.
+- A session that ends by hitting the turn cap, or the 10-minute timeout with something written, is
+  scored on what it wrote.
+
+## What this does not measure
+
+- Visual quality. Nothing here looks at pixels.
+- Contrast. R9 asserts semantics and ARIA only. Contrast is a token-level property; `tokens:validate`
+  prints a DESIGN.md report on it, which is a report and not a gate.
+- Anything beyond five tasks, three runs each, in one kit.
+- Any model other than the one recorded in `meta.json` (the alias `sonnet` resolves to a model ID that
+  is written to every run).
+- Whether guidance helps a person. This is a model reading a folder.
+- Focus containment in modals, and real browser behaviour: everything runs in jsdom.
+- Whether arm A's human docs, rather than arm B's agent files, are what keeps R1 to R5 high. That is
+  the question the two arms ask together, not something either arm can separate.
+
+## Results
+
+None are written here. The numbers live in the generated `eval/results/round-N/summary.md`.

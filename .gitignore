@@ -2,3 +2,12 @@ node_modules/
 dist-demo/
 .vercel
 marketing-shots/
+
+# eval harness: raw transcripts never get committed, sealed task T5 never gets committed,
+# stub-subject output is scratch (see eval/README.md)
+eval/results*/**/raw/
+eval/results-sealed/
+eval/results-stub/
+eval/results-stub-sealed/
+eval/logs/
+eval/isolation-scratch/

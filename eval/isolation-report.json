@@ -1,0 +1,242 @@
+{
+  "when": "2026-11-02T07:36:21.461Z",
+  "cliVersion": null,
+  "steps": {
+    "canaries": {
+      "control": {
+        "answeredAll": true,
+        "aLeaked": true,
+        "bLeaked": true,
+        "nonceSeen": true,
+        "hooksRan": false,
+        "hookEvents": 6
+      },
+      "real": [
+        {
+          "answeredAll": true,
+          "aLeaked": false,
+          "bLeaked": false,
+          "nonceSeen": true,
+          "hooksRan": false,
+          "hookEvents": 0
+        },
+        {
+          "answeredAll": true,
+          "aLeaked": false,
+          "bLeaked": false,
+          "nonceSeen": true,
+          "hooksRan": false,
+          "hookEvents": 0
+        },
+        {
+          "answeredAll": true,
+          "aLeaked": false,
+          "bLeaked": false,
+          "nonceSeen": true,
+          "hooksRan": false,
+          "hookEvents": 0
+        }
+      ],
+      "pass": true,
+      "hookCheckSensitive": true
+    },
+    "inventory": [
+      {
+        "label": "as configured",
+        "tools": [
+          "Edit",
+          "Glob",
+          "Grep",
+          "Read",
+          "Write"
+        ],
+        "mcpServers": [],
+        "plugins": [
+          "cc-plugin-agents-md [builtin]",
+          "cc-plugin-telemetry [builtin]",
+          "cc-plugin-plugin-authoring [builtin]"
+        ],
+        "skills": [
+          "design",
+          "design-sync",
+          "dataviz",
+          "update-config",
+          "verify",
+          "debug",
+          "code-review",
+          "simplify",
+          "batch",
+          "fewer-permission-prompts",
+          "doctor",
+          "loop",
+          "schedule",
+          "send-to-project",
+          "claude-api",
+          "run",
+          "run-skill-generator",
+          "plugin-authoring"
+        ],
+        "agents": [
+          "claude",
+          "Explore",
+          "general-purpose",
+          "Plan",
+          "statusline-setup"
+        ],
+        "slashCommandCount": 54,
+        "autoMemory": true,
+        "modelSelfReport": {
+          "tools": 5,
+          "skills": 0,
+          "plugins": 0,
+          "mcp": 0
+        },
+        "exactlyFiveTools": true,
+        "nonBuiltinPlugins": 0,
+        "modelSeesNothingExtra": true,
+        "clean": true,
+        "strictClean": false
+      },
+      {
+        "label": "plus --strict-mcp-config with an empty MCP config",
+        "tools": [
+          "Edit",
+          "Glob",
+          "Grep",
+          "Read",
+          "Write"
+        ],
+        "mcpServers": [],
+        "plugins": [
+          "cc-plugin-agents-md [builtin]",
+          "cc-plugin-telemetry [builtin]",
+          "cc-plugin-plugin-authoring [builtin]"
+        ],
+        "skills": [
+          "design",
+          "design-sync",
+          "dataviz",
+          "update-config",
+          "verify",
+          "debug",
+          "code-review",
+          "simplify",
+          "batch",
+          "fewer-permission-prompts",
+          "doctor",
+          "loop",
+          "schedule",
+          "send-to-project",
+          "claude-api",
+          "run",
+          "run-skill-generator",
+          "plugin-authoring"
+        ],
+        "agents": [
+          "claude",
+          "Explore",
+          "general-purpose",
+          "Plan",
+          "statusline-setup"
+        ],
+        "slashCommandCount": 54,
+        "autoMemory": true,
+        "modelSelfReport": {
+          "tools": 5,
+          "skills": 0,
+          "plugins": 0,
+          "mcp": 0
+        },
+        "exactlyFiveTools": true,
+        "nonBuiltinPlugins": 0,
+        "modelSeesNothingExtra": true,
+        "clean": true,
+        "strictClean": false
+      },
+      {
+        "label": "plus the above and --disable-slash-commands",
+        "tools": [
+          "Edit",
+          "Glob",
+          "Grep",
+          "Read",
+          "Write"
+        ],
+        "mcpServers": [],
+        "plugins": [
+          "cc-plugin-agents-md [builtin]",
+          "cc-plugin-telemetry [builtin]",
+          "cc-plugin-plugin-authoring [builtin]"
+        ],
+        "skills": [],
+        "agents": [
+          "claude",
+          "Explore",
+          "general-purpose",
+          "Plan",
+          "statusline-setup"
+        ],
+        "slashCommandCount": 0,
+        "autoMemory": true,
+        "modelSelfReport": {
+          "tools": 5,
+          "skills": 0,
+          "plugins": 0,
+          "mcp": 0
+        },
+        "exactlyFiveTools": true,
+        "nonBuiltinPlugins": 0,
+        "modelSeesNothingExtra": true,
+        "clean": true,
+        "strictClean": false
+      }
+    ],
+    "arms": {
+      "A": {
+        "title": "NONE",
+        "designOrRegistryInContext": false
+      },
+      "B": {
+        "title": "NIL DS - Agent guide",
+        "designOrRegistryInContext": false
+      }
+    },
+    "permissions": [
+      {
+        "label": "adopted: Read(./**) only, no Glob or Grep rule",
+        "readOutside": "denied",
+        "grepOutside": "denied",
+        "globOutside": "denied",
+        "writeSrcCall": "denied",
+        "writeSrcFileExists": false,
+        "writeOutFileExists": true,
+        "readInside": "allowed",
+        "grepInside": "allowed",
+        "globInside": "allowed",
+        "canaryContentReachedTheModel": false,
+        "confined": true
+      }
+    ],
+    "maxTurns": {
+      "requested": 1,
+      "subtype": "error_max_turns",
+      "terminalReason": "max_turns",
+      "numTurns": 2,
+      "isError": true,
+      "finished": true
+    }
+  },
+  "window": {
+    "status": "allowed",
+    "fiveHour": {
+      "utilization": 0.03,
+      "resetsAt": 1793622600,
+      "status": "allowed"
+    },
+    "sevenDay": {
+      "utilization": 0.21,
+      "resetsAt": 1794124800,
+      "status": "allowed"
+    }
+  }
+}
