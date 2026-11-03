@@ -1,19 +1,19 @@
-> **NIL DS** — public kit by [Jennifer Hull](https://jenniferhull.co.za). Live demo: [nil-ds.vercel.app](https://nil-ds.vercel.app).
+> **NIL DS** is a public kit by [Jennifer Hull](https://jenniferhull.co.za). Live demo: [nil-ds.vercel.app](https://nil-ds.vercel.app).
 > Architecture: see `ARCHITECTURE.md`. North star (`@nilds/*`): see `PLAN.md`.
 
 # NIL DS
 
-Token + primitive kit — brutalist CLI lineage from `mothership-stable`, plus
+Token + primitive kit, brutalist CLI lineage from `mothership-stable`, plus
 **new instrument primitives** (Dial, Stack, Panel, etc.). Primitive → semantic →
 component architecture with agent-readable `tokens.json` + `registry.json`.
 
 **Live demo:** [nil-ds.vercel.app](https://nil-ds.vercel.app)
 
-![NIL DS showroom intro — hero and climate dials](docs/showroom-intro.png)
+![NIL DS showroom intro: hero and climate dials](docs/showroom-intro.png)
 
 *Intro + climate: composed showroom, not a flat catalog.*
 
-![Token Lab — swap primitives, semantics follow](docs/showroom-token-lab.png)
+![Token Lab: swap primitives, semantics follow](docs/showroom-token-lab.png)
 
 *Token Lab: swap a primitive; semantic `--nil-*` roles update; components stay put.*
 
@@ -46,14 +46,14 @@ npm run build:demo   # dist-demo/
 
 ## Consumer wiring
 
-See **[APPLY.md](APPLY.md)** — link, CSS import order, Tailwind `@theme`, ui wrappers.
+See **[APPLY.md](APPLY.md)** for the link, CSS import order, Tailwind `@theme` and ui wrappers.
 
 ## Agent / design ops
 
-- **[AGENTS.md](AGENTS.md)** — token rules, composition guide
-- **[registry.json](registry.json)** — component manifest
-- **[FIGMA.md](FIGMA.md)** — variables sync path
-- `src/core/tailwind-theme.css` — ready Tailwind v4 alias block
+- **[AGENTS.md](AGENTS.md)**: token rules, composition guide
+- **[registry.json](registry.json)**: component manifest
+- **[FIGMA.md](FIGMA.md)**: variables sync path
+- `src/core/tailwind-theme.css`: ready Tailwind v4 alias block
 
 ## DESIGN.md
 
@@ -72,11 +72,11 @@ Honest state: the format is at spec version `alpha`, and it has no concept of th
 
 ## Showroom
 
-Five composed scenes (Intro, Climate, Instrument, Analytics, Token Lab) + Gallery appendix — not a flat component catalog.
+Five composed scenes (Intro, Climate, Instrument, Analytics, Token Lab) plus a Gallery appendix, not a flat component catalog.
 
 ## Status
 
-- [x] v0.1 proper elevation — instrument primitives + Token Lab + build pipeline
+- [x] v0.1 proper elevation: instrument primitives + Token Lab + build pipeline
 - [x] Figma path documented (`FIGMA.md`)
 - [x] Vite showroom (Storybook parked)
 - [ ] `@nilds/*` publish / monorepo split when earned

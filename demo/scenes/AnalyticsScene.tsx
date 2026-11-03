@@ -53,7 +53,7 @@ export function AnalyticsScene() {
             ))}
           </div>
           <div style={{ marginTop: 'var(--nil-spacing-sm)' }}>
-            <Text size="sm" muted>Weekly kWh — Mon – Sun</Text>
+            <Text size="sm" muted>Weekly kWh, Mon to Sun</Text>
           </div>
           <div className="nil-demo-step-chart" aria-hidden>
             {STEP_HEIGHTS.map((h, i) => (

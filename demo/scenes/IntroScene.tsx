@@ -98,11 +98,11 @@ export function IntroScene({
         </div>
 
         <div className="nil-demo-layer-strip">
-          <span><strong>1 · Primitive</strong> — <code>tokens.json</code></span>
+          <span><strong>1 · Primitive</strong>: <code>tokens.json</code></span>
           <span aria-hidden>→</span>
-          <span><strong>2 · Semantic</strong> — <code>--nil-*</code> roles</span>
+          <span><strong>2 · Semantic</strong>: <code>--nil-*</code> roles</span>
           <span aria-hidden>→</span>
-          <span><strong>3 · Component</strong> — React primitives</span>
+          <span><strong>3 · Component</strong>: React primitives</span>
         </div>
       </div>
     </DemoScene>

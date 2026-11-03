@@ -99,7 +99,7 @@ export function TokenLabScene({ band }: { band?: boolean }) {
                 }}
               />
               <div>--nil-{key}</div>
-              <div style={{ color: 'var(--nil-color-text-muted)' }}>{swatches[key] ?? '—'}</div>
+              <div style={{ color: 'var(--nil-color-text-muted)' }}>{swatches[key] ?? 'none'}</div>
             </div>
           ))}
         </div>

@@ -1,4 +1,4 @@
-# NIL DS — Agent guide
+# NIL DS agent guide
 
 Read this before generating UI with NIL primitives.
 
@@ -30,7 +30,7 @@ Read this before generating UI with NIL primitives.
 ## App vs NIL boundary
 
 - **NIL tokens:** bg, surface, text, border, accent, spacing, motion.
-- **App tokens:** product category colours, bucket hues, feature-specific semantics — map in consumer `@theme`, not in `tokens.json`.
+- **App tokens:** product category colours, bucket hues, feature-specific semantics. Map in consumer `@theme`, not in `tokens.json`.
 
 ## Registry
 
@@ -40,8 +40,8 @@ See `registry.json` for per-component token dependencies and props.
 
 - Import Radix/shadcn into NIL kit source
 - Use `#000` / `#fff` unless explicitly requested
-- Hardcode corner radius in components — use `--nil-radius-default` (4px soft brutalist)
-- Invent magic pixel values — use `--nil-spacing-*` and layout tokens
+- Hardcode corner radius in components. Use `--nil-radius-default` (4px soft brutalist)
+- Invent magic pixel values. Use `--nil-spacing-*` and layout tokens
 
 ## About this repo
 
@@ -61,7 +61,7 @@ One active kit build at a time. A second distinct look only if a real build earn
 ## Architecture
 
 Primitive → semantic → component. Agent-readable `tokens.json` plus `registry.json` are
-the point of the whole thing, not a side artefact — they are what makes the kit legible
+the point of the whole thing, not a side artefact, and they are what makes the kit legible
 to an agent, which is the actual pitch.
 
 ## Before committing
@@ -78,7 +78,7 @@ capability ledger stops being true.
 ## Visual system
 
 Brutalist CLI: 4px default radius (soft brutalist, `radius-default`), 2px borders, IBM
-Plex Sans and IBM Plex Mono, warm off-white and dark. **Not Soft Bento** — that belongs
+Plex Sans and IBM Plex Mono, warm off-white and dark. **Not Soft Bento**, which belongs
 to dx-grid-inspector. Do not merge the two systems; they are deliberately separate.
 
 **Never restate a token value in prose, here or in any doc.** Name the token and let the
@@ -106,24 +106,12 @@ about.
 `PLAN.md` is exempt and must stay exempt. Its hexes are dated decision entries recording
 what was true that day; correcting them into the present would falsify the log.
 
-## This kit now has a downstream consumer, and it holds a COPY
+## No repo consumes this kit today
 
-Added 2026-09-16. `~/mothership/build/tetherlog` consumes this kit, but it does **not** read these files at
-build time. It vendors `src/tokens/tokens.css` and `src/core/core.css` into its own
-`src/nil-ds/` via `scripts/sync-nil-ds.sh`, because Vercel only checks out one repo and a
-relative path to a sibling directory does not exist there. That failed a preview build the
-first time the branch was pushed.
-
-**So a change here does not reach TetherLog until someone reruns that script.** Nothing
-errors. TetherLog keeps building, keeps deploying, and quietly serves the old tokens. It is
-the stale-hex gotcha below, one repo further out, where `tokens:validate` cannot see it.
-
-Verified 2026-09-16: the vendored copies are byte-identical to this repo's HEAD (`d1434e5`)
-by sha256, and carry the reduced-motion block.
-
-**If you change `tokens.json`, `tokens.css` or `core.css`, say so in the commit message and
-tell whoever owns TetherLog to run `npm run sync-nil-ds`.** This kit is no longer only its
-own consumer.
+Checked 2026-11-03 across `~/mothership`: no repo depends on this kit or holds a vendored copy
+of its CSS. The one hit, a test fixture, is a copy of the kit itself.
+TetherLog vendored a copy until its decision D-001 (2026-09-18) deleted `src/nil-ds/` and
+`scripts/sync-nil-ds.sh`.
 
 ## Gotcha: a green axe test does not mean contrast passes
 
@@ -141,7 +129,7 @@ Same family as the stale-hex gotcha above: nothing errors, the output is well-fo
 it is only wrong if you believe it says more than it does.
 
 **So: never write "accessibility tested" in the ledger, the README or public copy.** Write
-what is true — semantics and ARIA are asserted per component. Contrast is a token-level
+what is true: semantics and ARIA are asserted per component. Contrast is a token-level
 property and the honest home for it is `tokens:validate`.
 
 **Partly built 2026-10-17, as a report and not a gate.** `tokens:validate` now runs the DESIGN.md
@@ -169,8 +157,9 @@ Added 2026-10-17, with the DESIGN.md work on branch `design-md`.
   check, in `build:demo`.** TetherLog put checks into its build and every Vercel deployment
   errored for eight in a row (`areas/products-tetherlog.md` in the brain, 2026-09-18); the
   mechanism was never found, and a green local build proved nothing. `build:demo` does run the
-  *generator*, through `tokens:build`, and that has **not** been seen to build on Vercel yet. If a
-  preview of this branch errors, change `build:demo` to call `scripts/build-tokens.mjs` directly.
+  *generator*, through `tokens:build`, and that has now built on Vercel: the Preview deployment for
+  `094d15b` (GitHub deployment 7155578909, 2026-10-18) reports state success. If a later deploy
+  errors, change `build:demo` to call `scripts/build-tokens.mjs` directly.
 - **The linter is pinned to exactly 0.4.0, no caret.** The format is at spec version `alpha`. Bump it
   on purpose, after reading the new rules, because a rule change can turn a clean run into errors.
 - **`registry.json` is not a complete record, and DESIGN.md inherits that.** Checked 2026-10-17

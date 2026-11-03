@@ -136,7 +136,7 @@ export function GalleryScene() {
     <DemoScene id="gallery" ref={ref}>
       <div className={`nil-enter${visible ? ' is-visible' : ''}`}>
         <Heading level={2}>Gallery</Heading>
-        <Text muted>Every primitive state — appendix for auditors.</Text>
+        <Text muted>Every primitive state, an appendix for auditors.</Text>
       </div>
 
       <div className="nil-demo-gallery-grid" style={{ marginTop: 'var(--nil-spacing-lg)' }}>
@@ -201,7 +201,7 @@ export function GalleryScene() {
           <Heading level={3}>Input</Heading>
           <div style={{ marginTop: 'var(--nil-spacing-sm)' }}>
             <Input label="Name" placeholder="Your name" />
-            <Input label="Device ID" placeholder="Required" error="Invalid ID — check format" style={{ marginTop: 'var(--nil-spacing-md)' }} />
+            <Input label="Device ID" placeholder="Required" error="Invalid ID: check the format" style={{ marginTop: 'var(--nil-spacing-md)' }} />
           </div>
         </Card>
 
@@ -225,7 +225,7 @@ export function GalleryScene() {
 
       <Divider spacing="var(--nil-spacing-xl)" />
       <Text size="sm" muted>
-        Motion: <code>.nil-grid-bg</code>, <code>.nil-cursor-blink</code>, <code>.nil-enter</code> — see scenes above.
+        Motion: <code>.nil-grid-bg</code>, <code>.nil-cursor-blink</code>, <code>.nil-enter</code>. See the scenes above.
       </Text>
 
       <Lightbox image={lightbox} onClose={() => setLightbox(null)} />
