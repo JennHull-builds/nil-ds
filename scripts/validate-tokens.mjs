@@ -1,5 +1,6 @@
 /**
- * Validate tokens.json ↔ tokens.css parity, and DESIGN.md.
+ * Validate tokens.json ↔ tokens.css parity, DESIGN.md (including contrast), and that no
+ * text colour reads a fill token.
  * Run: npm run tokens:validate (or via typecheck)
  */
 import { readFileSync, readdirSync, statSync } from 'node:fs';
@@ -123,12 +124,12 @@ const liveHex = new Set();
   Object.values(node).forEach(collect);
 })(tokens);
 
-function walk(dir, out = []) {
+function walk(dir, out = [], ext = SCAN_EXT, skip = SKIP) {
   for (const entry of readdirSync(dir)) {
     const full = join(dir, entry);
-    if (SKIP.test(full)) continue;
-    if (statSync(full).isDirectory()) walk(full, out);
-    else if (SCAN_EXT.test(full)) out.push(full);
+    if (skip.test(full)) continue;
+    if (statSync(full).isDirectory()) walk(full, out, ext, skip);
+    else if (ext.test(full)) out.push(full);
   }
   return out;
 }
@@ -153,6 +154,77 @@ for (const file of targets) {
 }
 
 /**
+ * Fill-as-text guard.
+ *
+ * `--nil-color-accent` and `--nil-color-danger` are fills. Used as a text colour they miss
+ * WCAG AA, and nothing else would notice: the contrast check below only reads the pairs
+ * mapped in design-md/structure.json, not the CSS. Accent or danger as text goes through
+ * `--nil-color-text-accent` or `--nil-color-text-danger`, which have their own value per
+ * theme.
+ *
+ * This fails the run when a text colour reads one of the two fill tokens. A text colour is
+ * the CSS `color` property (and `-webkit-text-fill-color`) in a stylesheet, or a `color:`
+ * entry in a style object. Names are matched exactly, so `--nil-color-accent-contrast` and
+ * the text roles never match. Backgrounds, borders, outlines, strokes, SVG fills and
+ * `caret-color` are not text and are left alone.
+ *
+ * What it cannot see: a fill token that reaches `color` through a variable or a lookup
+ * table (Meta's tone map is the kind of place that needs a human), and a utility class such
+ * as Tailwind's `text-mark`, which is a name in tailwind-theme.css and not a `color:` line.
+ */
+const TEXT_GUARD_DIRS = ['src', 'demo'];
+const TEXT_GUARD_EXT = /\.(css|ts|tsx)$/;
+const TEXT_GUARD_SKIP = /(^|\/)(node_modules|dist-demo|tokens)(\/|$)|\.test\.tsx?$/;
+const FILL_TOKEN = /var\(\s*--nil-color-(accent|danger)\s*[,)]/;
+
+/** Blank out comments but keep every newline, so reported line numbers stay true. */
+function blankComments(text, isCss) {
+  const blank = (m) => m.replace(/[^\n]/g, ' ');
+  const noBlocks = text.replace(/\/\*[\s\S]*?\*\//g, blank);
+  return isCss ? noBlocks : noBlocks.replace(/(^|\s)\/\/[^\n]*/g, blank);
+}
+
+/** Read one property value: up to the first `,` `;` or `}` outside quotes and brackets. */
+function readValue(src, start) {
+  let depth = 0;
+  let quote = null;
+  let i = start;
+  for (; i < src.length; i++) {
+    const ch = src[i];
+    if (quote) {
+      if (ch === '\\') i++;
+      else if (ch === quote) quote = null;
+    } else if (ch === '"' || ch === "'" || ch === '`') quote = ch;
+    else if (ch === '(' || ch === '[') depth++;
+    else if (ch === ')' || ch === ']') depth--;
+    else if (depth <= 0 && (ch === ',' || ch === ';' || ch === '}')) break;
+  }
+  return src.slice(start, i);
+}
+
+for (const dir of TEXT_GUARD_DIRS) {
+  for (const file of walk(join(root, dir), [], TEXT_GUARD_EXT, TEXT_GUARD_SKIP)) {
+    const rel = file.replace(`${root}/`, '');
+    const isCss = file.endsWith('.css');
+    const src = blankComments(readFileSync(file, 'utf8'), isCss);
+    // Not a property name that merely ends in "color" (background-color, caret-color, backgroundColor).
+    const property = isCss
+      ? /(^|[;{}\s])(color|-webkit-text-fill-color)\s*:\s*/g
+      : /(^|[,{\s])(color|WebkitTextFillColor)\s*:\s*/g;
+    for (const m of src.matchAll(property)) {
+      const valueStart = m.index + m[0].length;
+      const hit = readValue(src, valueStart).match(FILL_TOKEN);
+      if (!hit) continue;
+      const line = src.slice(0, valueStart).split('\n').length;
+      errors.push(
+        `${rel}:${line} text colour reads --nil-color-${hit[1]}, which is a fill and misses AA as text. ` +
+        `Use --nil-color-text-${hit[1]}.`,
+      );
+    }
+  }
+}
+
+/**
  * DESIGN.md guards.
  *
  * DESIGN.md is generated (scripts/build-design-md.mjs), so the same two things that can
@@ -163,10 +235,15 @@ for (const file of targets) {
  * of any kind in the hand-written text. That is the stale-hex gotcha in CLAUDE.md, applied
  * before it can happen instead of after eight files have drifted.
  *
+ * Contrast is a gate, with limits. Every text and background pair mapped in
+ * design-md/structure.json must meet WCAG AA, and a contrast-ratio finding fails the run
+ * (the linter files it as a warning; this script promotes it). Pairs nobody mapped are not
+ * covered, and neither is anything done with `opacity`, which the linter cannot see.
+ * Other warnings, such as orphaned tokens, are printed and do not fail the run.
+ *
  * The linter runs here and in `typecheck`, never in `build:demo`. TetherLog put checks
  * into its Vercel build and broke eight deployments in a row; the lesson is that a lint
- * result must never be able to stop a deploy. Warnings are printed on every run and do not
- * fail it. Only errors do.
+ * result must never be able to stop a deploy.
  */
 const designPath = join(root, 'DESIGN.md');
 let designBefore = null;
@@ -223,11 +300,17 @@ try {
 try {
   const lint = JSON.parse(lintRaw);
   const { errors: nErr, warnings: nWarn, infos: nInfo } = lint.summary;
-  console.log(`DESIGN.md lint (@google/design.md ${lintPkg.version}): ${nErr} errors, ${nWarn} warnings, ${nInfo} info`);
+  // The linter files a contrast miss as a warning. Here it is an error.
+  const severityOf = (f) => (f.rule === 'contrast-ratio' ? 'error' : f.severity);
+  const nPromoted = lint.findings.filter((f) => f.severity === 'warning' && severityOf(f) === 'error').length;
+  console.log(
+    `DESIGN.md lint (@google/design.md ${lintPkg.version}): ${nErr + nPromoted} errors, ${nWarn - nPromoted} warnings, ${nInfo} info`,
+  );
   for (const f of lint.findings) {
     if (f.severity === 'info') continue;
-    console.log(`  ${f.severity} [${f.rule}] ${f.path ?? ''}: ${f.message}`);
-    if (f.severity === 'error') errors.push(`DESIGN.md lint [${f.rule}] ${f.path ?? ''}: ${f.message}`);
+    const severity = severityOf(f);
+    console.log(`  ${severity} [${f.rule}] ${f.path ?? ''}: ${f.message}`);
+    if (severity === 'error') errors.push(`DESIGN.md lint [${f.rule}] ${f.path ?? ''}: ${f.message}`);
   }
 } catch {
   errors.push(`designmd lint produced no readable result: ${lintRaw.slice(0, 200) || '(empty output)'}`);

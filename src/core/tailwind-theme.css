@@ -1,6 +1,11 @@
 /**
  * NIL DS — Tailwind v4 @theme alias block.
  * Import after tokens.css + core.css in consumer index.css.
+ *
+ * `mark` and `danger` are fills. As text (`text-mark`, `text-danger`) they fall short of WCAG AA,
+ * and `tokens:validate` can't see utility classes, so nothing here guards them. The text roles
+ * have no alias in this block yet. For accent or danger text, write var(--nil-color-text-accent)
+ * or var(--nil-color-text-danger).
  */
 @theme {
   --color-paper: var(--nil-color-bg);

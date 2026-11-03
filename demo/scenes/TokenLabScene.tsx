@@ -30,6 +30,8 @@ const SEMANTIC_COLORS = [
   'color-surface',
   'color-text',
   'color-text-muted',
+  'color-text-accent',
+  'color-text-danger',
   'color-border',
   'color-accent',
   'color-accent-contrast',
@@ -58,8 +60,17 @@ export function TokenLabScene({ band }: { band?: boolean }) {
   }, []);
 
   const applyAccent = (hex: string) => {
-    document.documentElement.style.setProperty('--nil-color-accent', hex);
-    setSwatches((s) => ({ ...s, 'color-accent': hex }));
+    const root = document.documentElement;
+    root.style.setProperty('--nil-color-accent', hex);
+    // An alternative accent has no separate text value, so it stands in for the text role too.
+    // The live accent hands the text role back to the theme, which keeps its own text values.
+    if (hex === LIVE_ACCENT) root.style.removeProperty('--nil-color-text-accent');
+    else root.style.setProperty('--nil-color-text-accent', hex);
+    setSwatches((s) => ({
+      ...s,
+      'color-accent': hex,
+      'color-text-accent': getComputedStyle(root).getPropertyValue('--nil-color-text-accent').trim(),
+    }));
   };
 
   const applyCanvas = (bg: string, surface: string) => {

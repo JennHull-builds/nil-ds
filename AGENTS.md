@@ -7,7 +7,8 @@ Read this before generating UI with NIL primitives.
 1. Load `tokens.css` then `core.css` on the consumer root.
 2. Components consume **only** `--nil-*` semantic tokens.
 3. Never reference `--nil-primitive-*` in component or page code.
-4. Swap brand by changing `primitive.color.accent` in `tokens.json` then `npm run tokens:build`.
+4. Swap brand by changing `primitive.color.accent`, `accent-text` and `accent-text-dark` in `tokens.json`, then `npm run tokens:build`. `tokens:validate` fails if a mapped pair no longer meets WCAG AA.
+5. Accent or danger as text uses `--nil-color-text-accent` or `--nil-color-text-danger`. The plain fill tokens, `--nil-color-accent` and `--nil-color-danger`, fail as text, and `tokens:validate` rejects them.
 
 ## When to use what
 
@@ -132,11 +133,16 @@ it is only wrong if you believe it says more than it does.
 what is true: semantics and ARIA are asserted per component. Contrast is a token-level
 property and the honest home for it is `tokens:validate`.
 
-**Partly built 2026-10-17, as a report and not a gate.** `tokens:validate` now runs the DESIGN.md
-linter, which computes WCAG ratios on the background and text pairs mapped in
-`design-md/structure.json` and prints failures as warnings on every run. That covers only the
-pairs someone mapped, only the registered components, and it never fails the run. It is not
-"contrast tested" either. Read the warnings before saying anything about contrast.
+**Built as a gate 2026-11-03** (it was a report from 2026-10-17). `tokens:validate` runs the
+DESIGN.md linter, which computes WCAG ratios on the text and background pairs mapped in
+`design-md/structure.json`, and a contrast miss now fails the run. It covers only the pairs
+someone mapped. It can't see anything dimmed with `opacity`: ThemeToggle's inactive icon is
+one, and only a comment in `core.css` guards its number. It doesn't see states either: the primary
+Button's hover filter (`brightness(1.08)`) lightens the fill under white text to about 4.1:1, measured
+from pixels on 2026-11-03. So the true sentence is: every text and
+background pair mapped in `design-md/structure.json` meets WCAG AA, and `tokens:validate` fails
+if one does not. Unmapped pairs are not covered. Never write "contrast tested" or "accessible"
+for it.
 
 **Verify the matcher before trusting a green run.** These assertions were confirmed real by
 rendering an image with no `alt` and a link with no text, and watching the suite fail. An
@@ -167,7 +173,33 @@ Added 2026-10-17, with the DESIGN.md work on branch `design-md`.
   components read (Button reads `bg` and `text-muted`, neither listed); it lists one nothing reads
   (Stack's `shadow-stack`); and it gives Dial sizes as `sm|md|lg` while the component also accepts
   `xl`. The pairings in `design-md/structure.json` were therefore read from the component source and
-  `core.css`, not from the registry. Do the same when adding one.
+  `core.css`, not from the registry. Do the same when adding one. Updated 2026-11-03: Badge, Input,
+  ThemeToggle and Lightbox now have entries, with token lists derived from the CSS and the component
+  source, so the registry lists 16 of the 21 files. Meta and Prompt still leave out some tokens they read.
+
+## Gotcha: accent and danger are fills, and text has its own roles
+
+Added 2026-11-03, with the contrast gate.
+
+White text on the accent fill needs a darker blue than accent text on the dark canvas allows, so no
+single blue passes both. Fill and text are separate roles. `--nil-color-accent` and
+`--nil-color-danger` colour fills. `--nil-color-text-accent` and `--nil-color-text-danger` colour text,
+each with its own dark value.
+
+- **Text uses the text roles.** `tokens:validate` fails on a `color` declaration, in CSS or in a style
+  object, that reads a fill token. Borders, backgrounds, outlines, strokes, SVG fills and `caret-color`
+  may still use the fills.
+- **The check has two blind spots.** A fill that reaches `color` through a variable or a lookup table
+  goes unseen, so `toneColor` in `Meta.tsx` is checked by hand. Tailwind utilities go unseen too:
+  `text-mark` and `text-danger` in `src/core/tailwind-theme.css` still read the fills, and nothing guards them.
+- **Surface is the harder background.** Cards, Panels and Inputs sit on `surface`, which is closer to
+  the text colour than the canvas is, so a pair that passes on the canvas can still fail there.
+  `design-md/structure.json` has an `-on-surface` entry for each Meta and Badge tone. Add one when you
+  put coloured text in a Card.
+- **Token Lab's accent swap sets both roles.** The live accent hands the text role back to the theme.
+  Without that, picking it would drop accent text to the contrast of the fill. The swap only works in
+  the light theme, and did before this change: the demo wrapper carries its own `data-theme`, and that
+  theme block shadows anything Token Lab sets on `<html>`.
 
 ## Gotcha: Composer's focus, sizing and registry rules
 

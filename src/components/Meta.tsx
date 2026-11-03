@@ -10,8 +10,8 @@ export interface MetaProps extends HTMLAttributes<HTMLSpanElement> {
 
 const toneColor: Record<NonNullable<MetaProps['tone']>, string> = {
   neutral: 'var(--nil-color-border)',
-  accent: 'var(--nil-color-accent)',
-  danger: 'var(--nil-color-danger)',
+  accent: 'var(--nil-color-text-accent)',
+  danger: 'var(--nil-color-text-danger)',
   success: 'var(--nil-color-success)',
 };
 

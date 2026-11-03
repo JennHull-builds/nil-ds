@@ -66,7 +66,9 @@ npm run tokens:build          # regenerates tokens.css and DESIGN.md
 npx designmd lint DESIGN.md   # the format's own linter
 ```
 
-`npm run tokens:validate` fails if `DESIGN.md` has drifted from its sources, and it runs the linter too. Lint errors fail it. Warnings are printed and don't, so the contrast findings show up on every run. The linter isn't part of `build:demo`, so it can't block a deploy.
+`npm run tokens:validate` fails if `DESIGN.md` has drifted from its sources, and it runs the linter too. Lint errors fail it, and so does a contrast miss: a text and background pair mapped in `design-md/structure.json` has to meet WCAG AA (4.5:1), and the run fails if one doesn't. Pairs that aren't mapped aren't covered, and neither is anything dimmed with `opacity`, which the linter can't see. Other warnings, like orphaned tokens, are printed and don't fail the run. The linter isn't part of `build:demo`, so it can't block a deploy.
+
+The same run fails if a text colour reads `--nil-color-accent` or `--nil-color-danger`. Those two are fills. Accent or danger as text uses `--nil-color-text-accent` or `--nil-color-text-danger`, which have their own value in each theme. The check reads `color` declarations in CSS and in style objects. It doesn't follow a value through a variable.
 
 Honest state: the format is at spec version `alpha`, and it has no concept of themes, motion or borders. How NIL DS handles each is written up in the file itself and in `PLAN.md`.
 

@@ -380,7 +380,10 @@ pre,
   line-height: 1;
   background: transparent;
   color: var(--nil-color-text);
-  opacity: 0.3;
+  /* The inactive icon. Dimmed by opacity so it clears 3:1 against the canvas in both themes
+     (WCAG 1.4.11, non-text contrast). The contrast linter only reads colours, so nothing
+     guards this number: recheck it by hand if the canvas or the icon colour changes. */
+  opacity: 0.46;
   border: none;
   cursor: pointer;
   transition:
@@ -465,7 +468,7 @@ pre,
 }
 
 .nil-label--accent {
-  color: var(--nil-color-accent);
+  color: var(--nil-color-text-accent);
   font-weight: var(--nil-type-weight-mono-emphasis);
 }
 
@@ -522,11 +525,11 @@ pre,
 }
 
 .nil-badge--accent {
-  color: var(--nil-color-accent);
+  color: var(--nil-color-text-accent);
 }
 
 .nil-badge--danger {
-  color: var(--nil-color-danger);
+  color: var(--nil-color-text-danger);
 }
 
 .nil-badge--success {
@@ -589,7 +592,7 @@ pre,
 .nil-input-error {
   font-family: var(--nil-font-body);
   font-size: var(--nil-type-scale-xs);
-  color: var(--nil-color-danger);
+  color: var(--nil-color-text-danger);
 }
 
 /* ─── Composer ────────────────────────────────────────────────────────────── */
@@ -712,7 +715,7 @@ pre,
 
 /* The blink itself is .nil-cursor-blink (same tokens and timing as Prompt), switched off under reduced motion there. */
 .nil-composer__activity {
-  color: var(--nil-color-accent);
+  color: var(--nil-color-text-accent);
 }
 
 /*

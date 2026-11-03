@@ -1,5 +1,5 @@
 {
-  "_readme": "Hand-written structure for DESIGN.md. It names which tokens each component uses; it never holds a value. Every value comes from src/tokens/tokens.json at build time (scripts/build-design-md.mjs). Token names here are the semantic keys in tokens.json (color-bg, radius-default, type-scale-xs). A component painted on a transparent background is listed on color-bg, the canvas it sits on by default, so the linter has a real pair to check. Pairings were read from src/core/core.css and src/components/*.tsx; a pairing that code does not make does not belong here.",
+  "_readme": "Hand-written structure for DESIGN.md. It names which tokens each component uses; it never holds a value. Every value comes from src/tokens/tokens.json at build time (scripts/build-design-md.mjs). Token names here are the semantic keys in tokens.json (color-bg, radius-default, type-scale-xs). A component painted on a transparent background is listed on color-bg, the canvas it sits on by default, so the linter has a real pair to check. Where the demo draws one inside a Card or a Panel it also gets an entry ending in -on-surface, because surface is the harder background for coloured text and a pair that passes on the canvas can still fail there. Fill tokens never appear as a textColor: accent and danger as text go through color-text-accent and color-text-danger. Pairings were read from src/core/core.css and src/components/*.tsx; a pairing that code does not make does not belong here.",
   "meta": {
     "name": "NIL DS",
     "description": "Brutalist CLI token and primitive kit: monospaced instrument UI on a warm canvas, light and dark, one accent."
@@ -65,9 +65,13 @@
     "Meta": {
       "meta": { "backgroundColor": "color-bg", "textColor": "color-text", "typography": "label" },
       "meta-neutral": { "backgroundColor": "color-bg", "textColor": "color-text-muted", "typography": "label" },
-      "meta-accent": { "backgroundColor": "color-bg", "textColor": "color-accent", "typography": "label-emphasis" },
-      "meta-danger": { "backgroundColor": "color-bg", "textColor": "color-danger", "typography": "label-emphasis" },
-      "meta-success": { "backgroundColor": "color-bg", "textColor": "color-success", "typography": "label-emphasis" }
+      "meta-accent": { "backgroundColor": "color-bg", "textColor": "color-text-accent", "typography": "label-emphasis" },
+      "meta-danger": { "backgroundColor": "color-bg", "textColor": "color-text-danger", "typography": "label-emphasis" },
+      "meta-success": { "backgroundColor": "color-bg", "textColor": "color-success", "typography": "label-emphasis" },
+      "meta-neutral-on-surface": { "backgroundColor": "color-surface", "textColor": "color-text-muted", "typography": "label" },
+      "meta-accent-on-surface": { "backgroundColor": "color-surface", "textColor": "color-text-accent", "typography": "label-emphasis" },
+      "meta-danger-on-surface": { "backgroundColor": "color-surface", "textColor": "color-text-danger", "typography": "label-emphasis" },
+      "meta-success-on-surface": { "backgroundColor": "color-surface", "textColor": "color-success", "typography": "label-emphasis" }
     },
     "Readout": {
       "readout-lg": { "backgroundColor": "color-bg", "textColor": "color-text", "typography": "readout-lg" },
@@ -86,6 +90,29 @@
       "composer-disabled": { "backgroundColor": "color-surface", "textColor": "color-text-muted", "typography": "prompt" },
       "composer-send": { "backgroundColor": "color-accent", "textColor": "color-accent-contrast", "typography": "button-sm", "rounded": "radius-default" },
       "composer-stop": { "backgroundColor": "color-bg", "textColor": "color-text", "typography": "button-sm", "rounded": "radius-default" }
+    },
+    "Badge": {
+      "badge-neutral": { "backgroundColor": "color-bg", "textColor": "color-text-muted", "typography": "label", "rounded": "radius-default" },
+      "badge-accent": { "backgroundColor": "color-bg", "textColor": "color-text-accent", "typography": "label", "rounded": "radius-default" },
+      "badge-danger": { "backgroundColor": "color-bg", "textColor": "color-text-danger", "typography": "label", "rounded": "radius-default" },
+      "badge-success": { "backgroundColor": "color-bg", "textColor": "color-success", "typography": "label", "rounded": "radius-default" },
+      "badge-neutral-on-surface": { "backgroundColor": "color-surface", "textColor": "color-text-muted", "typography": "label", "rounded": "radius-default" },
+      "badge-accent-on-surface": { "backgroundColor": "color-surface", "textColor": "color-text-accent", "typography": "label", "rounded": "radius-default" },
+      "badge-danger-on-surface": { "backgroundColor": "color-surface", "textColor": "color-text-danger", "typography": "label", "rounded": "radius-default" },
+      "badge-success-on-surface": { "backgroundColor": "color-surface", "textColor": "color-success", "typography": "label", "rounded": "radius-default" }
+    },
+    "Input": {
+      "input": { "backgroundColor": "color-surface", "textColor": "color-text", "typography": "body-md", "rounded": "radius-default" },
+      "input-placeholder": { "backgroundColor": "color-surface", "textColor": "color-text-muted", "typography": "body-md" },
+      "input-label": { "backgroundColor": "color-bg", "textColor": "color-text", "typography": "body-sm" },
+      "input-error": { "backgroundColor": "color-bg", "textColor": "color-text-danger" },
+      "input-error-on-surface": { "backgroundColor": "color-surface", "textColor": "color-text-danger" }
+    },
+    "ThemeToggle": {
+      "theme-toggle-pressed": { "backgroundColor": "color-accent", "textColor": "color-accent-contrast" }
+    },
+    "Lightbox": {
+      "lightbox-close": { "backgroundColor": "color-overlay", "textColor": "color-overlay-fg", "typography": "button-md", "rounded": "radius-default" }
     }
   }
 }

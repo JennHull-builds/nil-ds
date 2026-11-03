@@ -25,7 +25,7 @@ export function Prompt({ children, prefix = '>', showCursor = true, className, s
       <span style={{ color: 'var(--nil-color-text-muted)' }}>{prefix} </span>
       {children}
       {showCursor ? (
-        <span className="nil-cursor-blink" aria-hidden style={{ color: 'var(--nil-color-accent)' }}>
+        <span className="nil-cursor-blink" aria-hidden style={{ color: 'var(--nil-color-text-accent)' }}>
           ▌
         </span>
       ) : null}

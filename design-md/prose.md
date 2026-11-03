@@ -12,9 +12,11 @@ Everything in the front matter, and every table below, is generated from `src/to
 
 `bg` is the canvas. `surface` is anything raised above it: panels, inputs, cards. `text` is the ink, `text-muted` is for secondary text, and `border` colours rules and outlines.
 
-`primary` is the single accent. The token file calls it `accent`; it is named `primary` here because the DESIGN.md format and its linter look for that name. Use it for the main action, focus outlines and the indicators on gauges. `on-primary` is the text colour that sits on it.
+`primary` is the single accent, and it is a fill. The token file calls it `accent`; it is named `primary` here because the DESIGN.md format and its linter look for that name. Use it for the main action, focus outlines and the indicators on gauges. `on-primary` is the text colour that sits on it.
 
-`danger` and `success` carry status, as text and outlines on labels, badges and input errors. `overlay`, `overlay-fg` and `overlay-border` belong to the lightbox. `grid-line` draws the structural hatch.
+Accent as text is its own role. `text-accent` colours accent labels, badges and the cursor, and it has a dark value of its own so it stays readable on both canvases. `primary` falls short of AA as a text colour, so it never goes on text.
+
+`danger` is the status fill and outline colour, such as an invalid input's border. Danger as text is `text-danger`, on labels, badges and input errors, with a dark value of its own. `success` only ever appears as text, so it is its own text colour and has a separate dark value. `overlay`, `overlay-fg` and `overlay-border` belong to the lightbox. `grid-line` draws the structural hatch.
 
 ### Dark theme
 
@@ -30,7 +32,7 @@ In CSS, colours are the `--nil-color-*` custom properties. Use those, not the va
 
 ### Contrast
 
-The linter checks the contrast of every component that has both a background and a text colour. Run `npm run tokens:validate` for the current findings and read them before putting text on a colour. A component that is transparent in code is listed against `bg`, the canvas it sits on by default, so moving it onto `surface` changes its contrast.
+The linter checks the contrast of every component that has both a background and a text colour, and `npm run tokens:validate` fails if a pair falls below WCAG AA. A component that is transparent in code is listed against `bg`, the canvas it sits on by default. Where one is drawn inside a card or a panel it also has an entry ending in `-on-surface`, because surface is the harder background for coloured text. Only the pairs listed in this file are checked. A pair that isn't here isn't covered, and neither is anything dimmed with opacity.
 
 ## Typography
 
@@ -84,7 +86,8 @@ What the front matter can't say:
 - Don't introduce pure black or pure white of your own. Use the colour tokens.
 - Don't hardcode a corner radius or a pixel value. Use `rounded.default` and the spacing scale.
 - Do keep product-specific colours, such as category or bucket hues, in the app's own theme. Don't add them to NIL's tokens.
-- Do check the linter's contrast findings before pairing text with a background.
+- Do run `npm run tokens:validate` before pairing text with a background. A pair below WCAG AA fails it.
+- Do use `text-accent` and `text-danger` for accent and danger text. Don't use `primary` or `danger` as a text colour.
 - Do pick a component by its job. `AGENTS.md` has the table.
 
 ## Motion

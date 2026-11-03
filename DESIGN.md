@@ -7,11 +7,13 @@ colors:
   surface: "#eae9e5"
   text: "#0a0a0a"
   text-muted: "#4a4a4a"
+  text-accent: "#2c5ce2"
+  text-danger: "#c62832"
   border: "#0a0a0a"
-  primary: "#3b6ef5"
+  primary: "#396bf2"
   on-primary: "#ffffff"
   danger: "#c62832"
-  success: "#22a06b"
+  success: "#00774c"
   overlay: "rgba(10, 10, 10, 0.92)"
   overlay-fg: "#f5f5f4"
   overlay-border: "rgba(245, 245, 244, 0.4)"
@@ -21,7 +23,10 @@ colors:
   surface-dark: "#1c1c1c"
   text-dark: "#f3f2ee"
   text-muted-dark: "#8a8a8a"
+  text-accent-dark: "#4a7dff"
+  text-danger-dark: "#ea4d4f"
   border-dark: "#eae9e5"
+  success-dark: "#22a06b"
 typography:
   heading-1:
     fontFamily: "IBM Plex Sans"
@@ -264,19 +269,19 @@ components:
     typography: "{typography.label}"
   meta-accent:
     backgroundColor: "{colors.bg}"
-    textColor: "{colors.primary}"
+    textColor: "{colors.text-accent}"
     typography: "{typography.label-emphasis}"
   meta-accent-dark:
     backgroundColor: "{colors.bg-dark}"
-    textColor: "{colors.primary}"
+    textColor: "{colors.text-accent-dark}"
     typography: "{typography.label-emphasis}"
   meta-danger:
     backgroundColor: "{colors.bg}"
-    textColor: "{colors.danger}"
+    textColor: "{colors.text-danger}"
     typography: "{typography.label-emphasis}"
   meta-danger-dark:
     backgroundColor: "{colors.bg-dark}"
-    textColor: "{colors.danger}"
+    textColor: "{colors.text-danger-dark}"
     typography: "{typography.label-emphasis}"
   meta-success:
     backgroundColor: "{colors.bg}"
@@ -284,7 +289,39 @@ components:
     typography: "{typography.label-emphasis}"
   meta-success-dark:
     backgroundColor: "{colors.bg-dark}"
+    textColor: "{colors.success-dark}"
+    typography: "{typography.label-emphasis}"
+  meta-neutral-on-surface:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.text-muted}"
+    typography: "{typography.label}"
+  meta-neutral-on-surface-dark:
+    backgroundColor: "{colors.surface-dark}"
+    textColor: "{colors.text-muted-dark}"
+    typography: "{typography.label}"
+  meta-accent-on-surface:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.text-accent}"
+    typography: "{typography.label-emphasis}"
+  meta-accent-on-surface-dark:
+    backgroundColor: "{colors.surface-dark}"
+    textColor: "{colors.text-accent-dark}"
+    typography: "{typography.label-emphasis}"
+  meta-danger-on-surface:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.text-danger}"
+    typography: "{typography.label-emphasis}"
+  meta-danger-on-surface-dark:
+    backgroundColor: "{colors.surface-dark}"
+    textColor: "{colors.text-danger-dark}"
+    typography: "{typography.label-emphasis}"
+  meta-success-on-surface:
+    backgroundColor: "{colors.surface}"
     textColor: "{colors.success}"
+    typography: "{typography.label-emphasis}"
+  meta-success-on-surface-dark:
+    backgroundColor: "{colors.surface-dark}"
+    textColor: "{colors.success-dark}"
     typography: "{typography.label-emphasis}"
   readout-lg:
     backgroundColor: "{colors.bg}"
@@ -379,6 +416,132 @@ components:
     textColor: "{colors.text-dark}"
     typography: "{typography.button-sm}"
     rounded: "{rounded.default}"
+  badge-neutral:
+    backgroundColor: "{colors.bg}"
+    textColor: "{colors.text-muted}"
+    typography: "{typography.label}"
+    rounded: "{rounded.default}"
+  badge-neutral-dark:
+    backgroundColor: "{colors.bg-dark}"
+    textColor: "{colors.text-muted-dark}"
+    typography: "{typography.label}"
+    rounded: "{rounded.default}"
+  badge-accent:
+    backgroundColor: "{colors.bg}"
+    textColor: "{colors.text-accent}"
+    typography: "{typography.label}"
+    rounded: "{rounded.default}"
+  badge-accent-dark:
+    backgroundColor: "{colors.bg-dark}"
+    textColor: "{colors.text-accent-dark}"
+    typography: "{typography.label}"
+    rounded: "{rounded.default}"
+  badge-danger:
+    backgroundColor: "{colors.bg}"
+    textColor: "{colors.text-danger}"
+    typography: "{typography.label}"
+    rounded: "{rounded.default}"
+  badge-danger-dark:
+    backgroundColor: "{colors.bg-dark}"
+    textColor: "{colors.text-danger-dark}"
+    typography: "{typography.label}"
+    rounded: "{rounded.default}"
+  badge-success:
+    backgroundColor: "{colors.bg}"
+    textColor: "{colors.success}"
+    typography: "{typography.label}"
+    rounded: "{rounded.default}"
+  badge-success-dark:
+    backgroundColor: "{colors.bg-dark}"
+    textColor: "{colors.success-dark}"
+    typography: "{typography.label}"
+    rounded: "{rounded.default}"
+  badge-neutral-on-surface:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.text-muted}"
+    typography: "{typography.label}"
+    rounded: "{rounded.default}"
+  badge-neutral-on-surface-dark:
+    backgroundColor: "{colors.surface-dark}"
+    textColor: "{colors.text-muted-dark}"
+    typography: "{typography.label}"
+    rounded: "{rounded.default}"
+  badge-accent-on-surface:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.text-accent}"
+    typography: "{typography.label}"
+    rounded: "{rounded.default}"
+  badge-accent-on-surface-dark:
+    backgroundColor: "{colors.surface-dark}"
+    textColor: "{colors.text-accent-dark}"
+    typography: "{typography.label}"
+    rounded: "{rounded.default}"
+  badge-danger-on-surface:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.text-danger}"
+    typography: "{typography.label}"
+    rounded: "{rounded.default}"
+  badge-danger-on-surface-dark:
+    backgroundColor: "{colors.surface-dark}"
+    textColor: "{colors.text-danger-dark}"
+    typography: "{typography.label}"
+    rounded: "{rounded.default}"
+  badge-success-on-surface:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.success}"
+    typography: "{typography.label}"
+    rounded: "{rounded.default}"
+  badge-success-on-surface-dark:
+    backgroundColor: "{colors.surface-dark}"
+    textColor: "{colors.success-dark}"
+    typography: "{typography.label}"
+    rounded: "{rounded.default}"
+  input:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.text}"
+    typography: "{typography.body-md}"
+    rounded: "{rounded.default}"
+  input-dark:
+    backgroundColor: "{colors.surface-dark}"
+    textColor: "{colors.text-dark}"
+    typography: "{typography.body-md}"
+    rounded: "{rounded.default}"
+  input-placeholder:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.text-muted}"
+    typography: "{typography.body-md}"
+  input-placeholder-dark:
+    backgroundColor: "{colors.surface-dark}"
+    textColor: "{colors.text-muted-dark}"
+    typography: "{typography.body-md}"
+  input-label:
+    backgroundColor: "{colors.bg}"
+    textColor: "{colors.text}"
+    typography: "{typography.body-sm}"
+  input-label-dark:
+    backgroundColor: "{colors.bg-dark}"
+    textColor: "{colors.text-dark}"
+    typography: "{typography.body-sm}"
+  input-error:
+    backgroundColor: "{colors.bg}"
+    textColor: "{colors.text-danger}"
+  input-error-dark:
+    backgroundColor: "{colors.bg-dark}"
+    textColor: "{colors.text-danger-dark}"
+  input-error-on-surface:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.text-danger}"
+  input-error-on-surface-dark:
+    backgroundColor: "{colors.surface-dark}"
+    textColor: "{colors.text-danger-dark}"
+  theme-toggle-pressed:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.on-primary}"
+  lightbox-close:
+    backgroundColor: "{colors.overlay}"
+    textColor: "{colors.overlay-fg}"
+    typography: "{typography.button-md}"
+    rounded: "{rounded.default}"
 ---
 
 <!-- Generated by scripts/build-design-md.mjs from src/tokens/tokens.json, registry.json and design-md/. Do not edit by hand. Regenerate: npm run tokens:build -->
@@ -397,9 +560,11 @@ Everything in the front matter, and every table below, is generated from `src/to
 
 `bg` is the canvas. `surface` is anything raised above it: panels, inputs, cards. `text` is the ink, `text-muted` is for secondary text, and `border` colours rules and outlines.
 
-`primary` is the single accent. The token file calls it `accent`; it is named `primary` here because the DESIGN.md format and its linter look for that name. Use it for the main action, focus outlines and the indicators on gauges. `on-primary` is the text colour that sits on it.
+`primary` is the single accent, and it is a fill. The token file calls it `accent`; it is named `primary` here because the DESIGN.md format and its linter look for that name. Use it for the main action, focus outlines and the indicators on gauges. `on-primary` is the text colour that sits on it.
 
-`danger` and `success` carry status, as text and outlines on labels, badges and input errors. `overlay`, `overlay-fg` and `overlay-border` belong to the lightbox. `grid-line` draws the structural hatch.
+Accent as text is its own role. `text-accent` colours accent labels, badges and the cursor, and it has a dark value of its own so it stays readable on both canvases. `primary` falls short of AA as a text colour, so it never goes on text.
+
+`danger` is the status fill and outline colour, such as an invalid input's border. Danger as text is `text-danger`, on labels, badges and input errors, with a dark value of its own. `success` only ever appears as text, so it is its own text colour and has a separate dark value. `overlay`, `overlay-fg` and `overlay-border` belong to the lightbox. `grid-line` draws the structural hatch.
 
 ### Dark theme
 
@@ -417,6 +582,8 @@ In CSS, colours are the `--nil-color-*` custom properties. Use those, not the va
 | `surface` | `semantic.light.color-surface` | `--nil-color-surface` |
 | `text` | `semantic.light.color-text` | `--nil-color-text` |
 | `text-muted` | `semantic.light.color-text-muted` | `--nil-color-text-muted` |
+| `text-accent` | `semantic.light.color-text-accent` | `--nil-color-text-accent` |
+| `text-danger` | `semantic.light.color-text-danger` | `--nil-color-text-danger` |
 | `border` | `semantic.light.color-border` | `--nil-color-border` |
 | `primary` | `semantic.light.color-accent` | `--nil-color-accent` |
 | `on-primary` | `semantic.light.color-accent-contrast` | `--nil-color-accent-contrast` |
@@ -431,11 +598,14 @@ In CSS, colours are the `--nil-color-*` custom properties. Use those, not the va
 | `surface-dark` | `semantic.dark.color-surface` | `--nil-color-surface under [data-theme='dark']` |
 | `text-dark` | `semantic.dark.color-text` | `--nil-color-text under [data-theme='dark']` |
 | `text-muted-dark` | `semantic.dark.color-text-muted` | `--nil-color-text-muted under [data-theme='dark']` |
+| `text-accent-dark` | `semantic.dark.color-text-accent` | `--nil-color-text-accent under [data-theme='dark']` |
+| `text-danger-dark` | `semantic.dark.color-text-danger` | `--nil-color-text-danger under [data-theme='dark']` |
 | `border-dark` | `semantic.dark.color-border` | `--nil-color-border under [data-theme='dark']` |
+| `success-dark` | `semantic.dark.color-success` | `--nil-color-success under [data-theme='dark']` |
 
 ### Contrast
 
-The linter checks the contrast of every component that has both a background and a text colour. Run `npm run tokens:validate` for the current findings and read them before putting text on a colour. A component that is transparent in code is listed against `bg`, the canvas it sits on by default, so moving it onto `surface` changes its contrast.
+The linter checks the contrast of every component that has both a background and a text colour, and `npm run tokens:validate` fails if a pair falls below WCAG AA. A component that is transparent in code is listed against `bg`, the canvas it sits on by default. Where one is drawn inside a card or a panel it also has an entry ending in `-on-surface`, because surface is the harder background for coloured text. Only the pairs listed in this file are checked. A pair that isn't here isn't covered, and neither is anything dimmed with opacity.
 
 ## Typography
 
@@ -495,7 +665,8 @@ What the front matter can't say:
 - Don't introduce pure black or pure white of your own. Use the colour tokens.
 - Don't hardcode a corner radius or a pixel value. Use `rounded.default` and the spacing scale.
 - Do keep product-specific colours, such as category or bucket hues, in the app's own theme. Don't add them to NIL's tokens.
-- Do check the linter's contrast findings before pairing text with a background.
+- Do run `npm run tokens:validate` before pairing text with a background. A pair below WCAG AA fails it.
+- Do use `text-accent` and `text-danger` for accent and danger text. Don't use `primary` or `danger` as a text colour.
 - Do pick a component by its job. `AGENTS.md` has the table.
 
 ## Motion

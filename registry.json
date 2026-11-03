@@ -51,7 +51,7 @@
     },
     {
       "name": "Meta",
-      "tokens": ["--nil-color-accent", "--nil-color-danger", "--nil-color-success", "--nil-color-border", "--nil-color-text-muted", "--nil-type-weight-mono", "--nil-type-weight-mono-emphasis"],
+      "tokens": ["--nil-color-text-accent", "--nil-color-text-danger", "--nil-color-success", "--nil-color-border", "--nil-color-text-muted", "--nil-type-weight-mono", "--nil-type-weight-mono-emphasis"],
       "props": { "label": "string", "tone": "neutral|accent|danger|success" }
     },
     {
@@ -61,13 +61,33 @@
     },
     {
       "name": "Prompt",
-      "tokens": ["--nil-color-text", "--nil-color-text-muted", "--nil-color-accent"],
+      "tokens": ["--nil-color-text", "--nil-color-text-muted", "--nil-color-text-accent"],
       "props": { "prefix": "string?", "showCursor": "boolean" }
     },
     {
       "name": "Composer",
-      "tokens": ["--nil-color-surface", "--nil-color-text", "--nil-color-text-muted", "--nil-color-border", "--nil-color-accent", "--nil-border-width", "--nil-border-width-thick", "--nil-radius-default", "--nil-font-mono", "--nil-type-scale-base", "--nil-type-scale-xs", "--nil-type-weight-mono", "--nil-spacing-xs", "--nil-spacing-sm", "--nil-spacing-md", "--nil-motion-duration-fast", "--nil-motion-easing-standard"],
+      "tokens": ["--nil-color-surface", "--nil-color-text", "--nil-color-text-muted", "--nil-color-border", "--nil-color-accent", "--nil-color-text-accent", "--nil-border-width", "--nil-border-width-thick", "--nil-radius-default", "--nil-font-mono", "--nil-type-scale-base", "--nil-type-scale-xs", "--nil-type-weight-mono", "--nil-spacing-xs", "--nil-spacing-sm", "--nil-spacing-md", "--nil-motion-duration-fast", "--nil-motion-easing-standard"],
       "props": { "label": "string", "showLabel": "boolean", "onSend": "function", "value": "string?", "defaultValue": "string?", "onValueChange": "function?", "status": "idle|sending|streaming", "onStop": "function?", "maxRows": "number", "prefix": "string?", "hint": "string|false", "disabled": "boolean", "ref": "forwarded to the textarea" }
+    },
+    {
+      "name": "Badge",
+      "tokens": ["--nil-color-text-muted", "--nil-color-text-accent", "--nil-color-text-danger", "--nil-color-success", "--nil-border-width", "--nil-radius-default", "--nil-font-mono", "--nil-type-scale-xs", "--nil-spacing-xs", "--nil-spacing-sm"],
+      "props": { "tone": "neutral|accent|danger|success" }
+    },
+    {
+      "name": "Input",
+      "tokens": ["--nil-color-text", "--nil-color-text-muted", "--nil-color-text-danger", "--nil-color-danger", "--nil-color-surface", "--nil-color-border", "--nil-color-accent", "--nil-border-width", "--nil-radius-default", "--nil-font-body", "--nil-type-scale-xs", "--nil-type-scale-sm", "--nil-type-scale-base", "--nil-spacing-xs", "--nil-spacing-sm"],
+      "props": { "label": "string", "error": "string?" }
+    },
+    {
+      "name": "ThemeToggle",
+      "tokens": ["--nil-color-text", "--nil-color-border", "--nil-color-accent", "--nil-color-accent-contrast", "--nil-border-width", "--nil-radius-default", "--nil-type-scale-xs", "--nil-motion-duration-base", "--nil-motion-easing-standard"],
+      "props": { "theme": "light|dark", "onThemeChange": "function", "disabled": "boolean" }
+    },
+    {
+      "name": "Lightbox",
+      "tokens": ["--nil-color-overlay", "--nil-color-overlay-fg", "--nil-color-overlay-border", "--nil-color-accent", "--nil-border-width-thick", "--nil-radius-default", "--nil-font-mono", "--nil-type-scale-sm", "--nil-spacing-xs", "--nil-spacing-md", "--nil-spacing-lg", "--nil-spacing-xl", "--nil-spacing-2xl", "--nil-motion-duration-base", "--nil-motion-easing-out-expo"],
+      "props": { "image": "{ src, alt }|null", "onClose": "function" }
     }
   ]
 }
