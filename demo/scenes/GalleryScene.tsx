@@ -1,9 +1,10 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState, type FormEvent } from 'react';
 import {
   Badge,
   Button,
   Card,
   Composer,
+  Dialog,
   Divider,
   Grid,
   Heading,
@@ -128,6 +129,136 @@ function ComposerDemo() {
   );
 }
 
+/** How long the demo pretends to delete for. Long enough to see the working state. */
+const DELETE_MS = 1400;
+
+/**
+ * A destructive confirmation. Danger variant, focus starts on Cancel, and the delete shows that it
+ * is working: the label becomes "Deleting" with the kit's blinking cursor, and a status message says so.
+ * While it runs, both buttons are aria-disabled and not disabled, so focus stays where it is, and
+ * Escape and the Close control do nothing.
+ */
+function DeleteDemo() {
+  const [open, setOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [deleted, setDeleted] = useState(false);
+  const cancelRef = useRef<HTMLButtonElement>(null);
+  const timer = useRef<number>();
+  useEffect(() => () => window.clearTimeout(timer.current), []);
+
+  const close = () => {
+    if (!deleting) setOpen(false);
+  };
+  const confirm = () => {
+    if (deleting) return;
+    setDeleting(true);
+    timer.current = window.setTimeout(() => {
+      setDeleting(false);
+      setOpen(false);
+      setDeleted(true);
+    }, DELETE_MS);
+  };
+
+  return (
+    <div className="nil-demo-dialog-row">
+      <Button
+        variant="secondary"
+        onClick={() => {
+          setDeleted(false);
+          setOpen(true);
+        }}
+      >
+        Delete project
+      </Button>
+      <Text size="sm" muted role="status">
+        {deleted ? 'Project deleted. Nothing was removed, this is a demo.' : ''}
+      </Text>
+      <Dialog
+        open={open}
+        onClose={close}
+        variant="danger"
+        title="Delete project"
+        description="This removes the project and every token in it. It can't be undone."
+        initialFocusRef={cancelRef}
+        actions={
+          <>
+            <Button ref={cancelRef} variant="secondary" aria-disabled={deleting || undefined} onClick={close}>
+              Cancel
+            </Button>
+            <Button variant="danger" aria-disabled={deleting || undefined} onClick={confirm}>
+              {deleting ? (
+                <>
+                  Deleting<span className="nil-cursor-blink" aria-hidden>▌</span>
+                </>
+              ) : (
+                'Delete project'
+              )}
+            </Button>
+          </>
+        }
+      >
+        <p role="status" className="nil-sr-only">
+          {deleting ? 'Deleting project' : ''}
+        </p>
+      </Dialog>
+    </div>
+  );
+}
+
+/** A short form. Focus starts in the field, Enter saves, and the Save button sits in the actions row. */
+function RenameDemo() {
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState('nil-ds demo');
+  const [saved, setSaved] = useState<string | null>(null);
+  const formId = useId();
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const next = String(new FormData(event.currentTarget).get('name') ?? '').trim();
+    if (!next) return;
+    setName(next);
+    setSaved(next);
+    setOpen(false);
+  };
+
+  return (
+    <div className="nil-demo-dialog-row">
+      <Button
+        variant="secondary"
+        onClick={() => {
+          setSaved(null);
+          setOpen(true);
+        }}
+      >
+        Rename project
+      </Button>
+      <Text size="sm" muted role="status">
+        {saved ? `Renamed to ${saved}. Nothing was saved, this is a demo.` : ''}
+      </Text>
+      <Dialog
+        open={open}
+        onClose={() => setOpen(false)}
+        title="Rename project"
+        description="Pick a short name. You can change it again later."
+        actions={
+          <>
+            <Button variant="secondary" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="primary" type="submit" form={formId}>
+              Save name
+            </Button>
+          </>
+        }
+      >
+        <form id={formId} onSubmit={handleSubmit}>
+          <Input label="Project name" name="name" defaultValue={name} required />
+        </form>
+      </Dialog>
+    </div>
+  );
+}
+
 export function GalleryScene() {
   const { ref, visible } = useReveal();
   const [lightbox, setLightbox] = useState<LightboxImage | null>(null);
@@ -174,6 +305,17 @@ export function GalleryScene() {
           </Text>
           <div style={{ marginTop: 'var(--nil-spacing-md)' }}>
             <ComposerDemo />
+          </div>
+        </Card>
+
+        <Card style={{ gridColumn: '1 / -1' }}>
+          <Heading level={3}>Dialog</Heading>
+          <Text size="sm" muted style={{ marginTop: 'var(--nil-spacing-xs)' }}>
+            A modal for one decision or a short form. Focus moves in, stays in, and returns to the button that opened it.
+          </Text>
+          <div style={{ marginTop: 'var(--nil-spacing-md)' }}>
+            <DeleteDemo />
+            <RenameDemo />
           </div>
         </Card>
 

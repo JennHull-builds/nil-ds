@@ -271,8 +271,18 @@ pre,
   border-color: var(--nil-color-accent);
 }
 
-.nil-btn--primary .nil-btn__bracket {
+.nil-btn--primary .nil-btn__bracket,
+.nil-btn--danger .nil-btn__bracket {
   color: color-mix(in srgb, var(--nil-color-accent-contrast) 62%, transparent);
+}
+
+/* Destructive actions. The fill is --nil-color-danger and the text is the accent's contrast
+   colour, the same white-on-fill pairing as primary. Danger as TEXT uses --nil-color-text-danger. */
+.nil-btn--danger {
+  background: var(--nil-color-danger);
+  color: var(--nil-color-accent-contrast);
+  border-width: var(--nil-border-width-thick);
+  border-color: var(--nil-color-danger);
 }
 
 .nil-btn--secondary {
@@ -329,6 +339,23 @@ pre,
   border-color: color-mix(in srgb, var(--nil-color-accent) 90%, var(--nil-color-bg));
 }
 
+/* Danger hover is the same darkening as primary, for the same reason. */
+.nil-btn--danger:not(:disabled):hover {
+  background: color-mix(in srgb, var(--nil-color-danger) 90%, var(--nil-color-text));
+  border-color: color-mix(in srgb, var(--nil-color-danger) 90%, var(--nil-color-text));
+}
+
+[data-theme='dark'] .nil-btn--danger:not(:disabled):hover {
+  background: color-mix(in srgb, var(--nil-color-danger) 90%, var(--nil-color-bg));
+  border-color: color-mix(in srgb, var(--nil-color-danger) 90%, var(--nil-color-bg));
+}
+
+/* A button that is busy keeps focus, so it is marked aria-disabled and not disabled: a focused
+   button that turns natively disabled sends focus to the page. The click is ignored in code. */
+.nil-btn[aria-disabled='true'] {
+  cursor: not-allowed;
+}
+
 .nil-btn--secondary:not(:disabled):hover {
   background: var(--nil-color-surface);
 }
@@ -360,6 +387,7 @@ pre,
 .nil-input:focus-visible,
 .nil-theme-segment:focus-visible,
 .nil-lightbox-close:focus-visible,
+.nil-dialog__close:focus-visible,
 .nil-demo-nav a:focus-visible {
   outline: 2px solid var(--nil-color-accent);
   outline-offset: 2px;
@@ -744,6 +772,153 @@ pre,
   }
 }
 
+/* ─── Dialog ──────────────────────────────────────────────────────────────── */
+
+/*
+ * A native <dialog> opened with showModal(), which makes the page behind it inert.
+ *
+ * The dialog element fills the viewport and is the scrim. The panel is the visible box. A click
+ * whose target is the dialog element itself landed outside the panel, which is how a backdrop
+ * click is told apart from a click inside. ::backdrop is made transparent so the browser's own
+ * dim never stacks on the scrim, and so the scrim does not depend on ::backdrop inheriting
+ * custom properties.
+ *
+ * Scrolling happens inside the dialog, so a tall panel never scrolls the page behind it.
+ */
+.nil-dialog {
+  position: fixed;
+  inset: 0;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: var(--nil-spacing-md);
+  border: 0;
+  background: var(--nil-color-overlay);
+  color: var(--nil-color-text);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.nil-dialog[open] {
+  display: flex;
+}
+
+.nil-dialog::backdrop {
+  background: transparent;
+}
+
+/* The dialog itself takes focus only when nothing inside can. It is not a control. */
+.nil-dialog:focus-visible {
+  outline: none;
+}
+
+.nil-dialog__panel {
+  box-sizing: border-box;
+  /* Auto margins centre the panel, and let a tall one start at the top and scroll. */
+  margin: auto;
+  width: min(100%, var(--nil-size-dialog));
+  display: flex;
+  flex-direction: column;
+  background: var(--nil-color-surface);
+  border: var(--nil-border-width) solid var(--nil-color-border);
+  border-radius: var(--nil-radius-default);
+}
+
+/* The danger marker is a top rule, a non-text edge that needs 3:1 against what touches it. */
+.nil-dialog--danger .nil-dialog__panel {
+  border-top: var(--nil-border-width-thick) solid var(--nil-color-danger);
+}
+
+.nil-dialog__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--nil-spacing-sm);
+  padding: var(--nil-spacing-sm) var(--nil-spacing-md);
+  border-bottom: var(--nil-border-width) solid var(--nil-color-border);
+}
+
+/* Same voice as a Panel header: mono, uppercase, small, wide tracking. */
+.nil-dialog__title {
+  margin: 0;
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-xs);
+  font-weight: var(--nil-type-weight-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--nil-color-text);
+}
+
+/* Styled like Lightbox's "Close [Esc]", on the panel's own surface. */
+.nil-dialog__close {
+  appearance: none;
+  flex-shrink: 0;
+  padding: var(--nil-spacing-xs) var(--nil-spacing-md);
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-sm);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--nil-color-text);
+  background: transparent;
+  border: var(--nil-border-width-thick) solid var(--nil-color-border);
+  border-radius: var(--nil-radius-default);
+  cursor: pointer;
+  transition: background var(--nil-motion-duration-fast) var(--nil-motion-easing-standard);
+}
+
+.nil-dialog__close:hover {
+  background: var(--nil-color-bg);
+}
+
+.nil-dialog__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nil-spacing-md);
+  padding: var(--nil-spacing-md);
+}
+
+.nil-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--nil-spacing-sm);
+  padding: var(--nil-spacing-md);
+  border-top: var(--nil-border-width) solid var(--nil-color-border);
+}
+
+/* Enter: a short fade, and the panel rises a little. Both read the motion tokens, so a slower
+   feel is one token swap. Nothing plays under reduced motion (see the block at the foot). */
+@keyframes nil-dialog-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes nil-dialog-rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--nil-spacing-sm));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.nil-dialog[open] {
+  animation: nil-dialog-fade var(--nil-motion-duration-base) var(--nil-motion-easing-out-expo) both;
+}
+
+.nil-dialog[open] .nil-dialog__panel {
+  animation: nil-dialog-rise var(--nil-motion-duration-base) var(--nil-motion-easing-out-expo) both;
+}
+
 /* ─── DataRow ─────────────────────────────────────────────────────────────── */
 
 .nil-data-row {
@@ -793,6 +968,12 @@ pre,
   /* Finite, so a 1ms duration would be harmless. Switched off anyway: an element that
      fades in over 1ms is a flicker, and `both` holds the start frame until it runs. */
   .nil-lightbox-backdrop {
+    animation: none;
+  }
+
+  /* Dialog arrives in place: no fade, no rise. The same flicker reasoning as the lightbox. */
+  .nil-dialog[open],
+  .nil-dialog[open] .nil-dialog__panel {
     animation: none;
   }
 

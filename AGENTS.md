@@ -26,6 +26,9 @@ Read this before generating UI with NIL primitives.
 | CLI key-value | `Meta` |
 | Terminal line | `Prompt` |
 | Multi-line chat or command input | `Composer` |
+| A modal decision or short form | `Dialog` |
+| Full-size image viewer | `Lightbox` |
+| Destructive action | `Button` with `variant="danger"` |
 | Large stat | `Readout` |
 
 ## App vs NIL boundary
@@ -176,6 +179,38 @@ Added 2026-10-17, with the DESIGN.md work on branch `design-md`.
   `core.css`, not from the registry. Do the same when adding one. Updated 2026-11-03: Badge, Input,
   ThemeToggle and Lightbox now have entries, with token lists derived from the CSS and the component
   source, so the registry lists 16 of the 21 files. The Meta and Prompt lists were completed the same way.
+  Dialog brings it to 17 of the 22 files, and Button's list was completed from the code with it.
+
+## Gotcha: Dialog is the native element, and jsdom cannot see most of it
+
+Added 2026-11-03, with Dialog.
+
+- **The scrim is the dialog element.** `.nil-dialog` fills the viewport and carries `--nil-color-overlay`.
+  The panel inside it is the visible box. A click whose target is the dialog element itself is a
+  backdrop click, and a press that starts inside the panel does not count. `::backdrop` is set
+  transparent so the browser's own dim never stacks on the scrim. Keep the gutter around the panel as
+  padding on the dialog, so clicks in it still land on the dialog.
+- **Tab is wrapped in code.** `showModal()` makes the page inert, but Chromium gave the browser's own
+  UI a Tab stop at each end of the dialog (measured 2026-11-03), so focus left the controls for one
+  press. Dialog's `onKeyDown` wraps the ends.
+- **jsdom fakes only the open attribute and the close event.** `src/test/setup.ts` shims `showModal()`
+  and `close()` because jsdom 29 has neither. The top layer, the inert page behind, Escape producing a
+  `cancel` event and Tab containment exist only in a real browser. The keyboard walk was run in
+  Playwright on Chromium. Firefox and Safari are unchecked.
+- **axe sees nothing inside a native `<dialog>` in jsdom.** Every rule comes back "incomplete", so a
+  nameless button inside `<dialog open>` passes while the same button in a `<div>` fails, and
+  `toHaveNoViolations` only fails on violations. Dialog's axe test runs on the same markup with the
+  dialog swapped for `<div role="dialog">`, and two guard tests prove it can fail. Any new test of a
+  native dialog needs the same treatment. Names and descriptions are also asserted with role queries.
+- **Focus is moved in code.** On open it goes to `initialFocusRef`, else the first control in the body
+  or actions, and to Close only when nothing else can take it. On close it returns to whatever had
+  focus at open. A button click does not
+  focus the button in Safari or in Firefox on macOS, so there may be nothing to return to there
+  (unchecked). For a destructive confirmation, point `initialFocusRef` at Cancel.
+- **A busy button stays focusable.** Mark it `aria-disabled` and ignore the click. A focused button
+  that becomes natively `disabled` sends focus to the page, the same trap Composer had.
+- **Leave `<form method="dialog">` out.** It closes the element behind the component's back. Handle
+  `onSubmit` and call `onClose`.
 
 ## Gotcha: accent and danger are fills, and text has its own roles
 

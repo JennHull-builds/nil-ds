@@ -223,6 +223,19 @@
   margin-top: var(--nil-spacing-md);
 }
 
+/* Gallery Dialog block: a trigger, and the status line that appears after the dialog closes. */
+.nil-demo-dialog-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nil-spacing-sm) var(--nil-spacing-md);
+  min-height: var(--nil-spacing-xl);
+}
+
+.nil-demo-dialog-row + .nil-demo-dialog-row {
+  margin-top: var(--nil-spacing-md);
+}
+
 .nil-demo-button-strip {
   display: flex;
   flex-wrap: wrap;

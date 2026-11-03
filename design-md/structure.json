@@ -24,6 +24,7 @@
       "button-primary": { "backgroundColor": "color-accent", "textColor": "color-accent-contrast", "typography": "button-md", "rounded": "radius-default" },
       "button-secondary": { "backgroundColor": "color-bg", "textColor": "color-text", "typography": "button-md", "rounded": "radius-default" },
       "button-ghost": { "backgroundColor": "color-bg", "textColor": "color-text", "typography": "button-md", "rounded": "radius-default" },
+      "button-danger": { "backgroundColor": "color-danger", "textColor": "color-accent-contrast", "typography": "button-md", "rounded": "radius-default" },
       "button-disabled": { "backgroundColor": "color-surface", "textColor": "color-text-muted", "typography": "button-md", "rounded": "radius-default" },
       "button-sm": { "typography": "button-sm" }
     },
@@ -113,6 +114,12 @@
     },
     "Lightbox": {
       "lightbox-close": { "backgroundColor": "color-overlay", "textColor": "color-overlay-fg", "typography": "button-md", "rounded": "radius-default" }
+    },
+    "Dialog": {
+      "dialog": { "backgroundColor": "color-surface", "textColor": "color-text", "typography": "body-md", "rounded": "radius-default", "width": "size-dialog" },
+      "dialog-title": { "backgroundColor": "color-surface", "textColor": "color-text", "typography": "label" },
+      "dialog-description": { "backgroundColor": "color-surface", "textColor": "color-text-muted", "typography": "body-md" },
+      "dialog-close": { "backgroundColor": "color-surface", "textColor": "color-text", "typography": "button-md", "rounded": "radius-default" }
     }
   }
 }

@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { createElement } from 'react';
 import { render } from '@testing-library/react';
 import { Composer } from '../components/Composer';
+import { Dialog } from '../components/Dialog';
 import tokensJson from './tokens.json';
 
 /**
@@ -110,6 +111,50 @@ describe('reduced motion', () => {
     const composerRules = coreCss.match(/[^{}]*nil-composer[^{}]*\{[^{}]*\}/g) ?? [];
     expect(composerRules.length).toBeGreaterThan(5);
     for (const rule of composerRules) expect(rule).not.toMatch(/animation\s*:/);
+  });
+
+  describe('Dialog', () => {
+    // The enter is finite, so a 1ms duration would not strobe. It is switched off anyway: a panel
+    // that fades in over 1ms is a flicker, and `both` holds the start frame until the animation runs.
+    const outsideMedia = coreCss.replace(blockAfter(coreCss, REDUCE), '');
+
+    it('the enter animation is switched OFF under reduced motion, not merely shortened', () => {
+      const block = blockAfter(coreCss, REDUCE);
+      expect(block).toMatch(
+        /\.nil-dialog\[open\],\s*\.nil-dialog\[open\] \.nil-dialog__panel\s*\{[^}]*animation:\s*none/,
+      );
+    });
+
+    it('has an enter animation to switch off, on the dialog and on its panel', () => {
+      // Guards the assertion above against passing when there was never an animation.
+      const rules = [...outsideMedia.matchAll(/(\.nil-dialog\[open\][^{]*)\{([^{}]*animation:[^;}]*)/g)];
+      expect(rules.map((m) => m[1].trim())).toEqual(['.nil-dialog[open]', '.nil-dialog[open] .nil-dialog__panel']);
+    });
+
+    it('every Dialog animation reads the motion tokens, is finite, and uses no literal time', () => {
+      const rules = outsideMedia.match(/[^{}]*nil-dialog[^{}]*\{[^{}]*\}/g) ?? [];
+      expect(rules.length).toBeGreaterThan(8);
+      for (const rule of rules) {
+        expect(rule).not.toMatch(/\d(ms|s)\b/);
+        for (const [declaration] of rule.matchAll(/animation\s*:[^;]*/g)) {
+          expect(declaration).toContain('var(--nil-motion-duration-base)');
+          expect(declaration).toContain('var(--nil-motion-easing-out-expo)');
+          expect(declaration).not.toMatch(/infinite/);
+        }
+      }
+    });
+
+    it('the rise distance is a spacing token, not a pixel value', () => {
+      const keyframes = blockAfter(coreCss, '@keyframes nil-dialog-rise');
+      expect(keyframes.length).toBeGreaterThan(20);
+      expect(keyframes).toContain('translateY(var(--nil-spacing-sm))');
+      expect(keyframes).not.toMatch(/\d+px/);
+    });
+
+    it('the component sets no inline motion, so the media query is the only switch', () => {
+      const { container } = render(createElement(Dialog, { open: true, onClose: () => {}, title: 'T' }));
+      expect(container.innerHTML).not.toMatch(/animation|transition|transform/);
+    });
   });
 
   it('the stagger delay is zeroed, because the stagger is the motion', () => {

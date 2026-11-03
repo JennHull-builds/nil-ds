@@ -1,16 +1,27 @@
+import { forwardRef } from 'react';
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
-  variant?: 'primary' | 'secondary' | 'ghost';
+  /** `danger` is for destructive actions: a danger fill with the accent's contrast text. */
+  variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
   size?: 'sm' | 'md';
 }
 
-/** Terminal `[ ACTION ]` shell — every variant shares the bracket frame. */
-export function Button({ children, variant = 'secondary', size = 'md', style, disabled, className, ...rest }: ButtonProps) {
+/**
+ * Terminal `[ ACTION ]` shell, every variant shares the bracket frame.
+ *
+ * The ref reaches the underlying `<button>`, so a parent can move focus to it
+ * (Dialog's `initialFocusRef` is the first user).
+ */
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+  { children, variant = 'secondary', size = 'md', style, disabled, className, ...rest },
+  ref,
+) {
   return (
     <button
       {...rest}
+      ref={ref}
       disabled={disabled}
       className={['nil-btn', `nil-btn--${variant}`, `nil-btn--${size}`, className].filter(Boolean).join(' ')}
       style={style}
@@ -24,4 +35,4 @@ export function Button({ children, variant = 'secondary', size = 'md', style, di
       </span>
     </button>
   );
-}
+});

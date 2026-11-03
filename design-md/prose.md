@@ -16,7 +16,7 @@ Everything in the front matter, and every table below, is generated from `src/to
 
 Accent as text is its own role. `text-accent` colours accent labels, badges and the cursor, and it has a dark value of its own so it stays readable on both canvases. `primary` falls short of AA as a text colour, so it never goes on text.
 
-`danger` is the status fill and outline colour, such as an invalid input's border. Danger as text is `text-danger`, on labels, badges and input errors, with a dark value of its own. `success` only ever appears as text, so it is its own text colour and has a separate dark value. `overlay`, `overlay-fg` and `overlay-border` belong to the lightbox. `grid-line` draws the structural hatch.
+`danger` is the status fill and outline colour: the danger button's fill, an invalid input's border and a danger dialog's top rule. Danger as text is `text-danger`, on labels, badges and input errors, with a dark value of its own. `success` only ever appears as text, so it is its own text colour and has a separate dark value. `overlay`, `overlay-fg` and `overlay-border` belong to the lightbox. `grid-line` draws the structural hatch.
 
 ### Dark theme
 
@@ -70,12 +70,13 @@ Bordered components use `rounded.default`, a small radius: soft brutalist, not s
 
 ## Components
 
-One group per primitive in `registry.json`: Button, Panel, Stack, Dial, Ring, Toggle, DataRow, TabStrip, Meta, Readout, Prompt and Composer. Variants use the format's related-key convention (`button-primary`, `button-secondary`), and the dark twin of any variant ends in `-dark`. Dial and Ring sizes are `size` entries such as `dial-sm` and `ring-md`.
+One group per primitive in `registry.json`: Button, Panel, Stack, Dial, Ring, Toggle, DataRow, TabStrip, Meta, Readout, Prompt, Composer, Badge, Input, ThemeToggle, Lightbox and Dialog. Variants use the format's related-key convention (`button-primary`, `button-secondary`), and the dark twin of any variant ends in `-dark`. Dial and Ring sizes are `size` entries such as `dial-sm` and `ring-md`.
 
 What the front matter can't say:
 
 - Borders. See Elevation & Depth.
-- Interaction states other than disabled. Primary buttons brighten on hover, secondary and ghost buttons fill with `surface`, and focus is an outline in `primary`.
+- Interaction states other than disabled. Primary and danger buttons darken on hover, secondary and ghost buttons fill with `surface`, and focus is an outline in `primary`.
+- Dialog's scrim and danger rule. The scrim is `overlay` painted on the dialog element itself, and a danger dialog adds a top rule in `danger`. Neither is a text and background pair, so the linter doesn't check them. The danger rule is a non-text edge and needs 3:1 against what touches it.
 - Composer's height. The text box grows with its text up to a row limit set by a prop, so it has no size entry. Its focus outline is drawn on the shell, not on the text box.
 - The active data row's background. CSS mixes it from other tokens, so it has no entry of its own and the linter doesn't check it.
 - Transparency. Components that are transparent in code (the ghost button, an off toggle, rows, tabs, meta labels, prompts, readouts, dials and rings) are listed on `bg`.

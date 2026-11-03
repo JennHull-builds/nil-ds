@@ -67,6 +67,7 @@
   --nil-primitive-size-dial-xl: 240px;
   --nil-primitive-size-ring-sm: 48px;
   --nil-primitive-size-ring-md: 72px;
+  --nil-primitive-size-dialog: 480px;
   --nil-primitive-layout-page-x: 80px;
   --nil-primitive-layout-section-y: 120px;
   --nil-primitive-layout-max-width: 1440px;
@@ -123,6 +124,7 @@
   --nil-size-dial-xl: var(--nil-primitive-size-dial-xl);
   --nil-size-ring-sm: var(--nil-primitive-size-ring-sm);
   --nil-size-ring-md: var(--nil-primitive-size-ring-md);
+  --nil-size-dialog: var(--nil-primitive-size-dialog);
   --nil-layout-page-x: var(--nil-primitive-layout-page-x);
   --nil-layout-section-y: var(--nil-primitive-layout-section-y);
   --nil-layout-max-width: var(--nil-primitive-layout-max-width);

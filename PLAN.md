@@ -155,6 +155,23 @@ reinjection, brand lime/mint/pork, Soft Bento, page/print chrome.
 
 ## Log
 
+- 2026-11-03: **Dialog, and the two Button changes it needed.** Dialog is the kit's base modal, on
+  the native `<dialog>` with `showModal()`: a Panel-style header, a Lightbox-style Close, an actions
+  row, and a scrim that is the dialog element itself. Focus goes in, stays in and returns to the
+  opener, all moved in code. Escape closes, a backdrop click closes only when asked, and the
+  default for that is off for both variants: a destructive confirmation should be answered with an
+  explicit choice, and a stray click would throw away what someone typed. Focus starts on
+  `initialFocusRef`, or on the first control in the body or actions, and on Close only when nothing
+  else can take it. A danger Dialog adds a
+  top rule in the danger fill, which is non-text and clears 3:1 on both edges. Its title stays in the
+  normal text colour. Enter is a short fade and a small rise at `duration-base`, because someone
+  waiting to answer a dialog should not wait 650ms, and it is switched off under reduced motion.
+  Button gained `forwardRef` (so `initialFocusRef` can reach it) and `variant="danger"`, after the
+  2 November eval showed six "Delete project" dialogs faking one by restyling the primary Button. New
+  token `size-dialog`, no value changed. Two things only a browser showed: Chromium gave its own UI a
+  Tab stop at each end of the dialog, so Tab is wrapped in code, and axe cannot see inside a native
+  `<dialog>` in jsdom, so Dialog's axe test runs on the same markup with the dialog swapped for a
+  `<div role="dialog">`. Left for later: Lightbox onto Dialog, and `forwardRef` on Input.
 - 2026-11-03: **Contrast is a gate, and accent and danger have separate fill and text roles
   (candidate B).** The DESIGN.md linter reported six text and background pairs below WCAG AA
   (4.5:1), and `tokens:validate` only warned. One blue cannot do both jobs: white text on the fill

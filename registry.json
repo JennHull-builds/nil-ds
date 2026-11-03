@@ -11,8 +11,8 @@
   "components": [
     {
       "name": "Button",
-      "tokens": ["--nil-color-accent", "--nil-color-accent-contrast", "--nil-color-text", "--nil-color-border", "--nil-color-surface", "--nil-border-width"],
-      "props": { "variant": "primary|secondary|ghost", "size": "sm|md", "disabled": "boolean" }
+      "tokens": ["--nil-color-accent", "--nil-color-accent-contrast", "--nil-color-danger", "--nil-color-text", "--nil-color-text-muted", "--nil-color-bg", "--nil-color-border", "--nil-color-surface", "--nil-border-width", "--nil-border-width-thick", "--nil-radius-default", "--nil-font-mono", "--nil-type-scale-xs", "--nil-type-scale-sm", "--nil-motion-duration-base", "--nil-motion-easing-standard"],
+      "props": { "variant": "primary|secondary|ghost|danger", "size": "sm|md", "disabled": "boolean" }
     },
     {
       "name": "Panel",
@@ -88,6 +88,11 @@
       "name": "Lightbox",
       "tokens": ["--nil-color-overlay", "--nil-color-overlay-fg", "--nil-color-overlay-border", "--nil-color-accent", "--nil-border-width-thick", "--nil-radius-default", "--nil-font-mono", "--nil-type-scale-sm", "--nil-spacing-xs", "--nil-spacing-md", "--nil-spacing-lg", "--nil-spacing-xl", "--nil-spacing-2xl", "--nil-motion-duration-base", "--nil-motion-easing-out-expo"],
       "props": { "image": "{ src, alt }|null", "onClose": "function" }
+    },
+    {
+      "name": "Dialog",
+      "tokens": ["--nil-color-overlay", "--nil-color-surface", "--nil-color-text", "--nil-color-bg", "--nil-color-border", "--nil-color-danger", "--nil-color-accent", "--nil-border-width", "--nil-border-width-thick", "--nil-radius-default", "--nil-font-mono", "--nil-type-scale-xs", "--nil-type-scale-sm", "--nil-type-weight-mono", "--nil-spacing-xs", "--nil-spacing-sm", "--nil-spacing-md", "--nil-size-dialog", "--nil-motion-duration-fast", "--nil-motion-duration-base", "--nil-motion-easing-standard", "--nil-motion-easing-out-expo"],
+      "props": { "open": "boolean", "onClose": "function", "title": "string", "description": "string?", "children": "ReactNode?", "actions": "ReactNode?", "variant": "default|danger", "dismissOnBackdrop": "boolean (default false)", "initialFocusRef": "RefObject<HTMLElement>?" }
     }
   ]
 }

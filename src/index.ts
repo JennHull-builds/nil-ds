@@ -31,6 +31,9 @@ export type { Theme, ThemeToggleProps } from './components/ThemeToggle';
 export { Lightbox } from './components/Lightbox';
 export type { LightboxImage, LightboxProps } from './components/Lightbox';
 
+export { Dialog } from './components/Dialog';
+export type { DialogProps } from './components/Dialog';
+
 export { Panel } from './components/Panel';
 export type { PanelProps } from './components/Panel';
 
