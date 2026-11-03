@@ -482,7 +482,7 @@ describe('Dialog', () => {
                 </Button>
                 <Button
                   variant="danger"
-                  aria-disabled={busy || undefined}
+                  aria-busy={busy || undefined}
                   onClick={() => {
                     if (busy) return;
                     setBusy(true);
@@ -518,7 +518,8 @@ describe('Dialog', () => {
 
       await user.keyboard('{Enter}');
       expect(screen.getByRole('button', { name: 'Deleting' })).toHaveFocus(); // the same button, still focused
-      expect(del).toHaveAttribute('aria-disabled', 'true');
+      expect(del).toHaveAttribute('aria-busy', 'true'); // the working button keeps its look
+      expect(del).not.toHaveAttribute('aria-disabled');
       expect(del).not.toBeDisabled();
 
       act(() => {

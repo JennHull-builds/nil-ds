@@ -136,8 +136,9 @@ const DELETE_MS = 1400;
  * A destructive confirmation. Danger variant, focus starts on Cancel, and the delete shows that it
  * is working: the label becomes "Deleting" with the kit's blinking cursor, and a status message says so.
  * While it runs the Dialog is `busy`, so Escape, Close and the backdrop do nothing and Close looks
- * unavailable. Cancel and Delete are the caller's buttons, so they are marked aria-disabled here,
- * never disabled: focus stays where it is.
+ * unavailable. The buttons are the caller's: Cancel is marked aria-disabled, so it dims, and Delete
+ * is marked aria-busy, so it keeps its look and shows the moving cursor. Neither is ever disabled:
+ * focus stays where it is.
  */
 function DeleteDemo() {
   const [open, setOpen] = useState(false);
@@ -187,7 +188,7 @@ function DeleteDemo() {
             <Button ref={cancelRef} variant="secondary" aria-disabled={deleting || undefined} onClick={cancel}>
               Cancel
             </Button>
-            <Button variant="danger" aria-disabled={deleting || undefined} onClick={confirm}>
+            <Button variant="danger" aria-busy={deleting || undefined} onClick={confirm}>
               {deleting ? (
                 <>
                   Deleting<span className="nil-cursor-blink" aria-hidden>▌</span>

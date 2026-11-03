@@ -173,7 +173,8 @@ reinjection, brand lime/mint/pork, Soft Bento, page/print chrome.
   `<dialog>` in jsdom, so Dialog's axe test runs on the same markup with the dialog swapped for a
   `<div role="dialog">`. A `busy` prop holds the dialog open while something runs: aria-busy, a
   dimmed Close, and Escape, Close and the backdrop ignored. Button gives `aria-disabled` the same
-  look as `disabled`, so a busy button says so and still keeps focus. Left for later: Lightbox onto
+  look as `disabled`, so a busy button says so and still keeps focus, and `aria-busy` keeps the button
+  that is doing the work vivid, with a progress cursor. Left for later: Lightbox onto
   Dialog, and `forwardRef` on Input.
 - 2026-11-03: **Contrast is a gate, and accent and danger have separate fill and text roles
   (candidate B).** The DESIGN.md linter reported six text and background pairs below WCAG AA

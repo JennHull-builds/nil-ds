@@ -212,7 +212,9 @@ Added 2026-11-03, with Dialog.
   `aria-disabled="true"` the same look as `disabled` in every variant, and no hover or pressed rule
   applies to it. Dialog's `busy` prop does the same for the dialog: aria-busy, a dimmed Close, and
   Escape, Close and the backdrop ignored without calling `onClose`. The buttons in the actions row
-  are the caller's, so the caller marks them aria-disabled.
+  are the caller's. Mark the unavailable ones aria-disabled, so they dim. Mark the one doing the work
+  `aria-busy`: it keeps its look at full strength, with a progress cursor and no hover or pressed
+  change, so the working thing stays visible. The caller ignores its clicks.
 - **Leave `<form method="dialog">` out.** It closes the element behind the component's back. Handle
   `onSubmit` and call `onClose`.
 

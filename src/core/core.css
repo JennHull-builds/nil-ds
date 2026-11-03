@@ -319,6 +319,15 @@ pre,
   color: var(--nil-color-text-muted);
 }
 
+/*
+ * Working. A button that is doing its job keeps its look at full strength, so the thing that is
+ * working stays visible, with a progress cursor and no hover or pressed change. It is not marked
+ * unavailable: the caller ignores its clicks. The buttons around it dim with aria-disabled.
+ */
+.nil-btn[aria-busy='true'] {
+  cursor: progress;
+}
+
 /* ─── Interactive feedback ──────────────────────────────────────────────────── */
 
 .nil-btn:not(:disabled) {
@@ -336,51 +345,51 @@ pre,
  * in dark. Both are the same colour, so the hovered fill matches across themes. The mixed result
  * is not in structure.json, so the contrast gate cannot see it: recheck by hand if it changes.
  */
-.nil-btn--primary:not(:disabled):not([aria-disabled='true']):hover {
+.nil-btn--primary:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):hover {
   background: color-mix(in srgb, var(--nil-color-accent) 90%, var(--nil-color-text));
   border-color: color-mix(in srgb, var(--nil-color-accent) 90%, var(--nil-color-text));
 }
 
-[data-theme='dark'] .nil-btn--primary:not(:disabled):not([aria-disabled='true']):hover {
+[data-theme='dark'] .nil-btn--primary:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):hover {
   background: color-mix(in srgb, var(--nil-color-accent) 90%, var(--nil-color-bg));
   border-color: color-mix(in srgb, var(--nil-color-accent) 90%, var(--nil-color-bg));
 }
 
 /* Danger hover is the same darkening as primary, for the same reason. */
-.nil-btn--danger:not(:disabled):not([aria-disabled='true']):hover {
+.nil-btn--danger:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):hover {
   background: color-mix(in srgb, var(--nil-color-danger) 90%, var(--nil-color-text));
   border-color: color-mix(in srgb, var(--nil-color-danger) 90%, var(--nil-color-text));
 }
 
-[data-theme='dark'] .nil-btn--danger:not(:disabled):not([aria-disabled='true']):hover {
+[data-theme='dark'] .nil-btn--danger:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):hover {
   background: color-mix(in srgb, var(--nil-color-danger) 90%, var(--nil-color-bg));
   border-color: color-mix(in srgb, var(--nil-color-danger) 90%, var(--nil-color-bg));
 }
 
-.nil-btn--secondary:not(:disabled):not([aria-disabled='true']):hover {
+.nil-btn--secondary:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):hover {
   background: var(--nil-color-surface);
 }
 
-.nil-btn--secondary:not(:disabled):not([aria-disabled='true']):active {
+.nil-btn--secondary:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):active {
   background: var(--nil-color-text);
   color: var(--nil-color-bg);
 }
 
-.nil-btn--secondary:not(:disabled):not([aria-disabled='true']):active .nil-btn__bracket {
+.nil-btn--secondary:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):active .nil-btn__bracket {
   color: var(--nil-color-text-muted);
 }
 
-.nil-btn--ghost:not(:disabled):not([aria-disabled='true']):hover {
+.nil-btn--ghost:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):hover {
   background: var(--nil-color-surface);
   border-color: var(--nil-color-border);
 }
 
-.nil-btn--ghost:not(:disabled):not([aria-disabled='true']):active {
+.nil-btn--ghost:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):active {
   background: var(--nil-color-text);
   color: var(--nil-color-bg);
 }
 
-.nil-btn--ghost:not(:disabled):not([aria-disabled='true']):active .nil-btn__bracket {
+.nil-btn--ghost:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):active .nil-btn__bracket {
   color: var(--nil-color-text-muted);
 }
 

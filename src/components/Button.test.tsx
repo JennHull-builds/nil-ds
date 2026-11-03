@@ -117,6 +117,36 @@ describe('Button', () => {
     });
   });
 
+  describe('aria-busy look (core.css)', () => {
+    // A working button keeps its look at full strength, so the thing that is working stays visible.
+    const css = readFileSync(join(__dirname, '..', '..', 'src/core/core.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+
+    it('gets a progress cursor and is not dimmed', () => {
+      const rule = css.match(/\.nil-btn\[aria-busy='true'\]\s*\{([^}]*)\}/);
+      expect(rule).not.toBeNull();
+      expect(rule![1]).toMatch(/cursor:\s*progress/);
+      expect(rule![1]).not.toMatch(/opacity|background|color:/); // nothing that would change how it looks
+    });
+
+    it('lets no hover or pressed rule apply to an aria-busy button', () => {
+      const selectors = [...css.matchAll(/([^{}]*\.nil-btn--[a-z]+[^{}]*:(?:hover|active)[^{}]*)\{/g)].map((m) => m[1].trim());
+      expect(selectors.length).toBeGreaterThanOrEqual(10);
+      for (const selector of selectors) expect(selector).toContain(":not([aria-busy='true'])");
+    });
+  });
+
+  it('keeps a button that is aria-busy focusable, enabled and clickable, since the caller ignores the click', async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn();
+    render(<Button aria-busy="true" onClick={onClick}>Working</Button>);
+    const button = screen.getByRole('button', { name: 'Working' });
+    await user.tab();
+    expect(button).toHaveFocus();
+    expect(button).not.toBeDisabled();
+    await user.click(button);
+    expect(onClick).toHaveBeenCalledTimes(1); // the kit does not swallow it; the caller's handler decides
+  });
+
   it('has no axe violations in any variant', async () => {
     const { container } = render(
       <>
