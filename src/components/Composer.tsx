@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import type { CSSProperties, KeyboardEvent, TextareaHTMLAttributes } from 'react';
+import type { CSSProperties, KeyboardEvent, ReactNode, TextareaHTMLAttributes } from 'react';
 import { Button } from './Button';
 
 export type ComposerStatus = 'idle' | 'sending' | 'streaming';
@@ -33,6 +33,16 @@ export interface ComposerProps
   prefix?: string;
   /** Text under the box. `false` hides it, a string replaces the default. */
   hint?: string | false;
+  /** The Send button's label, and its accessible name. Stop stays "Stop". */
+  sendLabel?: string;
+  /**
+   * Shown in the button slot instead of Send while the box has no characters and status is idle.
+   * A swap, not a stack: only one of the two is ever in the footer. The first character swaps it for
+   * Send, and clearing the draft swaps it back. Whitespace counts as a character, so a whitespace-only
+   * draft shows a disabled Send. Streaming always shows Stop. A focus that was in the footer moves to
+   * the text box when its button leaves.
+   */
+  emptyAction?: ReactNode;
   /** Classes and style go to the bordered shell. Everything else goes to the textarea. */
   className?: string;
   style?: CSSProperties;
@@ -80,6 +90,8 @@ export const Composer = forwardRef<HTMLTextAreaElement, ComposerProps>(function 
     maxRows = 6,
     prefix = '>',
     hint,
+    sendLabel = 'Send',
+    emptyAction,
     disabled = false,
     id,
     className,
@@ -114,6 +126,13 @@ export const Composer = forwardRef<HTMLTextAreaElement, ComposerProps>(function 
   const rows = Math.max(1, Math.floor(maxRows));
   const buttonDisabled = disabled || (isStreaming ? !onStop : !canSend);
   const footerRef = useRef<HTMLDivElement | null>(null);
+  const showEmptyAction = emptyAction != null && status === 'idle' && text.length === 0;
+
+  // Whether focus was in the footer before this render commits. Read here, while the DOM is still the
+  // old one: once a swap removes the focused button, focus has already fallen to the page.
+  const footerHeldFocus = useRef(false);
+  footerHeldFocus.current =
+    typeof document !== 'undefined' && !!footerRef.current?.contains(document.activeElement);
 
   function send() {
     if (!canSend) return;
@@ -176,6 +195,13 @@ export const Composer = forwardRef<HTMLTextAreaElement, ComposerProps>(function 
     if (footer && footer.contains(document.activeElement)) inputRef.current?.focus();
   }, [buttonDisabled, disabled]);
 
+  // A swap removes a button. If focus was on it, park focus in the text box, so it never falls to the page.
+  useIsomorphicLayoutEffect(() => {
+    if (footerHeldFocus.current && !footerRef.current?.contains(document.activeElement)) {
+      inputRef.current?.focus();
+    }
+  }, [showEmptyAction]);
+
   const showStatus = status !== 'idle';
   const statusText = status !== 'idle' ? STATUS_TEXT[status] : '';
   const hintText = hint === false ? null : (hint ?? DEFAULT_HINT);
@@ -235,16 +261,20 @@ export const Composer = forwardRef<HTMLTextAreaElement, ComposerProps>(function 
               ) : null}
             </span>
           ) : null}
-          {/* One button element for Send and Stop, so keyboard focus survives the swap. */}
-          <Button
-            type="button"
-            variant={isStreaming ? 'secondary' : 'primary'}
-            size="sm"
-            disabled={buttonDisabled}
-            onClick={isStreaming ? stop : send}
-          >
-            {isStreaming ? 'Stop' : 'Send'}
-          </Button>
+          {showEmptyAction ? (
+            <span className="nil-composer__empty-action">{emptyAction}</span>
+          ) : (
+            // One button element for Send and Stop, so keyboard focus survives that swap.
+            <Button
+              type="button"
+              variant={isStreaming ? 'secondary' : 'primary'}
+              size="sm"
+              disabled={buttonDisabled}
+              onClick={isStreaming ? stop : send}
+            >
+              {isStreaming ? 'Stop' : sendLabel}
+            </Button>
+          )}
         </div>
       </div>
       {/* Always mounted: a live region has to exist before its text changes to be announced. */}

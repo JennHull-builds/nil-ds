@@ -265,6 +265,11 @@ Added 2026-11-03, with Composer. Each of these fails quietly if someone "tidies"
   and the tokens the `.nil-composer*` rules read disagree, which is how the registry drifted before.
 - **Send's contrast comes from Button primary.** `composer-send` is mapped in
   `design-md/structure.json` so a change to the accent pair is checked here too.
+- **`emptyAction` swaps with Send, and `sendLabel` renames it.** While the box has no characters and
+  status is idle, `emptyAction` takes the button slot, so the footer holds only one of the two.
+  The first character swaps in Send, and a cleared draft swaps it back. Whitespace counts as a
+  character, so it shows a disabled Send. Streaming always shows Stop. If focus was on the button that
+  leaves, it moves to the text box.
 
 ## Gotcha: borders may draw thinner than the border token says
 

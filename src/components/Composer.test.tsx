@@ -485,6 +485,99 @@ describe('Composer', () => {
     });
   });
 
+  describe('sendLabel and emptyAction', () => {
+    const Mic = <button type="button">Mic</button>;
+    const controlled = (value: string, extra: Partial<React.ComponentProps<typeof Composer>> = {}) => (
+      <>
+        <button type="button">Elsewhere</button>
+        <Composer label="Message" value={value} onValueChange={() => {}} onSend={() => {}} emptyAction={Mic} {...extra} />
+      </>
+    );
+
+    it('renames Send, and its accessible name, with sendLabel', () => {
+      render(<Composer label="Message" onSend={() => {}} defaultValue="hello" sendLabel="Park" />);
+      expect(screen.getByRole('button', { name: 'Park' })).toBeEnabled();
+      expect(screen.queryByRole('button', { name: 'Send' })).toBeNull();
+    });
+
+    it('keeps "Send" as the default label', () => {
+      render(<Composer label="Message" onSend={() => {}} defaultValue="hello" />);
+      expect(sendButton()).toBeInTheDocument();
+    });
+
+    it('leaves Stop as "Stop" while streaming, whatever sendLabel says', () => {
+      render(<Composer label="Message" onSend={() => {}} status="streaming" onStop={() => {}} sendLabel="Park" />);
+      expect(screen.getByRole('button', { name: 'Stop' })).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: 'Park' })).toBeNull();
+    });
+
+    it('shows emptyAction and no Send while the box is empty and idle', () => {
+      render(<Composer label="Message" onSend={() => {}} emptyAction={Mic} />);
+      expect(screen.getByRole('button', { name: 'Mic' })).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: 'Send' })).toBeNull();
+    });
+
+    it('swaps to Send on the first character, and back when the draft is cleared', async () => {
+      const user = userEvent.setup();
+      render(<Composer label="Message" onSend={() => {}} emptyAction={Mic} sendLabel="Park" />);
+      await user.type(box(), 'a');
+      expect(screen.queryByRole('button', { name: 'Mic' })).toBeNull(); // a swap, not a stack
+      expect(screen.getByRole('button', { name: 'Park' })).toBeEnabled();
+      await user.keyboard('{Backspace}');
+      expect(screen.getByRole('button', { name: 'Mic' })).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: 'Park' })).toBeNull();
+    });
+
+    it('shows a disabled Send, not emptyAction, for a whitespace-only draft', async () => {
+      const user = userEvent.setup();
+      render(<Composer label="Message" onSend={() => {}} emptyAction={Mic} />);
+      await user.type(box(), ' ');
+      expect(screen.queryByRole('button', { name: 'Mic' })).toBeNull();
+      expect(sendButton()).toBeDisabled();
+    });
+
+    it('shows Stop while streaming, even when the box is empty and emptyAction is set', () => {
+      render(<Composer label="Message" onSend={() => {}} emptyAction={Mic} status="streaming" onStop={() => {}} />);
+      expect(screen.getByRole('button', { name: 'Stop' })).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: 'Mic' })).toBeNull();
+    });
+
+    it('shows a disabled Send, not emptyAction, while sending', () => {
+      render(<Composer label="Message" onSend={() => {}} emptyAction={Mic} status="sending" />);
+      expect(sendButton()).toBeDisabled();
+      expect(screen.queryByRole('button', { name: 'Mic' })).toBeNull();
+    });
+
+    it('changes nothing without emptyAction: an empty box still shows a disabled Send', () => {
+      render(<Composer label="Message" onSend={() => {}} />);
+      expect(sendButton()).toBeDisabled();
+    });
+
+    it('moves focus to the text box when focus was on emptyAction and the first character arrives', () => {
+      const { rerender } = render(controlled(''));
+      screen.getByRole('button', { name: 'Mic' }).focus();
+      rerender(controlled('a'));
+      expect(screen.queryByRole('button', { name: 'Mic' })).toBeNull();
+      expect(box()).toHaveFocus(); // not the page
+    });
+
+    it('moves focus to the text box when focus was on Send and the draft is cleared from outside', () => {
+      const { rerender } = render(controlled('a'));
+      sendButton().focus();
+      rerender(controlled(''));
+      expect(screen.getByRole('button', { name: 'Mic' })).toBeInTheDocument();
+      expect(box()).toHaveFocus();
+    });
+
+    it('does not take focus from somewhere else when the swap happens', () => {
+      const { rerender } = render(controlled(''));
+      const elsewhere = screen.getByRole('button', { name: 'Elsewhere' });
+      elsewhere.focus();
+      rerender(controlled('a'));
+      expect(elsewhere).toHaveFocus();
+    });
+  });
+
   describe('registration and styles', () => {
     /** Every `--nil-*` token read by a `.nil-composer*` rule, minus Composer's own local variables. */
     function tokensReadByComposerCss(): string[] {

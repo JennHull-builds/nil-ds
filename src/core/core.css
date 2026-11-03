@@ -746,9 +746,15 @@ pre,
   border-top: var(--nil-border-width) solid var(--nil-color-border);
 }
 
-.nil-composer__footer .nil-btn {
+.nil-composer__footer .nil-btn,
+.nil-composer__empty-action {
   margin-left: auto;
   flex-shrink: 0;
+}
+
+.nil-composer__empty-action {
+  display: inline-flex;
+  align-items: center;
 }
 
 .nil-composer__hint {
