@@ -298,10 +298,6 @@ pre,
   border-color: var(--nil-color-border);
 }
 
-.nil-btn--primary:disabled {
-  filter: none;
-}
-
 .nil-btn:disabled .nil-btn__bracket {
   color: var(--nil-color-text-muted);
 }
@@ -313,12 +309,24 @@ pre,
     background var(--nil-motion-duration-base) var(--nil-motion-easing-standard),
     border-color var(--nil-motion-duration-base) var(--nil-motion-easing-standard),
     color var(--nil-motion-duration-base) var(--nil-motion-easing-standard),
-    filter var(--nil-motion-duration-base) var(--nil-motion-easing-standard),
     opacity var(--nil-motion-duration-base) var(--nil-motion-easing-standard);
 }
 
+/*
+ * Primary hover darkens the fill and leaves the label alone. A brightness filter would darken
+ * the white label with it, and a lighter fill would lose contrast under that label, so neither
+ * clears AA. The colour mixed in is the dark of the current theme: the ink in light, the canvas
+ * in dark. Both are the same colour, so the hovered fill matches across themes. The mixed result
+ * is not in structure.json, so the contrast gate cannot see it: recheck by hand if it changes.
+ */
 .nil-btn--primary:not(:disabled):hover {
-  filter: brightness(1.08);
+  background: color-mix(in srgb, var(--nil-color-accent) 90%, var(--nil-color-text));
+  border-color: color-mix(in srgb, var(--nil-color-accent) 90%, var(--nil-color-text));
+}
+
+[data-theme='dark'] .nil-btn--primary:not(:disabled):hover {
+  background: color-mix(in srgb, var(--nil-color-accent) 90%, var(--nil-color-bg));
+  border-color: color-mix(in srgb, var(--nil-color-accent) 90%, var(--nil-color-bg));
 }
 
 .nil-btn--secondary:not(:disabled):hover {
@@ -399,7 +407,7 @@ pre,
 }
 
 .nil-theme-segment:not([aria-pressed='true']):hover {
-  opacity: 0.55;
+  opacity: 0.6;
 }
 
 .nil-theme-divider {

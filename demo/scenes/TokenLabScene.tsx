@@ -39,6 +39,13 @@ const SEMANTIC_COLORS = [
   'color-success',
 ] as const;
 
+/**
+ * Where the accent overrides go. The demo wrapper carries its own `data-theme`, so in the dark
+ * theme its theme block redefines every colour for itself and shadows anything set on `<html>`.
+ * An inline style on the wrapper itself wins over that block, in both themes.
+ */
+const themeHost = () => document.querySelector<HTMLElement>('.nil-demo-canvas') ?? document.documentElement;
+
 export function TokenLabScene({ band }: { band?: boolean }) {
   const { ref, visible } = useReveal();
   const [swatches, setSwatches] = useState<Record<string, string>>({});
@@ -46,10 +53,10 @@ export function TokenLabScene({ band }: { band?: boolean }) {
 
   useEffect(() => {
     const read = () => {
-      const root = document.documentElement;
+      const host = themeHost();
       const next: Record<string, string> = {};
       for (const key of SEMANTIC_COLORS) {
-        next[key] = getComputedStyle(root).getPropertyValue(`--nil-${key}`).trim();
+        next[key] = getComputedStyle(host).getPropertyValue(`--nil-${key}`).trim();
       }
       setSwatches(next);
     };
@@ -60,16 +67,16 @@ export function TokenLabScene({ band }: { band?: boolean }) {
   }, []);
 
   const applyAccent = (hex: string) => {
-    const root = document.documentElement;
-    root.style.setProperty('--nil-color-accent', hex);
+    const host = themeHost();
+    host.style.setProperty('--nil-color-accent', hex);
     // An alternative accent has no separate text value, so it stands in for the text role too.
     // The live accent hands the text role back to the theme, which keeps its own text values.
-    if (hex === LIVE_ACCENT) root.style.removeProperty('--nil-color-text-accent');
-    else root.style.setProperty('--nil-color-text-accent', hex);
+    if (hex === LIVE_ACCENT) host.style.removeProperty('--nil-color-text-accent');
+    else host.style.setProperty('--nil-color-text-accent', hex);
     setSwatches((s) => ({
       ...s,
       'color-accent': hex,
-      'color-text-accent': getComputedStyle(root).getPropertyValue('--nil-color-text-accent').trim(),
+      'color-text-accent': getComputedStyle(host).getPropertyValue('--nil-color-text-accent').trim(),
     }));
   };
 

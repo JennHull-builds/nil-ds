@@ -51,7 +51,7 @@
     },
     {
       "name": "Meta",
-      "tokens": ["--nil-color-text-accent", "--nil-color-text-danger", "--nil-color-success", "--nil-color-border", "--nil-color-text-muted", "--nil-type-weight-mono", "--nil-type-weight-mono-emphasis"],
+      "tokens": ["--nil-color-text", "--nil-color-text-muted", "--nil-color-text-accent", "--nil-color-text-danger", "--nil-color-success", "--nil-color-border", "--nil-font-mono", "--nil-type-scale-xs", "--nil-type-weight-mono", "--nil-type-weight-mono-emphasis", "--nil-radius-default"],
       "props": { "label": "string", "tone": "neutral|accent|danger|success" }
     },
     {
@@ -61,7 +61,7 @@
     },
     {
       "name": "Prompt",
-      "tokens": ["--nil-color-text", "--nil-color-text-muted", "--nil-color-text-accent"],
+      "tokens": ["--nil-color-text", "--nil-color-text-muted", "--nil-color-text-accent", "--nil-font-mono", "--nil-type-scale-base", "--nil-motion-duration-blink", "--nil-motion-easing-step"],
       "props": { "prefix": "string?", "showCursor": "boolean" }
     },
     {

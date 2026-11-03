@@ -137,9 +137,9 @@ property and the honest home for it is `tokens:validate`.
 DESIGN.md linter, which computes WCAG ratios on the text and background pairs mapped in
 `design-md/structure.json`, and a contrast miss now fails the run. It covers only the pairs
 someone mapped. It can't see anything dimmed with `opacity`: ThemeToggle's inactive icon is
-one, and only a comment in `core.css` guards its number. It doesn't see states either: the primary
-Button's hover filter (`brightness(1.08)`) lightens the fill under white text to about 4.1:1, measured
-from pixels on 2026-11-03. So the true sentence is: every text and
+one, and only a comment in `core.css` guards its number. It doesn't see states either. Hover and
+pressed states of Button and ThemeToggle were measured from pixels on 2026-11-03 and clear 4.5:1,
+but a hover rule is not a mapped pair, so a later change to one is not caught. So the true sentence is: every text and
 background pair mapped in `design-md/structure.json` meets WCAG AA, and `tokens:validate` fails
 if one does not. Unmapped pairs are not covered. Never write "contrast tested" or "accessible"
 for it.
@@ -175,7 +175,7 @@ Added 2026-10-17, with the DESIGN.md work on branch `design-md`.
   `xl`. The pairings in `design-md/structure.json` were therefore read from the component source and
   `core.css`, not from the registry. Do the same when adding one. Updated 2026-11-03: Badge, Input,
   ThemeToggle and Lightbox now have entries, with token lists derived from the CSS and the component
-  source, so the registry lists 16 of the 21 files. Meta and Prompt still leave out some tokens they read.
+  source, so the registry lists 16 of the 21 files. The Meta and Prompt lists were completed the same way.
 
 ## Gotcha: accent and danger are fills, and text has its own roles
 
@@ -191,15 +191,17 @@ each with its own dark value.
   may still use the fills.
 - **The check has two blind spots.** A fill that reaches `color` through a variable or a lookup table
   goes unseen, so `toneColor` in `Meta.tsx` is checked by hand. Tailwind utilities go unseen too:
-  `text-mark` and `text-danger` in `src/core/tailwind-theme.css` still read the fills, and nothing guards them.
+  `text-mark` and `text-danger` in `src/core/tailwind-theme.css` read the fills. Use `text-mark-ink` and
+  `text-danger-ink` for text, and know that nothing guards the class names.
 - **Surface is the harder background.** Cards, Panels and Inputs sit on `surface`, which is closer to
   the text colour than the canvas is, so a pair that passes on the canvas can still fail there.
   `design-md/structure.json` has an `-on-surface` entry for each Meta and Badge tone. Add one when you
   put coloured text in a Card.
 - **Token Lab's accent swap sets both roles.** The live accent hands the text role back to the theme.
-  Without that, picking it would drop accent text to the contrast of the fill. The swap only works in
-  the light theme, and did before this change: the demo wrapper carries its own `data-theme`, and that
-  theme block shadows anything Token Lab sets on `<html>`.
+  Without that, picking it would drop accent text to the contrast of the fill. The overrides go on the
+  demo wrapper. The wrapper carries its own `data-theme`, and in dark that block shadows anything set
+  on `<html>`. The canvas swap still sets `<html>` and so does nothing in dark; the demo resets canvas
+  overrides on every theme change anyway.
 
 ## Gotcha: Composer's focus, sizing and registry rules
 

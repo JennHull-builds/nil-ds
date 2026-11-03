@@ -3,9 +3,8 @@
  * Import after tokens.css + core.css in consumer index.css.
  *
  * `mark` and `danger` are fills. As text (`text-mark`, `text-danger`) they fall short of WCAG AA,
- * and `tokens:validate` can't see utility classes, so nothing here guards them. The text roles
- * have no alias in this block yet. For accent or danger text, write var(--nil-color-text-accent)
- * or var(--nil-color-text-danger).
+ * and `tokens:validate` can't see utility classes, so nothing guards them. For accent or danger
+ * text use `text-mark-ink` and `text-danger-ink`, which read the text roles.
  */
 @theme {
   --color-paper: var(--nil-color-bg);
@@ -15,7 +14,9 @@
   --color-muted: var(--nil-color-text-muted);
   --color-mark: var(--nil-color-accent);
   --color-mark-text: var(--nil-color-accent-contrast);
+  --color-mark-ink: var(--nil-color-text-accent);
   --color-danger: var(--nil-color-danger);
+  --color-danger-ink: var(--nil-color-text-danger);
   --color-success: var(--nil-color-success);
 
   --font-sans: var(--nil-font-body);

@@ -155,6 +155,25 @@ reinjection, brand lime/mint/pork, Soft Bento, page/print chrome.
 
 ## Log
 
+- 2026-11-03: **Contrast is a gate, and accent and danger have separate fill and text roles
+  (candidate B).** The DESIGN.md linter reported six text and background pairs below WCAG AA
+  (4.5:1), and `tokens:validate` only warned. One blue cannot do both jobs: white text on the fill
+  needs the blue darker than accent text on the dark canvas allows, so no single value passes
+  both. Two candidates were built side by side with every ratio recomputed from pixels: A, an
+  accent per theme (dark mode would carry dark ink on a lighter blue), and B, separate text roles.
+  B was chosen because the look holds. The fill moved from `#3b6ef5` to `#396bf2`, white text stays
+  on every fill in both themes, and the danger fill is unchanged for the coming danger Button.
+  New roles `color-text-accent` and `color-text-danger`, each with a dark value of its own: accent
+  text `#2c5ce2` in light and `#4a7dff` in dark, danger text `#c62832` in light and `#ea4d4f` in
+  dark. Success on the light theme moved from `#22a06b` to `#00774c`; its dark value is unchanged.
+  Values are sized to clear 4.6:1 on a Card surface as well as the canvas, because the Gallery
+  draws tones inside Cards and surface is the harder background. ThemeToggle's inactive icon went
+  from 0.30 to 0.46 opacity (3:1 for non-text). Primary Button hover now darkens the fill, because
+  the old brightness filter took white text to 4.08:1; it is 5.41:1 now. Contrast findings are
+  now errors in `tokens:validate`, and a second check fails any text colour that reads
+  `--nil-color-accent` or `--nil-color-danger`. Both cover mapped pairs and `color` declarations
+  only: states, opacity and Tailwind utilities are outside them. The accent is still Jen's locked
+  brand blue. It moved by a hair, on 2026-11-03, so that white text on it meets AA.
 - 2026-10-17: **Dark mode in DESIGN.md: a `-dark` suffix, nothing else.** The DESIGN.md format
   (Google Labs, spec version `alpha`) has no theme concept: `designmd spec --rules`, read in full
   and grepped the same day, never mentions dark or mode, and uses "theme" once, for Tailwind theme
