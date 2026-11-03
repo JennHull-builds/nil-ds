@@ -5,7 +5,10 @@ import { Text } from './Text';
 export interface DialogProps {
   /** Controlled. The dialog renders nothing while this is false, so a form inside it resets on each open. */
   open: boolean;
-  /** Called for Escape, the Close control and, when `dismissOnBackdrop` is set, a click on the scrim. */
+  /**
+   * Called for Escape, the Close control and, when `dismissOnBackdrop` is set, a click on the scrim.
+   * Never called while `busy`.
+   */
   onClose: () => void;
   /** Rendered as the heading, and the dialog's accessible name. */
   title: string;
@@ -20,9 +23,17 @@ export interface DialogProps {
   /**
    * Close on a click outside the panel. Off by default for both variants: a destructive
    * confirmation should be answered with an explicit choice, and a stray click would throw
-   * away what someone typed into a form. Escape and Close always work.
+   * away what someone typed into a form. Escape and Close work unless the dialog is `busy`.
    */
   dismissOnBackdrop?: boolean;
+  /**
+   * Something is running that must finish before the dialog can close, such as a delete in
+   * progress. The dialog sets aria-busy, Close becomes aria-disabled and looks unavailable, and
+   * Escape, Close and a backdrop click are ignored, so `onClose` is not called. Focus stays where
+   * it is. Mark the caller's own buttons aria-disabled too, never `disabled`: a focused button
+   * that turns natively disabled sends focus to the page.
+   */
+  busy?: boolean;
   /**
    * Where focus goes on open. Without it, focus goes to the first focusable thing in the body or
    * the actions, never the Close control, and to Close only if there is nothing else.
@@ -81,6 +92,7 @@ function OpenDialog({
   actions,
   variant = 'default',
   dismissOnBackdrop = false,
+  busy = false,
   initialFocusRef,
 }: DialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -120,12 +132,14 @@ function OpenDialog({
       className={['nil-dialog', variant === 'danger' ? 'nil-dialog--danger' : ''].filter(Boolean).join(' ')}
       aria-labelledby={titleId}
       aria-describedby={description ? descriptionId : undefined}
+      aria-busy={busy || undefined}
       tabIndex={-1}
       // Escape arrives as a cancel event. Stop the browser closing the element itself: `open` is
       // controlled, so the parent decides, and closing happens when this component unmounts.
+      // While busy the answer is no, and the parent is not asked.
       onCancel={(event) => {
         event.preventDefault();
-        onClose();
+        if (!busy) onClose();
       }}
       // showModal() makes the page behind inert, but Chromium still gives the browser's own UI a Tab
       // stop at each end, so focus left the controls for one press (measured 2026-11-03). Wrap it here.
@@ -154,7 +168,7 @@ function OpenDialog({
         pressStartedOnScrim.current = event.target === event.currentTarget;
       }}
       onClick={(event) => {
-        if (dismissOnBackdrop && event.target === event.currentTarget && pressStartedOnScrim.current) onClose();
+        if (!busy && dismissOnBackdrop && event.target === event.currentTarget && pressStartedOnScrim.current) onClose();
       }}
     >
       <div className="nil-dialog__panel">
@@ -162,7 +176,16 @@ function OpenDialog({
           <h2 id={titleId} className="nil-dialog__title">
             {title}
           </h2>
-          <button type="button" ref={closeRef} className="nil-dialog__close" onClick={onClose}>
+          {/* aria-disabled, not disabled, so Close keeps focus and the Tab order while busy. */}
+          <button
+            type="button"
+            ref={closeRef}
+            className="nil-dialog__close"
+            aria-disabled={busy || undefined}
+            onClick={() => {
+              if (!busy) onClose();
+            }}
+          >
             Close <span aria-hidden>[Esc]</span>
           </button>
         </div>

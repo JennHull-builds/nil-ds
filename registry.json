@@ -91,8 +91,8 @@
     },
     {
       "name": "Dialog",
-      "tokens": ["--nil-color-overlay", "--nil-color-surface", "--nil-color-text", "--nil-color-bg", "--nil-color-border", "--nil-color-danger", "--nil-color-accent", "--nil-border-width", "--nil-border-width-thick", "--nil-radius-default", "--nil-font-mono", "--nil-type-scale-xs", "--nil-type-scale-sm", "--nil-type-weight-mono", "--nil-spacing-xs", "--nil-spacing-sm", "--nil-spacing-md", "--nil-size-dialog", "--nil-motion-duration-fast", "--nil-motion-duration-base", "--nil-motion-easing-standard", "--nil-motion-easing-out-expo"],
-      "props": { "open": "boolean", "onClose": "function", "title": "string", "description": "string?", "children": "ReactNode?", "actions": "ReactNode?", "variant": "default|danger", "dismissOnBackdrop": "boolean (default false)", "initialFocusRef": "RefObject<HTMLElement>?" }
+      "tokens": ["--nil-color-overlay", "--nil-color-surface", "--nil-color-text", "--nil-color-text-muted", "--nil-color-bg", "--nil-color-border", "--nil-color-danger", "--nil-color-accent", "--nil-border-width", "--nil-border-width-thick", "--nil-radius-default", "--nil-font-mono", "--nil-type-scale-xs", "--nil-type-scale-sm", "--nil-type-weight-mono", "--nil-spacing-xs", "--nil-spacing-sm", "--nil-spacing-md", "--nil-size-dialog", "--nil-motion-duration-fast", "--nil-motion-duration-base", "--nil-motion-easing-standard", "--nil-motion-easing-out-expo"],
+      "props": { "open": "boolean", "onClose": "function", "title": "string", "description": "string?", "children": "ReactNode?", "actions": "ReactNode?", "variant": "default|danger", "dismissOnBackdrop": "boolean (default false)", "busy": "boolean", "initialFocusRef": "RefObject<HTMLElement>?" }
     }
   ]
 }

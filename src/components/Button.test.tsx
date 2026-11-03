@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { createRef } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -82,6 +84,37 @@ describe('Button', () => {
     render(<Button aria-disabled="true">Busy</Button>);
     await user.tab();
     expect(screen.getByRole('button', { name: 'Busy' })).toHaveFocus();
+  });
+
+  describe('aria-disabled look (core.css)', () => {
+    // jsdom computes no styles, so these read the stylesheet. A busy button is aria-disabled and not
+    // disabled, so it keeps focus; the CSS has to make it look unavailable and keep it from lighting up.
+    // (`?raw` would hand back an empty string under `css: false`, hence readFileSync and the guard.)
+    const css = readFileSync(join(__dirname, '..', '..', 'src/core/core.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+
+    it('read the stylesheet at all', () => {
+      expect(css.length).toBeGreaterThan(500);
+    });
+
+    it("gives aria-disabled the same look as :disabled, for every variant", () => {
+      const look = css.match(/\.nil-btn:disabled,\s*\.nil-btn\[aria-disabled='true'\]\s*\{([^}]*)\}/);
+      expect(look).not.toBeNull();
+      expect(look![1]).toMatch(/opacity:\s*0\.55/);
+      expect(look![1]).toMatch(/cursor:\s*not-allowed/);
+      expect(look![1]).toContain('background: var(--nil-color-surface)');
+      expect(look![1]).toContain('color: var(--nil-color-text-muted)');
+      // The bracket glyphs dim with it.
+      expect(css).toMatch(
+        /\.nil-btn:disabled \.nil-btn__bracket,\s*\.nil-btn\[aria-disabled='true'\] \.nil-btn__bracket/,
+      );
+    });
+
+    it('lets no hover or pressed rule apply to an aria-disabled button', () => {
+      const selectors = [...css.matchAll(/([^{}]*\.nil-btn--[a-z]+[^{}]*:(?:hover|active)[^{}]*)\{/g)].map((m) => m[1].trim());
+      // primary and danger hover (light and dark), secondary hover, pressed and its bracket, ghost the same
+      expect(selectors.length).toBeGreaterThanOrEqual(10);
+      for (const selector of selectors) expect(selector).toContain(":not([aria-disabled='true'])");
+    });
   });
 
   it('has no axe violations in any variant', async () => {

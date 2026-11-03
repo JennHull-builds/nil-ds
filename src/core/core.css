@@ -299,7 +299,13 @@ pre,
   border-color: transparent;
 }
 
-.nil-btn:disabled {
+/*
+ * Unavailable. `disabled` and `aria-disabled="true"` look the same, for every variant. A busy button
+ * is marked aria-disabled and not disabled so it keeps focus: a focused button that turns natively
+ * disabled sends focus to the page. The click is ignored in code, and the state rules below skip it.
+ */
+.nil-btn:disabled,
+.nil-btn[aria-disabled='true'] {
   opacity: 0.55;
   cursor: not-allowed;
   background: var(--nil-color-surface);
@@ -308,7 +314,8 @@ pre,
   border-color: var(--nil-color-border);
 }
 
-.nil-btn:disabled .nil-btn__bracket {
+.nil-btn:disabled .nil-btn__bracket,
+.nil-btn[aria-disabled='true'] .nil-btn__bracket {
   color: var(--nil-color-text-muted);
 }
 
@@ -329,57 +336,51 @@ pre,
  * in dark. Both are the same colour, so the hovered fill matches across themes. The mixed result
  * is not in structure.json, so the contrast gate cannot see it: recheck by hand if it changes.
  */
-.nil-btn--primary:not(:disabled):hover {
+.nil-btn--primary:not(:disabled):not([aria-disabled='true']):hover {
   background: color-mix(in srgb, var(--nil-color-accent) 90%, var(--nil-color-text));
   border-color: color-mix(in srgb, var(--nil-color-accent) 90%, var(--nil-color-text));
 }
 
-[data-theme='dark'] .nil-btn--primary:not(:disabled):hover {
+[data-theme='dark'] .nil-btn--primary:not(:disabled):not([aria-disabled='true']):hover {
   background: color-mix(in srgb, var(--nil-color-accent) 90%, var(--nil-color-bg));
   border-color: color-mix(in srgb, var(--nil-color-accent) 90%, var(--nil-color-bg));
 }
 
 /* Danger hover is the same darkening as primary, for the same reason. */
-.nil-btn--danger:not(:disabled):hover {
+.nil-btn--danger:not(:disabled):not([aria-disabled='true']):hover {
   background: color-mix(in srgb, var(--nil-color-danger) 90%, var(--nil-color-text));
   border-color: color-mix(in srgb, var(--nil-color-danger) 90%, var(--nil-color-text));
 }
 
-[data-theme='dark'] .nil-btn--danger:not(:disabled):hover {
+[data-theme='dark'] .nil-btn--danger:not(:disabled):not([aria-disabled='true']):hover {
   background: color-mix(in srgb, var(--nil-color-danger) 90%, var(--nil-color-bg));
   border-color: color-mix(in srgb, var(--nil-color-danger) 90%, var(--nil-color-bg));
 }
 
-/* A button that is busy keeps focus, so it is marked aria-disabled and not disabled: a focused
-   button that turns natively disabled sends focus to the page. The click is ignored in code. */
-.nil-btn[aria-disabled='true'] {
-  cursor: not-allowed;
-}
-
-.nil-btn--secondary:not(:disabled):hover {
+.nil-btn--secondary:not(:disabled):not([aria-disabled='true']):hover {
   background: var(--nil-color-surface);
 }
 
-.nil-btn--secondary:not(:disabled):active {
+.nil-btn--secondary:not(:disabled):not([aria-disabled='true']):active {
   background: var(--nil-color-text);
   color: var(--nil-color-bg);
 }
 
-.nil-btn--secondary:not(:disabled):active .nil-btn__bracket {
+.nil-btn--secondary:not(:disabled):not([aria-disabled='true']):active .nil-btn__bracket {
   color: var(--nil-color-text-muted);
 }
 
-.nil-btn--ghost:not(:disabled):hover {
+.nil-btn--ghost:not(:disabled):not([aria-disabled='true']):hover {
   background: var(--nil-color-surface);
   border-color: var(--nil-color-border);
 }
 
-.nil-btn--ghost:not(:disabled):active {
+.nil-btn--ghost:not(:disabled):not([aria-disabled='true']):active {
   background: var(--nil-color-text);
   color: var(--nil-color-bg);
 }
 
-.nil-btn--ghost:not(:disabled):active .nil-btn__bracket {
+.nil-btn--ghost:not(:disabled):not([aria-disabled='true']):active .nil-btn__bracket {
   color: var(--nil-color-text-muted);
 }
 
@@ -869,8 +870,15 @@ pre,
   transition: background var(--nil-motion-duration-fast) var(--nil-motion-easing-standard);
 }
 
-.nil-dialog__close:hover {
+.nil-dialog__close:not([aria-disabled='true']):hover {
   background: var(--nil-color-bg);
+}
+
+/* While the dialog is busy, Close stays focusable and looks unavailable, like a disabled Button. */
+.nil-dialog__close[aria-disabled='true'] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  color: var(--nil-color-text-muted);
 }
 
 .nil-dialog__body {

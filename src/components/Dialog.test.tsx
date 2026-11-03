@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
@@ -364,6 +366,90 @@ describe('Dialog', () => {
     });
   });
 
+  describe('busy', () => {
+    // A delete in progress cannot be backed out of. The dialog says so (aria-busy, a dimmed Close)
+    // and ignores every way of closing, without calling onClose and without moving focus.
+    const busyDialog = (props: Partial<DialogProps> = {}) => (
+      <Dialog
+        open
+        busy
+        onClose={props.onClose ?? (() => {})}
+        title="Delete project"
+        actions={<button type="button">Delete</button>}
+        {...props}
+      />
+    );
+
+    it('marks the dialog aria-busy only while busy', () => {
+      const { rerender } = render(busyDialog());
+      expect(dialogEl()).toHaveAttribute('aria-busy', 'true');
+      rerender(busyDialog({ busy: false }));
+      expect(dialogEl()).not.toHaveAttribute('aria-busy');
+    });
+
+    it('marks Close aria-disabled, not disabled, while busy, so it keeps its place in the Tab order', () => {
+      render(busyDialog());
+      const close = screen.getByRole('button', { name: 'Close' });
+      expect(close).toHaveAttribute('aria-disabled', 'true');
+      expect(close).not.toBeDisabled();
+      close.focus();
+      expect(close).toHaveFocus();
+    });
+
+    it('leaves Close alone when not busy', () => {
+      render(<Dialog open onClose={() => {}} title="T" />);
+      expect(screen.getByRole('button', { name: 'Close' })).not.toHaveAttribute('aria-disabled');
+    });
+
+    it('ignores Escape while busy: the browser is still stopped, and onClose is not called', () => {
+      const onClose = vi.fn();
+      render(busyDialog({ onClose }));
+      const notPrevented = pressEscape(dialogEl());
+      expect(notPrevented).toBe(false); // still prevented, so the element is not closed behind our back
+      expect(onClose).not.toHaveBeenCalled();
+      expect(dialogEl()).toHaveAttribute('open');
+    });
+
+    it('ignores a click on Close while busy', async () => {
+      const user = userEvent.setup();
+      const onClose = vi.fn();
+      render(busyDialog({ onClose }));
+      await user.click(screen.getByRole('button', { name: 'Close' }));
+      expect(onClose).not.toHaveBeenCalled();
+    });
+
+    it('ignores a backdrop click while busy, even with dismissOnBackdrop', async () => {
+      const user = userEvent.setup();
+      const onClose = vi.fn();
+      render(busyDialog({ onClose, dismissOnBackdrop: true }));
+      await user.click(dialogEl());
+      expect(onClose).not.toHaveBeenCalled();
+    });
+
+    it('keeps focus where it is when busy starts, and the dialog stays open', () => {
+      const tree = (busy: boolean) => (
+        <Dialog open busy={busy} onClose={() => {}} title="T" actions={<button type="button">Delete</button>} />
+      );
+      const { rerender } = render(tree(false));
+      const del = screen.getByRole('button', { name: 'Delete' });
+      expect(del).toHaveFocus();
+      rerender(tree(true));
+      expect(del).toHaveFocus();
+      expect(dialogEl()).toBeInTheDocument();
+    });
+
+    it('closes normally again once it is no longer busy', () => {
+      const onClose = vi.fn();
+      const tree = (busy: boolean) => <Dialog open busy={busy} onClose={onClose} title="T" />;
+      const { rerender } = render(tree(true));
+      pressEscape(dialogEl());
+      expect(onClose).not.toHaveBeenCalled();
+      rerender(tree(false));
+      pressEscape(dialogEl());
+      expect(onClose).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('a confirmation that is busy keeps focus', () => {
     // The pattern the showroom's Delete example uses. A focused button that becomes natively
     // disabled sends focus to the page, so the buttons are aria-disabled and their clicks ignored.
@@ -378,9 +464,8 @@ describe('Dialog', () => {
           </button>
           <Dialog
             open={open}
-            onClose={() => {
-              if (!busy) setOpen(false);
-            }}
+            onClose={() => setOpen(false)}
+            busy={busy}
             title="Delete project"
             variant="danger"
             initialFocusRef={cancel}
@@ -447,6 +532,26 @@ describe('Dialog', () => {
       });
       expect(screen.queryByRole('dialog')).toBeNull();
       expect(trigger).toHaveFocus();
+    });
+  });
+
+  describe('Close while busy (core.css)', () => {
+    const css = readFileSync(join(__dirname, '..', '..', 'src/core/core.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+
+    it('read the stylesheet at all', () => {
+      expect(css.length).toBeGreaterThan(500);
+    });
+
+    it('dims Close and shows it unavailable when aria-disabled', () => {
+      const rule = css.match(/\.nil-dialog__close\[aria-disabled='true'\]\s*\{([^}]*)\}/);
+      expect(rule).not.toBeNull();
+      expect(rule![1]).toMatch(/opacity:\s*0\.55/);
+      expect(rule![1]).toMatch(/cursor:\s*not-allowed/);
+    });
+
+    it('lights Close up on hover only when it is available', () => {
+      expect(css).toMatch(/\.nil-dialog__close:not\(\[aria-disabled='true'\]\):hover\s*\{/);
+      expect(css).not.toMatch(/\.nil-dialog__close:hover\s*\{/);
     });
   });
 

@@ -171,7 +171,10 @@ reinjection, brand lime/mint/pork, Soft Bento, page/print chrome.
   token `size-dialog`, no value changed. Two things only a browser showed: Chromium gave its own UI a
   Tab stop at each end of the dialog, so Tab is wrapped in code, and axe cannot see inside a native
   `<dialog>` in jsdom, so Dialog's axe test runs on the same markup with the dialog swapped for a
-  `<div role="dialog">`. Left for later: Lightbox onto Dialog, and `forwardRef` on Input.
+  `<div role="dialog">`. A `busy` prop holds the dialog open while something runs: aria-busy, a
+  dimmed Close, and Escape, Close and the backdrop ignored. Button gives `aria-disabled` the same
+  look as `disabled`, so a busy button says so and still keeps focus. Left for later: Lightbox onto
+  Dialog, and `forwardRef` on Input.
 - 2026-11-03: **Contrast is a gate, and accent and danger have separate fill and text roles
   (candidate B).** The DESIGN.md linter reported six text and background pairs below WCAG AA
   (4.5:1), and `tokens:validate` only warned. One blue cannot do both jobs: white text on the fill

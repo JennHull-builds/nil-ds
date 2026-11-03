@@ -208,7 +208,11 @@ Added 2026-11-03, with Dialog.
   focus the button in Safari or in Firefox on macOS, so there may be nothing to return to there
   (unchecked). For a destructive confirmation, point `initialFocusRef` at Cancel.
 - **A busy button stays focusable.** Mark it `aria-disabled` and ignore the click. A focused button
-  that becomes natively `disabled` sends focus to the page, the same trap Composer had.
+  that becomes natively `disabled` sends focus to the page, the same trap Composer had. Button gives
+  `aria-disabled="true"` the same look as `disabled` in every variant, and no hover or pressed rule
+  applies to it. Dialog's `busy` prop does the same for the dialog: aria-busy, a dimmed Close, and
+  Escape, Close and the backdrop ignored without calling `onClose`. The buttons in the actions row
+  are the caller's, so the caller marks them aria-disabled.
 - **Leave `<form method="dialog">` out.** It closes the element behind the component's back. Handle
   `onSubmit` and call `onClose`.
 

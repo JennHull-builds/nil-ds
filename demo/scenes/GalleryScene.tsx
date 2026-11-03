@@ -135,8 +135,9 @@ const DELETE_MS = 1400;
 /**
  * A destructive confirmation. Danger variant, focus starts on Cancel, and the delete shows that it
  * is working: the label becomes "Deleting" with the kit's blinking cursor, and a status message says so.
- * While it runs, both buttons are aria-disabled and not disabled, so focus stays where it is, and
- * Escape and the Close control do nothing.
+ * While it runs the Dialog is `busy`, so Escape, Close and the backdrop do nothing and Close looks
+ * unavailable. Cancel and Delete are the caller's buttons, so they are marked aria-disabled here,
+ * never disabled: focus stays where it is.
  */
 function DeleteDemo() {
   const [open, setOpen] = useState(false);
@@ -146,7 +147,7 @@ function DeleteDemo() {
   const timer = useRef<number>();
   useEffect(() => () => window.clearTimeout(timer.current), []);
 
-  const close = () => {
+  const cancel = () => {
     if (!deleting) setOpen(false);
   };
   const confirm = () => {
@@ -175,14 +176,15 @@ function DeleteDemo() {
       </Text>
       <Dialog
         open={open}
-        onClose={close}
+        onClose={() => setOpen(false)}
+        busy={deleting}
         variant="danger"
         title="Delete project"
         description="This removes the project and every token in it. It can't be undone."
         initialFocusRef={cancelRef}
         actions={
           <>
-            <Button ref={cancelRef} variant="secondary" aria-disabled={deleting || undefined} onClick={close}>
+            <Button ref={cancelRef} variant="secondary" aria-disabled={deleting || undefined} onClick={cancel}>
               Cancel
             </Button>
             <Button variant="danger" aria-disabled={deleting || undefined} onClick={confirm}>
