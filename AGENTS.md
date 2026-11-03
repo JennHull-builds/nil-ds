@@ -24,6 +24,7 @@ Read this before generating UI with NIL primitives.
 | Room / section nav | `TabStrip` |
 | CLI key-value | `Meta` |
 | Terminal line | `Prompt` |
+| Multi-line chat or command input | `Composer` |
 | Large stat | `Readout` |
 
 ## App vs NIL boundary
@@ -178,3 +179,32 @@ Added 2026-10-17, with the DESIGN.md work on branch `design-md`.
   (Stack's `shadow-stack`); and it gives Dial sizes as `sm|md|lg` while the component also accepts
   `xl`. The pairings in `design-md/structure.json` were therefore read from the component source and
   `core.css`, not from the registry. Do the same when adding one.
+
+## Gotcha: Composer's focus, sizing and registry rules
+
+Added 2026-11-03, with Composer. Each of these fails quietly if someone "tidies" it.
+
+- **Its focus ring is its own rule, and `:has()` never joins the kit's shared focus list.** A
+  browser that cannot parse one selector in a list drops the whole rule, so every component
+  would lose its ring there. The text box's own outline is removed only inside
+  `@supports selector(:has(*))`, so an older browser still rings the text box. `Composer.test.tsx`
+  fails if either moves.
+- **Focus never drops to the page.** Send and Stop move focus to the text box before the button
+  can become disabled (a sent draft clears, and a Stop with an empty draft turns into a disabled
+  Send). A focused button that becomes disabled sends focus to the body, and the next Tab starts
+  from the top. The tests Tab to each button and press Space.
+- **Height is CSS first.** `field-sizing: content` grows the box, `1lh` caps it at `maxRows`, and
+  a measured fallback covers engines without `field-sizing`. The line height is written once as a
+  unitless number in `core.css`, because the kit has no line-height token. Only Chromium was
+  tested. Firefox and Safari are unknown.
+- **The registry token list is checked against the CSS.** The test fails when `registry.json`
+  and the tokens the `.nil-composer*` rules read disagree, which is how the registry drifted before.
+- **Send's contrast comes from Button primary.** `composer-send` is mapped in
+  `design-md/structure.json` so a change to the accent pair is checked here too.
+
+## Gotcha: borders may draw thinner than the border token says
+
+Added 2026-11-03. `--nil-border-width` resolves to 1.5px, but Chromium 153 computes and draws every
+border that uses it as 1px, at device pixel ratio 1 and 2. Measured on the Gallery: Composer, Input
+and Card all compute the same. Firefox and Safari are unchecked. Whether to change the token is a
+later decision.

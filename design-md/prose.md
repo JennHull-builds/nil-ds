@@ -68,12 +68,13 @@ Bordered components use `rounded.default`, a small radius: soft brutalist, not s
 
 ## Components
 
-One group per primitive in `registry.json`: Button, Panel, Stack, Dial, Ring, Toggle, DataRow, TabStrip, Meta, Readout and Prompt. Variants use the format's related-key convention (`button-primary`, `button-secondary`), and the dark twin of any variant ends in `-dark`. Dial and Ring sizes are `size` entries such as `dial-sm` and `ring-md`.
+One group per primitive in `registry.json`: Button, Panel, Stack, Dial, Ring, Toggle, DataRow, TabStrip, Meta, Readout, Prompt and Composer. Variants use the format's related-key convention (`button-primary`, `button-secondary`), and the dark twin of any variant ends in `-dark`. Dial and Ring sizes are `size` entries such as `dial-sm` and `ring-md`.
 
 What the front matter can't say:
 
 - Borders. See Elevation & Depth.
 - Interaction states other than disabled. Primary buttons brighten on hover, secondary and ghost buttons fill with `surface`, and focus is an outline in `primary`.
+- Composer's height. The text box grows with its text up to a row limit set by a prop, so it has no size entry. Its focus outline is drawn on the shell, not on the text box.
 - The active data row's background. CSS mixes it from other tokens, so it has no entry of its own and the linter doesn't check it.
 - Transparency. Components that are transparent in code (the ghost button, an off toggle, rows, tabs, meta labels, prompts, readouts, dials and rings) are listed on `bg`.
 

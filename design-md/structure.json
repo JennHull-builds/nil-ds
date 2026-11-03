@@ -77,6 +77,15 @@
     "Prompt": {
       "prompt": { "backgroundColor": "color-bg", "textColor": "color-text", "typography": "prompt" },
       "prompt-prefix": { "backgroundColor": "color-bg", "textColor": "color-text-muted", "typography": "prompt" }
+    },
+    "Composer": {
+      "composer": { "backgroundColor": "color-surface", "textColor": "color-text", "typography": "prompt", "rounded": "radius-default", "padding": "spacing-md" },
+      "composer-prefix": { "backgroundColor": "color-surface", "textColor": "color-text-muted", "typography": "prompt" },
+      "composer-placeholder": { "backgroundColor": "color-surface", "textColor": "color-text-muted", "typography": "prompt" },
+      "composer-hint": { "backgroundColor": "color-surface", "textColor": "color-text-muted", "typography": "label" },
+      "composer-disabled": { "backgroundColor": "color-surface", "textColor": "color-text-muted", "typography": "prompt" },
+      "composer-send": { "backgroundColor": "color-accent", "textColor": "color-accent-contrast", "typography": "button-sm", "rounded": "radius-default" },
+      "composer-stop": { "backgroundColor": "color-bg", "textColor": "color-text", "typography": "button-sm", "rounded": "radius-default" }
     }
   }
 }

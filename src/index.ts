@@ -40,6 +40,9 @@ export type { StackProps } from './components/Stack';
 export { Prompt } from './components/Prompt';
 export type { PromptProps } from './components/Prompt';
 
+export { Composer } from './components/Composer';
+export type { ComposerProps, ComposerStatus } from './components/Composer';
+
 export { Readout } from './components/Readout';
 export type { ReadoutProps } from './components/Readout';
 

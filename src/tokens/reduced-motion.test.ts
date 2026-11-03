@@ -1,5 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { createElement } from 'react';
+import { render } from '@testing-library/react';
+import { Composer } from '../components/Composer';
 import tokensJson from './tokens.json';
 
 /**
@@ -89,6 +92,24 @@ describe('reduced motion', () => {
     for (const cls of looping) {
       expect(block).toMatch(new RegExp(`\\.${cls}\\s*\\{[^}]*animation:\\s*none`));
     }
+  });
+
+  it("Composer's activity indicator is the kit's blink class, so reduced motion holds it still", () => {
+    // The indicator must be built on .nil-cursor-blink, not on a blink of its own. That one class
+    // is what the media query switches off, so a second looping animation would escape it.
+    const { container } = render(
+      createElement(Composer, { label: 'Message', status: 'streaming', onStop: () => {}, onSend: () => {} }),
+    );
+    const indicator = container.querySelector('.nil-composer__activity');
+    expect(indicator).not.toBeNull();
+    expect(indicator).toHaveClass('nil-cursor-blink');
+
+    const block = blockAfter(coreCss, REDUCE);
+    expect(block).toMatch(/\.nil-cursor-blink\s*\{[^}]*animation:\s*none/);
+    // ...and nothing Composer-specific loops: no animation declaration at all in its own rules.
+    const composerRules = coreCss.match(/[^{}]*nil-composer[^{}]*\{[^{}]*\}/g) ?? [];
+    expect(composerRules.length).toBeGreaterThan(5);
+    for (const rule of composerRules) expect(rule).not.toMatch(/animation\s*:/);
   });
 
   it('the stagger delay is zeroed, because the stagger is the motion', () => {

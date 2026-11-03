@@ -1,15 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import {
   Badge,
   Button,
   Card,
+  Composer,
   Divider,
   Grid,
   Heading,
   Input,
   Lightbox,
   Meta,
+  Prompt,
   Text,
+  Toggle,
+  type ComposerStatus,
   type LightboxImage,
 } from '../../src';
 import { useReveal } from '../hooks/useReveal';
@@ -31,6 +35,98 @@ const DEMO_LIGHTBOX: LightboxImage = {
     ),
   alt: 'Sample technical drawing',
 };
+
+const DEMO_REPLY =
+  'Tokens are named values that code reads, like a colour or a spacing. A component asks for --nil-color-accent, never the hex, so one change in tokens.json reaches every component.';
+
+type Turn = { id: number; role: 'you' | 'kit'; text: string };
+
+/** What the conversation shows while "Show streaming state" is on: the canned reply, caught partway. */
+const PINNED_TURNS: Turn[] = [
+  { id: -2, role: 'you', text: 'Which token sets the accent?' },
+  { id: -1, role: 'kit', text: DEMO_REPLY.split(' ').slice(0, 18).join(' ') },
+];
+
+/** Working Composer with a canned reply, so Send, Stop and the streaming state can be tried without a backend. */
+function ComposerDemo() {
+  const [status, setStatus] = useState<ComposerStatus>('idle');
+  const [pinned, setPinned] = useState(false);
+  const [turns, setTurns] = useState<Turn[]>([]);
+  const timers = useRef<number[]>([]);
+  const nextId = useRef(0);
+  const toggleLabelId = useId();
+
+  const clearTimers = () => {
+    timers.current.forEach((t) => window.clearTimeout(t));
+    timers.current = [];
+  };
+  useEffect(() => clearTimers, []);
+
+  const handleSend = (text: string) => {
+    clearTimers();
+    const words = DEMO_REPLY.split(' ');
+    const replyId = nextId.current + 1;
+    nextId.current += 2;
+    setTurns((t) => [...t, { id: replyId - 1, role: 'you' as const, text }, { id: replyId, role: 'kit' as const, text: '' }].slice(-6));
+    setStatus('sending');
+    timers.current.push(
+      window.setTimeout(() => {
+        setStatus('streaming');
+        words.forEach((_, i) => {
+          timers.current.push(
+            window.setTimeout(() => {
+              setTurns((t) => t.map((turn) => (turn.id === replyId ? { ...turn, text: words.slice(0, i + 1).join(' ') } : turn)));
+              if (i === words.length - 1) setStatus('idle');
+            }, (i + 1) * 60),
+          );
+        });
+      }, 700),
+    );
+  };
+
+  const handleStop = () => {
+    clearTimers();
+    setStatus('idle');
+    setPinned(false);
+  };
+
+  // Pinned on and nothing really streaming: show the reply caught partway, so the state has something to point at.
+  const shown = pinned && status === 'idle' ? [...turns, ...PINNED_TURNS] : turns;
+  const visible = shown.filter((turn) => turn.text);
+
+  return (
+    <div className="nil-demo-composer">
+      {visible.length > 0 ? (
+        <div className="nil-demo-composer-log" role="log" aria-label="Conversation">
+          {visible.map((turn) =>
+            turn.role === 'you' ? (
+              <Prompt key={turn.id} showCursor={false} style={{ whiteSpace: 'pre-wrap' }}>
+                {turn.text}
+              </Prompt>
+            ) : (
+              <Text key={turn.id} size="sm" muted>
+                {turn.text}
+              </Text>
+            ),
+          )}
+        </div>
+      ) : null}
+      <Composer
+        label="Ask about NIL DS"
+        placeholder="Ask what a token does"
+        status={pinned ? 'streaming' : status}
+        onSend={handleSend}
+        onStop={handleStop}
+      />
+      <div className="nil-demo-composer-controls">
+        <Toggle checked={pinned} onCheckedChange={setPinned} aria-labelledby={toggleLabelId} />
+        <span id={toggleLabelId} className="nil-label">
+          Show streaming state
+        </span>
+      </div>
+    </div>
+  );
+}
 
 export function GalleryScene() {
   const { ref, visible } = useReveal();
@@ -68,6 +164,16 @@ export function GalleryScene() {
               </Button>
               <span className="nil-demo-button-label">disabled</span>
             </div>
+          </div>
+        </Card>
+
+        <Card style={{ gridColumn: '1 / -1' }}>
+          <Heading level={3}>Composer</Heading>
+          <Text size="sm" muted style={{ marginTop: 'var(--nil-spacing-xs)' }}>
+            Prompt shows a line. Composer is where you write one. Enter sends and Shift+Enter starts a new line. It respects IME composition, the way people type Japanese, Chinese or Korean: the Enter that confirms your characters never sends a half-finished message.
+          </Text>
+          <div style={{ marginTop: 'var(--nil-spacing-md)' }}>
+            <ComposerDemo />
           </div>
         </Card>
 

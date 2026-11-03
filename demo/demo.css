@@ -203,6 +203,26 @@
   gap: var(--nil-spacing-lg);
 }
 
+.nil-demo-composer {
+  display: flex;
+  flex-direction: column;
+  max-width: min(100%, 48rem);
+}
+
+.nil-demo-composer-log {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nil-spacing-sm);
+  margin-bottom: var(--nil-spacing-md);
+}
+
+.nil-demo-composer-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--nil-spacing-sm);
+  margin-top: var(--nil-spacing-md);
+}
+
 .nil-demo-button-strip {
   display: flex;
   flex-wrap: wrap;

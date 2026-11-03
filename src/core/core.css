@@ -592,6 +592,147 @@ pre,
   color: var(--nil-color-danger);
 }
 
+/* ─── Composer ────────────────────────────────────────────────────────────── */
+
+/*
+ * Visually hidden, still read by screen readers. The 1px box is the standard clip idiom,
+ * not a design value.
+ */
+.nil-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.nil-composer-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nil-spacing-xs);
+}
+
+/*
+ * Line height is written once, as a unitless number, because the kit has no line-height
+ * token. Prompt and body use the same 1.5. The box's min and max heights are derived from
+ * it, so changing it here changes the row count maths with it.
+ */
+.nil-composer {
+  --nil-composer-leading: 1.5;
+  --nil-composer-rows: 6;
+  display: flex;
+  flex-direction: column;
+  background: var(--nil-color-surface);
+  color: var(--nil-color-text);
+  border: var(--nil-border-width) solid var(--nil-color-border);
+  border-radius: var(--nil-radius-default);
+  transition: border-color var(--nil-motion-duration-fast) var(--nil-motion-easing-standard);
+}
+
+.nil-composer:not(.nil-composer--disabled):hover {
+  border-color: var(--nil-color-text-muted);
+}
+
+.nil-composer__row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--nil-spacing-sm);
+  padding: var(--nil-spacing-sm) var(--nil-spacing-md);
+}
+
+.nil-composer__prefix {
+  flex-shrink: 0;
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-base);
+  line-height: var(--nil-composer-leading);
+  color: var(--nil-color-text-muted);
+  user-select: none;
+}
+
+.nil-composer__input {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  resize: none;
+  overflow-y: auto;
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-base);
+  line-height: var(--nil-composer-leading);
+  color: var(--nil-color-text);
+  caret-color: var(--nil-color-accent);
+  field-sizing: content;
+  /* Each height is declared twice: the em form first, the lh form after it. An engine
+     without the lh unit drops the second declaration and keeps the first. */
+  min-height: calc(var(--nil-composer-leading) * 1em);
+  min-height: 1lh;
+  max-height: calc(var(--nil-composer-rows) * var(--nil-composer-leading) * 1em);
+  max-height: calc(var(--nil-composer-rows) * 1lh);
+}
+
+/* Firefox dims placeholder text by default, which would break the contrast we computed. */
+.nil-composer__input::placeholder {
+  color: var(--nil-color-text-muted);
+  opacity: 1;
+}
+
+.nil-composer__input:disabled {
+  color: var(--nil-color-text-muted);
+  -webkit-text-fill-color: var(--nil-color-text-muted);
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.nil-composer__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--nil-spacing-sm);
+  padding: var(--nil-spacing-sm) var(--nil-spacing-md);
+  border-top: var(--nil-border-width) solid var(--nil-color-border);
+}
+
+.nil-composer__footer .nil-btn {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.nil-composer__hint {
+  min-width: 0;
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-xs);
+  font-weight: var(--nil-type-weight-mono);
+  color: var(--nil-color-text-muted);
+}
+
+/* The blink itself is .nil-cursor-blink (same tokens and timing as Prompt), switched off under reduced motion there. */
+.nil-composer__activity {
+  color: var(--nil-color-accent);
+}
+
+/*
+ * Focus ring on the shell, for the text box only (Send keeps its own ring, so the two
+ * never double up). Its own rule on purpose: a selector list is dropped whole by a browser
+ * that cannot parse one entry, so :has() must not sit in the kit's shared focus list.
+ * Same ring as that list: accent, thick, thick offset. The text box's own outline goes
+ * only where :has() works, so an older browser still rings the text box itself.
+ */
+@supports selector(:has(*)) {
+  .nil-composer__input:focus-visible {
+    outline: none;
+  }
+
+  .nil-composer:has(.nil-composer__input:focus-visible) {
+    outline: var(--nil-border-width-thick) solid var(--nil-color-accent);
+    outline-offset: var(--nil-border-width-thick);
+  }
+}
+
 /* ─── DataRow ─────────────────────────────────────────────────────────────── */
 
 .nil-data-row {

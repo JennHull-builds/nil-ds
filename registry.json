@@ -63,6 +63,11 @@
       "name": "Prompt",
       "tokens": ["--nil-color-text", "--nil-color-text-muted", "--nil-color-accent"],
       "props": { "prefix": "string?", "showCursor": "boolean" }
+    },
+    {
+      "name": "Composer",
+      "tokens": ["--nil-color-surface", "--nil-color-text", "--nil-color-text-muted", "--nil-color-border", "--nil-color-accent", "--nil-border-width", "--nil-border-width-thick", "--nil-radius-default", "--nil-font-mono", "--nil-type-scale-base", "--nil-type-scale-xs", "--nil-type-weight-mono", "--nil-spacing-xs", "--nil-spacing-sm", "--nil-spacing-md", "--nil-motion-duration-fast", "--nil-motion-easing-standard"],
+      "props": { "label": "string", "showLabel": "boolean", "onSend": "function", "value": "string?", "defaultValue": "string?", "onValueChange": "function?", "status": "idle|sending|streaming", "onStop": "function?", "maxRows": "number", "prefix": "string?", "hint": "string|false", "disabled": "boolean", "ref": "forwarded to the textarea" }
     }
   ]
 }
