@@ -1,0 +1,120 @@
+{
+  "task": "T2",
+  "arm": "A",
+  "armLabel": "kit plus its human docs",
+  "round": "2",
+  "run": 1,
+  "subject": "claude",
+  "attempt": 1,
+  "kitCommit": "094d15b",
+  "harness": {
+    "commit": "61ce9e2",
+    "uncommitted": []
+  },
+  "subjectEnv": {
+    "DISABLE_AUTOUPDATER": "1",
+    "ENABLE_CLAUDEAI_MCP_SERVERS": "false"
+  },
+  "subjectExtraFlags": [
+    "--strict-mcp-config",
+    "--mcp-config",
+    "{\"mcpServers\":{}}",
+    "--disable-slash-commands",
+    "--settings",
+    "{\"permissions\":{\"blockReadsOutsideWorkingDirectories\":true}}"
+  ],
+  "sessionDirName": "nil-eval-0g9bZz",
+  "guidance": null,
+  "model": {
+    "requested": "sonnet",
+    "resolved": "claude-sonnet-5-5"
+  },
+  "cliVersion": "2.1.316",
+  "apiKeySource": "none",
+  "ended": "completed",
+  "terminalReason": "completed",
+  "turns": 12,
+  "durationMs": 26816,
+  "durationApiMs": 25622,
+  "wallMs": 27757,
+  "totalCostUsd": 0.0877484,
+  "costNote": "As reported by the CLI: an API-price equivalent, not a bill. Runs draw on Jen's Claude plan.",
+  "usage": {
+    "input_tokens": 12,
+    "output_tokens": 3520,
+    "cache_read_input_tokens": 50684,
+    "cache_creation_input_tokens": 11864
+  },
+  "firstTurnPromptTokens": 6179,
+  "promptBand": {
+    "file": "band-round-2.json",
+    "expected": 6177,
+    "diff": 2,
+    "toleranceTokens": 100
+  },
+  "usageWindows": {
+    "before": {
+      "status": "allowed",
+      "fiveHour": {
+        "utilization": 0.02,
+        "resetsAt": 1793658600,
+        "status": "allowed"
+      },
+      "sevenDay": {
+        "utilization": 0.36,
+        "resetsAt": 1794124800,
+        "status": "allowed"
+      }
+    },
+    "first": {
+      "status": "allowed",
+      "fiveHour": {
+        "utilization": 0.02,
+        "resetsAt": 1793658600,
+        "status": "allowed"
+      },
+      "sevenDay": {
+        "utilization": 0.36,
+        "resetsAt": 1794124800,
+        "status": "allowed"
+      }
+    },
+    "last": {
+      "status": "allowed",
+      "fiveHour": {
+        "utilization": 0.03,
+        "resetsAt": 1793658600,
+        "status": "allowed"
+      },
+      "sevenDay": {
+        "utilization": 0.36,
+        "resetsAt": 1794124800,
+        "status": "allowed"
+      }
+    }
+  },
+  "permissionDenials": 0,
+  "init": {
+    "tools": [
+      "Edit",
+      "Glob",
+      "Grep",
+      "Read",
+      "Write"
+    ],
+    "mcpServers": [],
+    "plugins": [
+      "cc-plugin-agents-md",
+      "cc-plugin-telemetry",
+      "cc-plugin-plugin-authoring"
+    ],
+    "autoMemory": true
+  },
+  "kitEditsOutsideEvalOutput": [],
+  "filesWritten": [
+    "Result.tsx"
+  ],
+  "refOnKitComponent": [],
+  "startedAt": "2026-11-02T17:35:57.768Z",
+  "finishedAt": "2026-11-02T17:36:29.738Z"
+}

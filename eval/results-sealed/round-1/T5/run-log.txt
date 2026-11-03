@@ -1,0 +1,7 @@
+[9/30] T5 A run-1  score (sealed)  26s  6 turns  $0.065  ended: completed
+[10/30] T5 B run-1  score (sealed)  27s  7 turns  $0.094  ended: completed
+[19/30] T5 A run-2  score (sealed)  37s  8 turns  $0.074  ended: completed
+[20/30] T5 B run-2  score (sealed)  28s  8 turns  $0.097  ended: completed
+[29/30] T5 A run-3  score (sealed)  35s  6 turns  $0.064  ended: completed
+[30/30] T5 B run-3  score (sealed)  36s  10 turns  $0.105  ended: completed
+T5 sealed: 6 runs completed

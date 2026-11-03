@@ -1,0 +1,32 @@
+{
+  "note": "Tool calls only: name and path. The transcript is never saved here.",
+  "tools": [
+    {
+      "name": "Glob",
+      "path": "",
+      "pattern": "src/**/*"
+    },
+    {
+      "name": "Read",
+      "path": "src/index.ts"
+    },
+    {
+      "name": "Read",
+      "path": "src/components/Button.tsx"
+    },
+    {
+      "name": "Grep",
+      "path": "src/tokens/tokens.css",
+      "pattern": "^\\s*--[\\w-]+:"
+    },
+    {
+      "name": "Write",
+      "path": "eval-output/Result.tsx"
+    }
+  ],
+  "opened": {
+    "DESIGN.md": 0,
+    "registry.json": 0,
+    "AGENTS.md": 0
+  }
+}

@@ -95,7 +95,7 @@ adjust for that, and each run records whether Claude tried one.
 
 Round 2 will be scored on the same four tasks the guidance fix is tuned on, and a reader would call
 that overfitting. T5 runs in both rounds and nobody tuning the guidance sees its outputs, so it
-shows whether the fix generalises. Its run folders go to `eval/results-sealed/` (gitignored).
+shows whether the fix generalises. Its run folders go to `eval/results-sealed/` (gitignored until round 2 ended; see "After round 2" below).
 `summarise.mjs` leaves it out of `summary.json` and `summary.md` and prints only "T5 sealed: N runs
 completed". `summarise.mjs --unseal` refuses to run until round 2 has finished, then adds T5 as its
 own held-out line, never folded into the four-task mean.
@@ -108,6 +108,8 @@ round 1 log into `eval/results-sealed/round-1/T5/run-log.txt` (both gitignored),
 T5 score files were not opened. Nothing else prints a score.
 
 **Who has seen what, for round 2.** The round-1 runner chat saw six T5 pass counts in the console log before the log was fixed (above). Round 2's guidance was chosen by Jen and the track lead from T1 to T4 only, and written by the chat that ran round 2, which never saw those counts and never opened `eval/results-sealed/` or `eval/logs/`. T5's round-1 results stay sealed until round 2 has finished, and `summarise.mjs --unseal` refuses to run before then. The six counts are the one known exception, and they were not part of choosing the guidance.
+
+**After round 2.** T5 stayed sealed until round 2 ended on 2 November 2026. It was committed after the unseal, without `raw/` (the `eval/results*/**/raw/` line in `.gitignore` still covers `eval/results-sealed/`), so readers can open the files the T5 finding below rests on. It is now spent as a held-out task: an earlier chat and the track lead have both read its outputs. A later round needs a new held-out task.
 
 ## The ten rules
 
@@ -148,10 +150,11 @@ apply to a component.
 
 ### What the rules do not catch
 
-Two blind spots, found after round 1 by reading the generated files. Neither rule was changed afterwards, on purpose: changing the test after seeing the results would tune it to the answer.
+Two blind spots were found after round 1 by reading the generated files, and a third after round 2 by reading the T5 files. No rule was changed afterwards, on purpose: changing the test after seeing the results would tune it to the answer.
 
 - **R7** looks for a raw `<button>`, an `<input type="checkbox">` and a `role="switch"` element. It does not look at headings or text, so a raw heading or paragraph is not flagged, whether or not the kit has a component for it.
 - **R4** covers padding, margin, gap, top, right, bottom, left, inset, font-size and border width. It does not cover width, height (or their min and max), font-weight, letter-spacing or line-height. In the round-1 T1 to T4 files, found by grep and not by the checker, both arms wrote raw numbers there: `width` and `max-width` (for example `width: 240`, `maxWidth: 440`, `width: '16rem'`), `height`, `fontWeight` (600 and 700) and `letterSpacing: '0.08em'`. No raw `line-height` turned up in either arm.
+- **R7**, a second gap: it cannot tell a restyled button from a menu item the kit does not have. A kit `Button` with `role="menuitem"` and a `style` override passes. A raw `<button role="menuitem">`, which is how a menu item is normally built when the kit has no menu, fails. Round 2's T5 files show both (see "Notes on the results").
 
 ### Two kit gaps round 1 found
 
@@ -383,4 +386,16 @@ to it, the two environment variables and the extra flags the subject ran with, a
 
 ## Results
 
-None are written here. The numbers live in the generated `eval/results/round-N/summary.md`.
+None are written here. The numbers live in the generated `eval/results/round-N/summary.md` and `eval/results/compare-rounds.md`.
+
+### Notes on the results
+
+**T5: arm B's gain came from a sentence written for a dialog, copied onto a menu.** Found after round 2 by reading `eval/results-sealed/round-2/T5/B/run-1/Result.tsx`, `run-2/Result.tsx` and `run-3/Result.tsx`.
+
+- In round 1, all three arm B runs built the menu items from raw `<button role="menuitem">` elements and failed R7.
+- In round 2, arm B runs 1 and 3 built every menu item from the kit's `Button`. They made Delete a filled red primary `Button`: `variant="primary"` with `background` and `borderColor` set to `var(--nil-color-danger)` through `style`. That is the destructive-actions sentence in round 2's `AGENTS.md`, applied word for word to a menu. Both passed R7.
+- Run 2 built the items from raw buttons with `role="menuitem"`, tokens only, and showed Delete as danger-coloured text (until it is highlighted). That is a common menu pattern, and it failed R7 for it.
+- So the checker scored the literal copy of the dialog sentence higher than the usual menu pattern. Arm B's gain on T5 is those two R7 passes.
+- This is three runs, and arm A moved on T5 with nothing changed. The sentence is the likely cause, since it is the only thing that changed and the code matches it, but it is not proven.
+
+The scores stay as measured. Changing a rule after seeing the results is what the held-out task was there to prevent. The fix belongs in the kit: a danger `Button` variant, then a menu with danger items. That is later work on another branch.

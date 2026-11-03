@@ -115,6 +115,19 @@ for (const f of ['DESIGN.md', 'registry.json']) for (const a of arms) {
   L.push(`| ${f} | ${a} | ${c(r1)} | ${c(r2)} |`);
 }
 
+// ---- 4b. token lookups and tool calls (T1 to T4)
+const tools = (r) => r.trace.tools ?? [];
+const grepTokensCss = (rs) => rs.filter((r) => tools(r).some((c) => c.name === 'Grep' && (c.path ?? '').includes('tokens.css'))).length;
+const readRegistry = (rs) => rs.filter((r) => tools(r).some((c) => c.name === 'Read' && (c.path ?? '').includes('registry.json'))).length;
+const toolCalls = (rs) => rs.reduce((n, r) => n + tools(r).length, 0);
+const lookupCols = [[r1, 'A'], [r2, 'A'], [r1, 'B'], [r2, 'B']].map(([rd, a]) => visible(rd, a));
+L.push('', '## Token lookups and tool calls (T1 to T4)', '',
+  'Counted from each run\'s trace.json, T1 to T4 only. A run counts once if it made at least one matching call. The Grep column counts calls whose path contains tokens.css, so a Grep with no path, or on a folder, is not counted.', '',
+  '| Measure | A round 1 | A round 2 | B round 1 | B round 2 |', '|---|---|---|---|---|');
+L.push(`| Runs with a Grep whose path contains tokens.css | ${lookupCols.map((rs) => `${grepTokensCss(rs)} of ${rs.length}`).join(' | ')} |`);
+L.push(`| Runs with a Read of registry.json | ${lookupCols.map((rs) => `${readRegistry(rs)} of ${rs.length}`).join(' | ')} |`);
+L.push(`| Total tool calls | ${lookupCols.map((rs) => toolCalls(rs)).join(' | ')} |`);
+
 // ---- 5. invented tokens
 L.push('', '## Invented tokens (R3)', '', 'Names written as var(--nil-...) that are not in tokens.css, with how many runs used each.', '');
 for (const a of arms) for (const rd of rounds) {

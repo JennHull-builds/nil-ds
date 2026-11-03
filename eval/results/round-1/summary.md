@@ -1,6 +1,6 @@
 # Round 1 summary (generated)
 
-Generated 2026-11-02T12:55:01.651Z by eval/summarise.mjs. Every number below is computed from the per-run files; none is typed. **This is a probe, not a study: no significance claims.** 24 scored runs. Model: claude-sonnet-5-5. Contrast is not covered anywhere (axe asserts semantics and ARIA only).
+Generated 2026-11-02T17:52:36.128Z by eval/summarise.mjs. Every number below is computed from the per-run files; none is typed. **This is a probe, not a study: no significance claims.** 24 scored runs. Model: claude-sonnet-5-5. Contrast is not covered anywhere (axe asserts semantics and ARIA only).
 
 ## Score per arm
 
@@ -82,3 +82,10 @@ Runs that were not run are excluded from every mean above.
 
 24 runs: 777 s of wall-clock time, $2.23 as the CLI reports it (an API-price equivalent, not a bill; the runs draw on a Claude plan). Tokens: 260 input, 74309 output, 1412227 cache read, 337416 cache write.
 Plan usage windows as reported in the stream, first to last run: five-hour 0% to 26%, seven-day 28% to 30%.
+
+## Held-out task T5 (its own line, not in the means above)
+
+| Arm | Scored runs | Mean | Min | Max |
+|---|---|---|---|---|
+| A: kit plus its human docs | 3 | 0.88 | 0.88 | 0.88 |
+| B: kit plus its human docs plus agent guidance | 3 | 0.90 | 0.90 | 0.90 |
