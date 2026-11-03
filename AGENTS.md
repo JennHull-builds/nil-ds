@@ -112,7 +112,7 @@ what was true that day; correcting them into the present would falsify the log.
 
 ## No repo consumes this kit today
 
-Checked 2026-11-03 across `~/mothership`: no repo depends on this kit or holds a vendored copy
+Checked 2026-11-03: no repo depends on this kit or holds a vendored copy
 of its CSS. The one hit, a test fixture, is a copy of the kit itself.
 TetherLog vendored a copy until its decision D-001 (2026-09-18) deleted `src/nil-ds/` and
 `scripts/sync-nil-ds.sh`.
