@@ -14,23 +14,26 @@ graph LR
   style S fill:#C7F300,stroke:#111,stroke-width:2px
 ```
 
-**Semantic is the load-bearing layer.** A component asking for `--nil-primitive-blue-600`
-is a component that breaks when the brand changes; asking for `--nil-accent` is one that
-does not. The dotted edge is enforced, not advisory — `tokens:validate` fails on a
-hardcoded hex or a raw px.
+**Semantic is the load-bearing layer.** A component asking for a `--nil-primitive-*` colour
+is a component that breaks when the brand changes; asking for `--nil-color-accent` is one
+that does not. The dotted edge is a written rule (`AGENTS.md`), not yet a check:
+`tokens:validate` fails on a hex that `tokens.json` does not hold, on a fill token used as a
+text colour, on DESIGN.md drift and on a contrast miss in a mapped pair. It does not catch a
+raw px value or a component reading `--nil-primitive-*`.
 
 ## Why the JSON is the source
 
 `tokens.json` generates `tokens.css`. Both are committed, and the JSON is what an agent
-reads — a design system that only exists as CSS is one an agent has to parse rather than
+reads. A design system that only exists as CSS is one an agent has to parse rather than
 query. That is the whole pitch: **agent-ready UI infrastructure, AI reads it.**
 
 ## Stack
 
-- React 19 + Vite + Tailwind v4, TypeScript
+- React (peer dependency `>=18`; developed and tested on React 18) + TypeScript. The showroom is a Vite app.
+- Tailwind is not a dependency. `src/core/tailwind-theme.css` is an optional alias block for a Tailwind v4 consumer.
 - Zero runtime dependencies beyond React. `@vercel/analytics` on the demo only.
-- Vitest — every primitive has a `.test.tsx` beside it
-- No package published yet. That is the gap keeping it off the top band.
+- Vitest: every component has a `.test.tsx` beside it
+- Not on npm. No package is published yet.
 
 ## Files
 
@@ -46,21 +49,21 @@ query. That is the whole pitch: **agent-ready UI infrastructure, AI reads it.**
 ## Commands that matter
 
 ```bash
-npm run tokens:validate   # fails on hardcoded hex or raw px
+npm run tokens:validate   # token parity, stale hex, fill-as-text, DESIGN.md drift and contrast
 npm run typecheck
 npm test
 ```
 
-`tokens:validate` is **load-bearing**. If it fails, the token-architecture claim in the
-capability ledger stops being true — it is the evidence, not a linter.
+`tokens:validate` is **load-bearing**. If it fails, the token-architecture claim stops
+being true. It is the evidence, not a linter.
 
 ## The visual line
 
-Brutalist CLI lineage: 2px borders, 4px radius (soft brutalist), IBM Plex Sans and IBM
-Plex Mono, warm off-white canvas, swappable accent. Values live in `primitive.color`
-and `primitive.type` in `tokens.json`, never in this file.
+Brutalist CLI lineage: hard borders (`border-width`, `border-width-thick`), a soft brutalist
+radius (`radius-default`), IBM Plex Sans and IBM Plex Mono, warm off-white canvas, swappable
+accent. Values live in `primitive` in `tokens.json`, never in this file.
 
-**Not Soft Bento** — 16px radius, ambient glow, deep-space canvas. That belongs to
+**Not Soft Bento**: a large radius, ambient glow, deep-space canvas. That belongs to
 `dx-grid-inspector` and `mothership-console`. The two systems stay separate on purpose;
 fusing them produces a third thing that is neither.
 

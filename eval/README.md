@@ -86,9 +86,9 @@ guidance file, because that would leak guidance into arm A. Each says what to bu
 | T4 | App shell: sidebar with two sections of links, current page marked, three stats |
 | T5 | Project actions menu: a trigger opening Rename, Duplicate, Delete, keyboard only. **Held out.** |
 
-The kit has no dialog, no textarea and no menu, so T2, T3 and T5 force hand-built parts. Those are
-judged by the token rules like everything else. The kit's `Button` does not forward refs
-(nothing in `src/components` uses `forwardRef`), so a `ref` on it fails R8. The checker does not
+At the frozen kit commit `094d15b` the kit had no dialog, no textarea and no menu, so T2, T3 and T5 force hand-built parts. (`v0.2` has since added Dialog and Composer; it still has no menu.) Those are
+judged by the token rules like everything else. At `094d15b` the kit's `Button` did not forward refs
+(nothing in `src/components` used `forwardRef`), so a `ref` on it fails R8. Button gained `forwardRef` later, outside the frozen kit. The checker does not
 adjust for that, and each run records whether Claude tried one.
 
 ### Why T5 is sealed
@@ -107,7 +107,7 @@ for a sealed task (no score, time, turns or cost), a stub run shows it, and the 
 round 1 log into `eval/results-sealed/round-1/T5/run-log.txt` (both gitignored), counted rather than read. The
 T5 score files were not opened. Nothing else prints a score.
 
-**Who has seen what, for round 2.** The agent that ran round 1 saw six T5 pass counts in the console log before the log was fixed (above). Round 2's guidance was chosen by Jen from T1 to T4 only, and written by the agent that ran round 2, which never saw those counts and never opened `eval/results-sealed/` or `eval/logs/`. T5's round-1 results stay sealed until round 2 has finished, and `summarise.mjs --unseal` refuses to run before then. The six counts are the one known exception, and they were not part of choosing the guidance.
+**Who has seen what, for round 2.** The agent that ran round 1 saw six T5 pass counts in the console log before the log was fixed (above). Round 2's guidance was chosen by the owner from T1 to T4 only, and written by the agent that ran round 2, which never saw those counts and never opened `eval/results-sealed/` or `eval/logs/`. T5's round-1 results stay sealed until round 2 has finished, and `summarise.mjs --unseal` refuses to run before then. The six counts are the one known exception, and they were not part of choosing the guidance.
 
 **After round 2.** T5 stayed sealed until round 2 ended on 2 November 2026. It was committed after the unseal, without `raw/` (the `eval/results*/**/raw/` line in `.gitignore` still covers `eval/results-sealed/`), so readers can open the files the T5 finding below rests on. It is now spent as a held-out task: the agent that ran round 1 and the reviewing agent have both read its outputs. A later round needs a new held-out task.
 
@@ -160,7 +160,7 @@ Two blind spots were found after round 1 by reading the generated files, and a t
 
 These are gaps in the kit, not in the eval. The kit stays frozen at `094d15b` for both rounds, so round 2 measures the guidance and nothing else.
 
-1. **No danger variant on Button.** `Button` has `primary`, `secondary` and `ghost`. All six round-1 T2 files built the destructive confirm from the primary Button plus `--nil-color-danger`. Arm A wrote a raw white text colour in all three of its T2 runs (R1 failed in 3 of 3); arm B wrote none in its three. Round 2's `AGENTS.md` tells arm B how to do it with tokens alone.
+1. **No danger variant on Button.** At `094d15b`, `Button` has `primary`, `secondary` and `ghost` (`v0.2` has since added `danger`). All six round-1 T2 files built the destructive confirm from the primary Button plus `--nil-color-danger`. Arm A wrote a raw white text colour in all three of its T2 runs (R1 failed in 3 of 3); arm B wrote none in its three. Round 2's `AGENTS.md` tells arm B how to do it with tokens alone.
 2. **The spacing and type scales name their middle step differently.** Spacing has `md`. The type scale has `base` and no `md`. One arm B run (T2, run 1) wrote `var(--nil-type-scale-md)`, and R3 failed on it. It looks like analogy with `--nil-spacing-md`: DESIGN.md was opened in none of the 12 arm B runs, so it was not the source.
 
 ## How the checker was broken on purpose
@@ -183,15 +183,16 @@ A green result means nothing until the check has been seen to fail.
 ### Test counts, kept separable
 
 When the eval merges into the kit, the kit's component tests have to stay countable on their own.
-Every checker test file lives under `eval/` and matches `eval/**/*.test.ts`. As of 2 November 2026:
+Every checker test file lives under `eval/` and matches `eval/**/*.test.ts`. Counted on `v0.2` on 4 November 2026:
 
 | | Tests | Files |
 |---|---|---|
-| The kit's own (`src/`) | 156 | 21 |
+| The kit's own (`src/`) | 278 | 23 |
 | The eval checker's (`eval/`: `check.test.ts` 171, `guards.test.ts` 22) | 193 | 2 |
-| `npm test` runs both | 349 | 23 |
 
-`npm run eval:count` recounts both from the test files, so these numbers can be checked, not trusted.
+The two are reported separately and never added together: a kit test count is the kit's alone.
+
+`npm run eval:count` recounts both from the test files, so these numbers can be checked, not trusted. Its third line adds the two together; read the first two.
 `npm run eval:test` runs only the eval's.
 
 ### The DOM shim (test-only)
@@ -335,7 +336,7 @@ Run the gate yourself: `npm run eval:isolation`. It spends a little usage.
 ## Rerun it
 
 ```bash
-npm ci
+npm ci                       # fails on v0.2 today: package-lock.json is missing esbuild 0.28.2. npm install works
 npm test                     # the kit's own tests plus the checker's
 npm run eval:mutate          # switch each rule off in turn, about 3 minutes
 npm run eval:isolation       # the gate, about 2 minutes, a little usage
@@ -398,4 +399,4 @@ None are written here. The numbers live in the generated `eval/results/round-N/s
 - So the checker scored the literal copy of the dialog sentence higher than the usual menu pattern. Arm B's gain on T5 is those two R7 passes.
 - This is three runs, and arm A moved on T5 with nothing changed. The sentence is the likely cause, since it is the only thing that changed and the code matches it, but it is not proven.
 
-The scores stay as measured. Changing a rule after seeing the results is what the held-out task was there to prevent. The fix belongs in the kit: a danger `Button` variant, then a menu with danger items. That is later work on another branch.
+The scores stay as measured. Changing a rule after seeing the results is what the held-out task was there to prevent. The fix belongs in the kit: a danger `Button` variant, then a menu with danger items. `v0.2` has the danger variant now; a menu is later work on another branch.

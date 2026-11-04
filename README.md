@@ -11,13 +11,13 @@ component architecture with agent-readable `tokens.json` + `registry.json`.
 
 ![NIL DS showroom intro: hero and climate dials](docs/showroom-intro.png)
 
-*Intro + climate: composed showroom, not a flat catalog.*
+*Intro + climate: composed showroom, not a flat catalogue.*
 
 ![Token Lab: swap primitives, semantics follow](docs/showroom-token-lab.png)
 
 *Token Lab: swap a primitive; semantic `--nil-*` roles update; components stay put.*
 
-## Primitives (v0.1)
+## Components (v0.2)
 
 | Component | Notes |
 |-----------|-------|
@@ -27,6 +27,7 @@ component architecture with agent-readable `tokens.json` + `registry.json`.
 | `Menu` | An action menu on the WAI-ARIA menu button pattern: arrow keys, Home and End, Escape returns focus, danger items in red text. No UI library |
 | `Sidebar` | App navigation: a named nav, headed sections, the current page marked by more than colour, and a toggle that collapses it in flow |
 | `Panel`, `Stack`, `Prompt`, `Readout` | Instrument shells |
+| `Composer` | Multi-line chat or command input, with Send and Stop |
 | `Dial`, `Ring` | Circular gauges |
 | `Toggle`, `DataRow`, `TabStrip` | Schedule / density UI. TabStrip has arrow keys, Home and End |
 
@@ -77,11 +78,13 @@ Honest state: the format is at spec version `alpha`, and it has no concept of th
 
 ## Showroom
 
-Five composed scenes (Intro, Climate, Instrument, Analytics, Token Lab) plus a Gallery appendix, not a flat component catalog.
+Composed scenes, not a flat component catalogue, in this order: Intro, Gallery, Token Lab, then Examples (Climate, Instrument, Analytics).
+
+A second page, `/proof` (`demo/ProofPage.tsx`), reports a small eval of the agent guidance. It is a probe, not a benchmark, and every number on it is read from the committed files in `eval/results/`. The method is in [eval/README.md](eval/README.md).
 
 ## Status
 
 - [x] v0.1 proper elevation: instrument primitives + Token Lab + build pipeline
 - [x] Figma path documented (`FIGMA.md`)
 - [x] Vite showroom (Storybook parked)
-- [ ] `@nilds/*` publish / monorepo split when earned
+- [ ] `@nilds/*` publish / monorepo split when earned.. Not on npm.
