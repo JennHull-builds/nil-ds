@@ -10,8 +10,10 @@ import {
   Heading,
   Input,
   Lightbox,
+  Menu,
   Meta,
   Prompt,
+  Sidebar,
   Text,
   Toggle,
   type ComposerStatus,
@@ -262,6 +264,66 @@ function RenameDemo() {
   );
 }
 
+/** A working Menu with three actions, and a line saying which one ran. Nothing is really renamed, copied or removed. */
+function MenuDemo() {
+  const [ran, setRan] = useState('No action yet. Open the menu and choose one.');
+  return (
+    <div className="nil-demo-dialog-row">
+      <Menu
+        label="Project actions"
+        items={[
+          { label: 'Rename', onSelect: () => setRan('Rename chosen. Nothing was changed, this is a demo.') },
+          { label: 'Duplicate', onSelect: () => setRan('Duplicated. Nothing was copied, this is a demo.') },
+          { separator: true },
+          { label: 'Delete', variant: 'danger', onSelect: () => setRan('Delete chosen. Nothing was removed, this is a demo.') },
+        ]}
+      />
+      <Text size="sm" muted role="status">
+        {ran}
+      </Text>
+    </div>
+  );
+}
+
+/** A Sidebar of this kit's own pages. The links go nowhere: the current page is held in state so a click shows it move. */
+const SIDEBAR_SECTIONS = [
+  { heading: 'Foundations', pages: ['Tokens', 'Contrast'] },
+  { heading: 'Components', pages: ['Composer', 'Dialog', 'Menu'] },
+];
+
+function SidebarDemo() {
+  const [current, setCurrent] = useState('Contrast');
+  return (
+    <div className="nil-demo-sidebar-frame">
+      <Sidebar
+        label="Kit pages"
+        headingLevel={4}
+        sections={SIDEBAR_SECTIONS.map((section) => ({
+          heading: section.heading,
+          items: section.pages.map((page) => ({ label: page, href: `#${page.toLowerCase()}`, current: page === current })),
+        }))}
+        renderLink={({ href, children, ...rest }) => (
+          <a
+            href={href}
+            {...rest}
+            onClick={(event) => {
+              event.preventDefault();
+              setCurrent(String(children));
+            }}
+          >
+            {children}
+          </a>
+        )}
+      />
+      <div className="nil-demo-sidebar-main">
+        <Text size="sm" muted role="status">
+          Current page: {current}. The links go nowhere, this is a demo.
+        </Text>
+      </div>
+    </div>
+  );
+}
+
 export function GalleryScene() {
   const { ref, visible } = useReveal();
   const [lightbox, setLightbox] = useState<LightboxImage | null>(null);
@@ -319,6 +381,26 @@ export function GalleryScene() {
           <div style={{ marginTop: 'var(--nil-spacing-md)' }}>
             <DeleteDemo />
             <RenameDemo />
+          </div>
+        </Card>
+
+        <Card style={{ gridColumn: '1 / -1' }}>
+          <Heading level={3}>Menu</Heading>
+          <Text size="sm" muted style={{ marginTop: 'var(--nil-spacing-xs)' }}>
+            A short list of actions on one thing. Arrow keys move through it, Home and End jump to the ends, and Escape closes it and puts you back on the button. The dangerous item is red text. It reads as a warning without raising its voice.
+          </Text>
+          <div style={{ marginTop: 'var(--nil-spacing-md)' }}>
+            <MenuDemo />
+          </div>
+        </Card>
+
+        <Card style={{ gridColumn: '1 / -1' }}>
+          <Heading level={3}>Sidebar</Heading>
+          <Text size="sm" muted style={{ marginTop: 'var(--nil-spacing-xs)' }}>
+            Navigation for a whole app. The page you are on is marked with a rule and a heavier weight, so the cue survives a grey screenshot. On a phone it starts folded behind one button, and it opens in place and pushes the page down.
+          </Text>
+          <div style={{ marginTop: 'var(--nil-spacing-md)' }}>
+            <SidebarDemo />
           </div>
         </Card>
 

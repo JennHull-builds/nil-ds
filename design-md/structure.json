@@ -14,6 +14,9 @@
     "label-emphasis": { "font": "font-mono", "size": "type-scale-xs", "weight": "type-weight-mono-emphasis" },
     "button-sm": { "font": "font-mono", "size": "type-scale-xs" },
     "button-md": { "font": "font-mono", "size": "type-scale-sm" },
+    "menu-item": { "font": "font-mono", "size": "type-scale-sm", "weight": "type-weight-mono" },
+    "nav-link": { "font": "font-mono", "size": "type-scale-sm", "weight": "type-weight-mono" },
+    "nav-link-current": { "font": "font-mono", "size": "type-scale-sm", "weight": "type-weight-mono-emphasis" },
     "prompt": { "font": "font-mono", "size": "type-scale-base" },
     "readout-lg": { "font": "font-display", "size": "type-scale-3xl" },
     "readout-md": { "font": "font-display", "size": "type-scale-2xl" },
@@ -114,6 +117,20 @@
     },
     "Lightbox": {
       "lightbox-close": { "backgroundColor": "color-overlay", "textColor": "color-overlay-fg", "typography": "button-md", "rounded": "radius-default" }
+    },
+    "Menu": {
+      "menu": { "backgroundColor": "color-surface", "textColor": "color-text", "typography": "menu-item", "rounded": "radius-default" },
+      "menu-item-highlighted": { "backgroundColor": "color-bg", "textColor": "color-text", "typography": "menu-item" },
+      "menu-item-disabled": { "backgroundColor": "color-surface", "textColor": "color-text-muted", "typography": "menu-item" },
+      "menu-item-danger": { "backgroundColor": "color-surface", "textColor": "color-text-danger", "typography": "menu-item" },
+      "menu-item-danger-highlighted": { "backgroundColor": "color-bg", "textColor": "color-text-danger", "typography": "menu-item" }
+    },
+    "Sidebar": {
+      "sidebar": { "backgroundColor": "color-surface", "textColor": "color-text", "typography": "nav-link" },
+      "sidebar-heading": { "backgroundColor": "color-surface", "textColor": "color-text-muted", "typography": "label" },
+      "sidebar-link-hover": { "backgroundColor": "color-bg", "textColor": "color-text", "typography": "nav-link" },
+      "sidebar-link-current": { "backgroundColor": "color-surface", "textColor": "color-text", "typography": "nav-link-current" },
+      "sidebar-link-current-hover": { "backgroundColor": "color-bg", "textColor": "color-text", "typography": "nav-link-current" }
     },
     "Dialog": {
       "dialog": { "backgroundColor": "color-surface", "textColor": "color-text", "typography": "body-md", "rounded": "radius-default", "width": "size-dialog" },

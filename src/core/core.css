@@ -942,6 +942,197 @@ pre,
   animation: nil-dialog-rise var(--nil-motion-duration-base) var(--nil-motion-easing-out-expo) both;
 }
 
+/* ─── Menu ────────────────────────────────────────────────────────────────── */
+
+/*
+ * An action menu. The wrapper is the positioning context and the menu is not portalled: it
+ * opens just below the trigger inside the wrapper. Nothing animates, so the reduced-motion block
+ * at the foot has nothing to switch off here.
+ *
+ * Text pairs, all mapped in design-md/structure.json: item text on surface, the highlighted row
+ * on the canvas colour, a disabled item muted, and danger text on both. The highlighted row also
+ * gets a thick left rule in the text colour, because surface and canvas are close and a fill alone
+ * is not enough to find the focused row. The rule is non-text and clears 3:1 on surface.
+ */
+.nil-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.nil-menu__list {
+  position: absolute;
+  top: 100%;
+  margin-top: var(--nil-spacing-xs);
+  /* A stacking order, not a size: lifts the menu over positioned siblings such as Panels. */
+  z-index: 1;
+  box-sizing: border-box;
+  min-width: 100%;
+  width: max-content;
+  max-width: calc(100vw - 2 * var(--nil-spacing-md));
+  overflow: hidden;
+  background: var(--nil-color-surface);
+  color: var(--nil-color-text);
+  border: var(--nil-border-width) solid var(--nil-color-border);
+  border-radius: var(--nil-radius-default);
+}
+
+/* display on the class would otherwise beat the hidden attribute. */
+.nil-menu__list[hidden] {
+  display: none;
+}
+
+.nil-menu__list--start {
+  left: 0;
+}
+
+.nil-menu__list--end {
+  right: 0;
+}
+
+.nil-menu__item {
+  appearance: none;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: var(--nil-spacing-sm) var(--nil-spacing-md);
+  border: 0;
+  border-left: var(--nil-border-width-thick) solid transparent;
+  border-radius: 0;
+  background: transparent;
+  color: var(--nil-color-text);
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-sm);
+  font-weight: var(--nil-type-weight-mono);
+  line-height: 1.45;
+  text-align: left;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+
+/* The highlight follows focus. Hover moves focus in code, so there is one highlighted row. The
+   transparent outline shows only in forced-colours mode, where fills are dropped. */
+.nil-menu__item:focus,
+.nil-menu__item:hover:not([aria-disabled='true']) {
+  background: var(--nil-color-bg);
+  border-left-color: var(--nil-color-text);
+  outline: var(--nil-border-width-thick) solid transparent;
+  outline-offset: calc(-1 * var(--nil-border-width-thick));
+}
+
+.nil-menu__item--danger {
+  color: var(--nil-color-text-danger);
+}
+
+.nil-menu__item[aria-disabled='true'] {
+  color: var(--nil-color-text-muted);
+  cursor: not-allowed;
+}
+
+.nil-menu__separator {
+  margin: 0;
+  border: 0;
+  border-top: var(--nil-border-width) solid var(--nil-color-border);
+}
+
+/* ─── Sidebar ─────────────────────────────────────────────────────────────── */
+
+/*
+ * App navigation: a column on the surface colour, separated from the content by the kit's rule.
+ * On a wide screen the rule is on the right edge, and below the md breakpoint (the same literal
+ * as the other @media blocks here) the sidebar sits above the content, so the rule moves to
+ * the bottom. Collapsing is in flow: the list takes the `hidden` attribute and the toggle stays.
+ * Nothing animates, so the reduced-motion block at the foot has nothing to switch off here.
+ *
+ * Text pairs, all mapped in design-md/structure.json: a link on surface, a hovered link on the
+ * canvas colour, the current link on surface in the emphasis weight, and a heading muted on
+ * surface. The current link is marked by more than colour: a thick left rule in the text colour,
+ * which is non-text and clears 3:1 on surface, and the heavier weight.
+ */
+.nil-sidebar {
+  box-sizing: border-box;
+  background: var(--nil-color-surface);
+  color: var(--nil-color-text);
+  border-right: var(--nil-border-width) solid var(--nil-color-border);
+}
+
+@media (max-width: 767px) {
+  .nil-sidebar {
+    border-right: 0;
+    border-bottom: var(--nil-border-width) solid var(--nil-color-border);
+  }
+}
+
+.nil-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nil-spacing-md);
+  padding-block: var(--nil-spacing-md);
+}
+
+.nil-sidebar__toggle {
+  align-self: flex-start;
+  margin-inline: var(--nil-spacing-md);
+}
+
+.nil-sidebar__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nil-spacing-lg);
+}
+
+/* display on the class would otherwise beat the hidden attribute. */
+.nil-sidebar__body[hidden] {
+  display: none;
+}
+
+.nil-sidebar__heading {
+  margin: 0 0 var(--nil-spacing-xs);
+  /* Lines the heading text up with the link text, past the current-page rule. */
+  padding-inline: calc(var(--nil-border-width-thick) + var(--nil-spacing-md)) var(--nil-spacing-md);
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-xs);
+  font-weight: var(--nil-type-weight-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--nil-color-text-muted);
+}
+
+.nil-sidebar__links {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nil-sidebar__link {
+  display: block;
+  box-sizing: border-box;
+  padding: var(--nil-spacing-sm) var(--nil-spacing-md);
+  border-left: var(--nil-border-width-thick) solid transparent;
+  color: var(--nil-color-text);
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-sm);
+  font-weight: var(--nil-type-weight-mono);
+  line-height: 1.45;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.nil-sidebar__link:hover {
+  background: var(--nil-color-bg);
+}
+
+.nil-sidebar__link[aria-current='page'] {
+  border-left-color: var(--nil-color-text);
+  font-weight: var(--nil-type-weight-mono-emphasis);
+}
+
+/* Inset, so the ring is not clipped by a neighbour and the rows keep their full width. */
+.nil-sidebar__link:focus-visible {
+  outline: var(--nil-border-width-thick) solid var(--nil-color-accent);
+  outline-offset: calc(-1 * var(--nil-border-width-thick));
+}
+
 /* ─── DataRow ─────────────────────────────────────────────────────────────── */
 
 .nil-data-row {
