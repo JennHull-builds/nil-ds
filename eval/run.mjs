@@ -18,7 +18,7 @@
  *       --stub-windows "0.5:0.2,0.9:0.2"          five-hour:seven-day utilisation each call reports
  *       --stub-reset-in 2                         seconds until the stub's five-hour window resets
  *
- * Policy (track lead, 2 November 2026):
+ * Policy (set 2 November 2026):
  *  - Before each run read the five-hour and seven-day utilisation. Five-hour above 85%: wait for
  *    its reset, if that is before --stop-at. Seven-day above 60%: stop, resumable.
  *  - A breach (the init event, or a first-turn prompt outside its cell's band) excludes that

@@ -107,9 +107,9 @@ for a sealed task (no score, time, turns or cost), a stub run shows it, and the 
 round 1 log into `eval/results-sealed/round-1/T5/run-log.txt` (both gitignored), counted rather than read. The
 T5 score files were not opened. Nothing else prints a score.
 
-**Who has seen what, for round 2.** The round-1 runner chat saw six T5 pass counts in the console log before the log was fixed (above). Round 2's guidance was chosen by Jen and the track lead from T1 to T4 only, and written by the chat that ran round 2, which never saw those counts and never opened `eval/results-sealed/` or `eval/logs/`. T5's round-1 results stay sealed until round 2 has finished, and `summarise.mjs --unseal` refuses to run before then. The six counts are the one known exception, and they were not part of choosing the guidance.
+**Who has seen what, for round 2.** The agent that ran round 1 saw six T5 pass counts in the console log before the log was fixed (above). Round 2's guidance was chosen by Jen from T1 to T4 only, and written by the agent that ran round 2, which never saw those counts and never opened `eval/results-sealed/` or `eval/logs/`. T5's round-1 results stay sealed until round 2 has finished, and `summarise.mjs --unseal` refuses to run before then. The six counts are the one known exception, and they were not part of choosing the guidance.
 
-**After round 2.** T5 stayed sealed until round 2 ended on 2 November 2026. It was committed after the unseal, without `raw/` (the `eval/results*/**/raw/` line in `.gitignore` still covers `eval/results-sealed/`), so readers can open the files the T5 finding below rests on. It is now spent as a held-out task: an earlier chat and the track lead have both read its outputs. A later round needs a new held-out task.
+**After round 2.** T5 stayed sealed until round 2 ended on 2 November 2026. It was committed after the unseal, without `raw/` (the `eval/results*/**/raw/` line in `.gitignore` still covers `eval/results-sealed/`), so readers can open the files the T5 finding below rests on. It is now spent as a held-out task: the agent that ran round 1 and the reviewing agent have both read its outputs. A later round needs a new held-out task.
 
 ## The ten rules
 
@@ -375,7 +375,7 @@ to it, the two environment variables and the extra flags the subject ran with, a
 
 - Visual quality. Nothing here looks at pixels.
 - Contrast. R9 asserts semantics and ARIA only. Contrast is a token-level property; `tokens:validate`
-  prints a DESIGN.md report on it, which is a report and not a gate.
+  prints a DESIGN.md report on it, which was a report and not a gate at the frozen kit commit. It has since become a gate in the kit, but that is outside this eval.
 - Anything beyond five tasks, three runs each, in one kit.
 - Any model other than the one recorded in `meta.json` (the alias `sonnet` resolves to a model ID that
   is written to every run).

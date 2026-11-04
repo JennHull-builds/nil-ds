@@ -1,3 +1,4 @@
+import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
@@ -16,5 +17,12 @@ export default defineConfig({
   build: {
     outDir: '../dist-demo',
     emptyOutDir: true,
+    // Two pages: the showroom (index.html) and the proof page (proof.html, served at /proof).
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'demo/index.html'),
+        proof: resolve(__dirname, 'demo/proof.html'),
+      },
+    },
   },
 });

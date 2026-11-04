@@ -73,7 +73,7 @@ export const SUBJECT = {
 };
 
 /**
- * Guards (track lead, 2 November 2026).
+ * Guards (set 2 November 2026).
  *  - promptBand: a run's first-turn prompt must be within this many tokens of its cell's calibrated
  *    size (eval/band-round-N.json). Noise measured at about 6 tokens; the smallest thing we care about
  *    (a missing AGENTS.md, an MCP connector) moves it by thousands.

@@ -3,6 +3,7 @@ import type { Theme } from '../src';
 import './demo.css';
 import { AnalyticsScene } from './scenes/AnalyticsScene';
 import { ClimateScene } from './scenes/ClimateScene';
+import { ExamplesIntro } from './scenes/ExamplesIntro';
 import { GalleryScene } from './scenes/GalleryScene';
 import { InstrumentScene } from './scenes/InstrumentScene';
 import { IntroScene } from './scenes/IntroScene';
@@ -11,11 +12,9 @@ import { Analytics } from '@vercel/analytics/react';
 
 const SCENES = [
   { id: 'intro', label: 'Intro' },
-  { id: 'climate', label: 'Climate' },
-  { id: 'instrument', label: 'Instrument' },
-  { id: 'analytics', label: 'Analytics' },
-  { id: 'token-lab', label: 'Token Lab' },
   { id: 'gallery', label: 'Gallery' },
+  { id: 'token-lab', label: 'Token Lab' },
+  { id: 'examples', label: 'Examples' },
 ] as const;
 
 export function App() {
@@ -32,11 +31,12 @@ export function App() {
   return (
     <div data-theme={theme} className="nil-demo-canvas">
       <IntroScene band theme={theme} onThemeChange={setTheme} scenes={SCENES} />
+      <GalleryScene />
+      <TokenLabScene band />
+      <ExamplesIntro />
       <ClimateScene />
       <InstrumentScene band />
       <AnalyticsScene />
-      <TokenLabScene band />
-      <GalleryScene />
       <footer className="nil-demo-footer">
         <div className="nil-container">
           <nav className="nil-demo-nav" aria-label="About this kit">

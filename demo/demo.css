@@ -280,3 +280,108 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Proof page. Tokens only: widths are in ch (the reading measure), never px. */
+.nil-proof-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--nil-spacing-md);
+  flex-wrap: wrap;
+}
+
+.nil-proof-head > div:first-child {
+  max-width: 64ch;
+}
+
+.nil-proof-meta {
+  display: flex;
+  gap: var(--nil-spacing-md);
+  flex-wrap: wrap;
+  margin-top: var(--nil-spacing-lg);
+}
+
+.nil-proof-section {
+  padding-block: var(--nil-spacing-lg);
+}
+
+.nil-proof-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nil-spacing-md);
+  margin-top: var(--nil-spacing-md);
+  max-width: 72ch;
+}
+
+.nil-proof-body a {
+  color: var(--nil-color-text-accent);
+}
+
+.nil-proof-list {
+  margin: 0;
+  padding-left: var(--nil-spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--nil-spacing-sm);
+  line-height: 1.5;
+  color: var(--nil-color-text);
+}
+
+.nil-proof-table-wrap {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.nil-proof-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-xs);
+  color: var(--nil-color-text);
+}
+
+.nil-proof-table caption {
+  text-align: left;
+  padding-bottom: var(--nil-spacing-sm);
+  color: var(--nil-color-text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.nil-proof-table th,
+.nil-proof-table td {
+  text-align: left;
+  padding: var(--nil-spacing-sm);
+  border-bottom: var(--nil-border-width) solid var(--nil-color-border);
+  white-space: nowrap;
+}
+
+.nil-proof-table thead th {
+  color: var(--nil-color-text-muted);
+  font-weight: 600;
+  border-bottom-color: var(--nil-color-text);
+}
+
+.nil-proof-table tbody th {
+  font-weight: 600;
+  white-space: normal;
+}
+
+.nil-proof-diff {
+  margin: 0;
+  padding: var(--nil-spacing-md);
+  background: var(--nil-color-surface);
+  border: var(--nil-border-width) solid var(--nil-color-border);
+  border-radius: var(--nil-radius-default);
+  overflow-x: auto;
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-xs);
+  line-height: 1.5;
+  color: var(--nil-color-text);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.nil-demo-examples-intro {
+  padding-top: var(--nil-spacing-2xl);
+}

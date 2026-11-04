@@ -102,8 +102,7 @@ by breaking it: shortening the blink instead of stopping it fails two tests.
 ## Out of scope
 
 This is a showroom and a dogfood kit, **not kit-SaaS**. No pricing page, no registry
-product, no monetised Figma. Ideas get noted, not built — `~/mothership/brain/chappie/memory/kit-market-verdict.md`
-is locked on that.
+product, no monetised Figma. Ideas get noted, not built. That decision is locked.
 
 Architecture north star: `PLAN.md`. Applying it elsewhere: `APPLY.md`. Agent rules:
 `AGENTS.md`.

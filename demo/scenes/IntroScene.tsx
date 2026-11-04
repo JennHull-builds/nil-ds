@@ -8,6 +8,7 @@ import {
   type Theme,
 } from '../../src';
 import tokensJson from '../../src/tokens/tokens.json';
+import { version } from '../../package.json';
 import { useReveal } from '../hooks/useReveal';
 import { DemoScene } from '../DemoScene';
 
@@ -42,6 +43,7 @@ export function IntroScene({
                     {scene.label}
                   </a>
                 ))}
+                <a href="/proof">Proof</a>
               </nav>
             </div>
           </div>
@@ -58,7 +60,7 @@ export function IntroScene({
                     <Prompt>READY TO EXECUTE</Prompt>
                     <div style={{ display: 'flex', gap: 'var(--nil-spacing-md)', flexWrap: 'wrap', marginTop: 'var(--nil-spacing-md)' }}>
                       <Meta label="Kit">NIL DS</Meta>
-                      <Meta label="Version">0.1</Meta>
+                      <Meta label="Version">{version}</Meta>
                       <Meta label="Accent" tone="accent">{ACCENT}</Meta>
                       <Meta label="Status" tone="success">Active</Meta>
                     </div>
@@ -70,7 +72,7 @@ export function IntroScene({
                         <span className="nil-demo-pagination-dot" />
                         <span className="nil-demo-pagination-dot" />
                       </div>
-                      <a href="#climate" className="nil-label nil-label--accent" style={{ textDecoration: 'none' }}>
+                      <a href="#gallery" className="nil-label nil-label--accent" style={{ textDecoration: 'none' }}>
                         Next →
                       </a>
                     </div>
@@ -92,7 +94,16 @@ export function IntroScene({
               NIL DS
               <span className="nil-cursor-blink" aria-hidden>_</span>
             </Heading>
-            <Text muted>Machine-readable token primitives. Agent-ready UI infrastructure.</Text>
+            <Text muted style={{ maxWidth: '64ch', marginTop: 'var(--nil-spacing-sm)' }}>
+              NIL DS is a small design system I designed and built. It has design tokens (named values,
+              like a colour or a spacing, that code reads), React components that use only those
+              tokens, and files written for AI agents. A small eval tests whether those files work.
+            </Text>
+            <p style={{ margin: 'var(--nil-spacing-sm) 0 0' }}>
+              <a href="/proof" className="nil-label nil-label--accent" style={{ textDecoration: 'none' }}>
+                See the eval →
+              </a>
+            </p>
           </div>
           <ThemeToggle theme={theme} onThemeChange={onThemeChange} />
         </div>

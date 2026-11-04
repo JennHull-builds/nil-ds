@@ -55,8 +55,7 @@ Architecture north star is `PLAN.md` (`@nilds/*`).
 
 ## What this repo is for
 
-It is **kit #1** and a showroom of taste, not a product. Per
-`~/mothership/brain/chappie/memory/kit-market-verdict.md`: kits are showroom plus dogfood, **not
+It is **kit #1** and a showroom of taste, not a product. The standing decision: kits are showroom plus dogfood, **not
 kit-SaaS**. Do not propose monetising it, adding a pricing page, or productising the
 registry. Note ideas, do not build them.
 
