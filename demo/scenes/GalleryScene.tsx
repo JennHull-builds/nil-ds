@@ -10,6 +10,7 @@ import {
   Heading,
   Input,
   Lightbox,
+  Menu,
   Meta,
   Prompt,
   Text,
@@ -262,6 +263,27 @@ function RenameDemo() {
   );
 }
 
+/** A working Menu with three actions, and a line saying which one ran. Nothing is really renamed, copied or removed. */
+function MenuDemo() {
+  const [ran, setRan] = useState('No action yet. Open the menu and choose one.');
+  return (
+    <div className="nil-demo-dialog-row">
+      <Menu
+        label="Project actions"
+        items={[
+          { label: 'Rename', onSelect: () => setRan('Rename chosen. Nothing was changed, this is a demo.') },
+          { label: 'Duplicate', onSelect: () => setRan('Duplicated. Nothing was copied, this is a demo.') },
+          { separator: true },
+          { label: 'Delete', variant: 'danger', onSelect: () => setRan('Delete chosen. Nothing was removed, this is a demo.') },
+        ]}
+      />
+      <Text size="sm" muted role="status">
+        {ran}
+      </Text>
+    </div>
+  );
+}
+
 export function GalleryScene() {
   const { ref, visible } = useReveal();
   const [lightbox, setLightbox] = useState<LightboxImage | null>(null);
@@ -319,6 +341,16 @@ export function GalleryScene() {
           <div style={{ marginTop: 'var(--nil-spacing-md)' }}>
             <DeleteDemo />
             <RenameDemo />
+          </div>
+        </Card>
+
+        <Card style={{ gridColumn: '1 / -1' }}>
+          <Heading level={3}>Menu</Heading>
+          <Text size="sm" muted style={{ marginTop: 'var(--nil-spacing-xs)' }}>
+            A short list of actions on one thing. Arrow keys move through it, Home and End jump to the ends, and Escape closes it and puts you back on the button. The dangerous item is red text. It reads as a warning without raising its voice.
+          </Text>
+          <div style={{ marginTop: 'var(--nil-spacing-md)' }}>
+            <MenuDemo />
           </div>
         </Card>
 

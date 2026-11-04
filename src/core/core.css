@@ -942,6 +942,99 @@ pre,
   animation: nil-dialog-rise var(--nil-motion-duration-base) var(--nil-motion-easing-out-expo) both;
 }
 
+/* ─── Menu ────────────────────────────────────────────────────────────────── */
+
+/*
+ * An action menu. The wrapper is the positioning context and the menu is not portalled: it
+ * opens just below the trigger inside the wrapper. Nothing animates, so the reduced-motion block
+ * at the foot has nothing to switch off here.
+ *
+ * Text pairs, all mapped in design-md/structure.json: item text on surface, the highlighted row
+ * on the canvas colour, a disabled item muted, and danger text on both. The highlighted row also
+ * gets a thick left rule in the text colour, because surface and canvas are close and a fill alone
+ * is not enough to find the focused row. The rule is non-text and clears 3:1 on surface.
+ */
+.nil-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.nil-menu__list {
+  position: absolute;
+  top: 100%;
+  margin-top: var(--nil-spacing-xs);
+  /* A stacking order, not a size: lifts the menu over positioned siblings such as Panels. */
+  z-index: 1;
+  box-sizing: border-box;
+  min-width: 100%;
+  width: max-content;
+  max-width: calc(100vw - 2 * var(--nil-spacing-md));
+  overflow: hidden;
+  background: var(--nil-color-surface);
+  color: var(--nil-color-text);
+  border: var(--nil-border-width) solid var(--nil-color-border);
+  border-radius: var(--nil-radius-default);
+}
+
+/* display on the class would otherwise beat the hidden attribute. */
+.nil-menu__list[hidden] {
+  display: none;
+}
+
+.nil-menu__list--start {
+  left: 0;
+}
+
+.nil-menu__list--end {
+  right: 0;
+}
+
+.nil-menu__item {
+  appearance: none;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: var(--nil-spacing-sm) var(--nil-spacing-md);
+  border: 0;
+  border-left: var(--nil-border-width-thick) solid transparent;
+  border-radius: 0;
+  background: transparent;
+  color: var(--nil-color-text);
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-sm);
+  font-weight: var(--nil-type-weight-mono);
+  line-height: 1.45;
+  text-align: left;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+
+/* The highlight follows focus. Hover moves focus in code, so there is one highlighted row. The
+   transparent outline shows only in forced-colours mode, where fills are dropped. */
+.nil-menu__item:focus,
+.nil-menu__item:hover:not([aria-disabled='true']) {
+  background: var(--nil-color-bg);
+  border-left-color: var(--nil-color-text);
+  outline: var(--nil-border-width-thick) solid transparent;
+  outline-offset: calc(-1 * var(--nil-border-width-thick));
+}
+
+.nil-menu__item--danger {
+  color: var(--nil-color-text-danger);
+}
+
+.nil-menu__item[aria-disabled='true'] {
+  color: var(--nil-color-text-muted);
+  cursor: not-allowed;
+}
+
+.nil-menu__separator {
+  margin: 0;
+  border: 0;
+  border-top: var(--nil-border-width) solid var(--nil-color-border);
+}
+
 /* ─── DataRow ─────────────────────────────────────────────────────────────── */
 
 .nil-data-row {

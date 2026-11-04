@@ -24,9 +24,10 @@ component architecture with agent-readable `tokens.json` + `registry.json`.
 | `Button`, `Badge`, `Card`, `Grid`, `Input`, `Heading`, `Text`, `Divider` | Core + mothership extracts |
 | `Meta`, `ThemeToggle`, `Lightbox` | CLI extracts |
 | `Dialog` | A modal decision or short form, on the native `<dialog>`. Focus moves in, stays in and returns |
+| `Menu` | An action menu on the WAI-ARIA menu button pattern: arrow keys, Home and End, Escape returns focus, danger items in red text. No UI library |
 | `Panel`, `Stack`, `Prompt`, `Readout` | Instrument shells |
 | `Dial`, `Ring` | Circular gauges |
-| `Toggle`, `DataRow`, `TabStrip` | Schedule / density UI |
+| `Toggle`, `DataRow`, `TabStrip` | Schedule / density UI. TabStrip has arrow keys, Home and End |
 
 ## Tokens
 

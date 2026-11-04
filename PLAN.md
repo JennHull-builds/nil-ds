@@ -155,6 +155,19 @@ reinjection, brand lime/mint/pork, Soft Bento, page/print chrome.
 
 ## Log
 
+- 2026-11-04: **Menu, and one roving-focus hook for Menu and TabStrip.** Menu is an action menu on the
+  WAI-ARIA menu button pattern with no UI library: the kit Button as trigger, a `role="menu"` named by
+  it, items as data (with optional separators), and a danger variant that is red text, never a filled
+  row, after the eval's menu task showed filled red Buttons standing in for it. Choosing an item puts
+  focus back on the trigger before `onSelect` runs, so an action that opens a Dialog hands it an opener.
+  Tab closes by moving focus to the trigger first, so nothing is trapped. It is not a portal: the list
+  sits below the trigger in a relative wrapper and flips edge if it would leave the viewport. Nothing
+  animates, so reduced motion has nothing to switch off. The highlighted row is the canvas colour on the
+  surface, which are close, so it also carries a thick left rule in the text colour. `useRovingFocus`
+  owns which item is in the Tab order, the arrows, Home and End, wrapping and disabled items, and gave
+  TabStrip its arrow keys with automatic activation (arrows move and select), because `onTabChange` is
+  cheap in every current use. No token value changed. axe has no rule for an unnamed `role="menu"`, so
+  the name is asserted with a role query. Typeahead is left for later.
 - 2026-11-03: **Dialog, and the two Button changes it needed.** Dialog is the kit's base modal, on
   the native `<dialog>` with `showModal()`: a Panel-style header, a Lightbox-style Close, an actions
   row, and a scrim that is the dialog element itself. Focus goes in, stays in and returns to the

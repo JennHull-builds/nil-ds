@@ -22,13 +22,15 @@ Read this before generating UI with NIL primitives.
 | ON/OFF schedule pill | `Toggle` |
 | Theme light/dark | `ThemeToggle` |
 | Schedule / table row | `DataRow` |
-| Room / section nav | `TabStrip` |
+| Room / section nav (Tab enters on the selected tab; ArrowLeft, ArrowRight, Home and End move and select) | `TabStrip` |
 | CLI key-value | `Meta` |
 | Terminal line | `Prompt` |
 | Multi-line chat or command input | `Composer` |
 | A modal decision or short form | `Dialog` |
+| A list of actions on one thing (rename, duplicate, delete) | `Menu` |
 | Full-size image viewer | `Lightbox` |
 | Destructive action | `Button` with `variant="danger"` |
+| Destructive item inside a `Menu` | `variant="danger"` on the item: red text, never a red `Button` |
 | Large stat | `Readout` |
 
 ## App vs NIL boundary
@@ -242,6 +244,33 @@ each with its own dark value.
   demo wrapper. The wrapper carries its own `data-theme`, and in dark that block shadows anything set
   on `<html>`. The canvas swap still sets `<html>` and so does nothing in dark; the demo resets canvas
   overrides on every theme change anyway.
+
+## Gotcha: Menu and the shared roving-focus hook
+
+Added with Menu. Each of these fails quietly if someone "tidies" it.
+
+- **One hook owns the arrow keys.** `useRovingFocus` handles which item is in the Tab order, the
+  arrow keys for an orientation, Home and End, wrapping, skipping disabled items and moving DOM
+  focus. Menu (vertical) and TabStrip (horizontal) both use it. Do not add a second copy of the key
+  handling to either.
+- **Choosing an item puts focus back on the trigger before `onSelect` runs.** An action that opens a
+  Dialog then hands the Dialog the trigger as its opener, and focus returns to it on close. Swap the
+  order and the Dialog records the closing menu item, which is gone by then.
+- **Tab closes the menu by moving focus to the trigger first.** The browser then carries the Tab on
+  from the trigger, so nothing is trapped and focus never drops to the page when the menu hides.
+- **Disabled items are `aria-disabled`, never `disabled`.** Arrow keys skip them, a click on one does
+  nothing, and a screen reader still reads them.
+- **A danger item is red text.** It uses `--nil-color-text-danger`. A filled red row, or a red
+  `Button` in a menu, is the wrong build.
+- **A closed menu is hidden, not removed.** The list stays in the document with `hidden`, so the
+  trigger's `aria-controls` always points at something. `core.css` has an explicit rule so the
+  `display` on the class does not beat `hidden`.
+- **axe has no rule for a nameless `role="menu"`.** Removing the menu's `aria-labelledby` passes axe.
+  Menu's tests assert the name with a role query for that reason, and its axe guards break the
+  menu items and the `role="menu"` parent instead.
+- **jsdom has no layout.** The flip that keeps the menu inside the viewport, the hover highlight and
+  the real Tab order were checked in Chromium, not in jsdom. Typeahead is not built. Firefox and
+  Safari are unchecked.
 
 ## Gotcha: Composer's focus, sizing and registry rules
 

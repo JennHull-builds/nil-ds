@@ -63,3 +63,9 @@ export type { DataRowProps } from './components/DataRow';
 
 export { TabStrip } from './components/TabStrip';
 export type { TabStripProps } from './components/TabStrip';
+
+export { Menu } from './components/Menu';
+export type { MenuProps, MenuItem, MenuSeparator, MenuEntry } from './components/Menu';
+
+export { useRovingFocus } from './components/useRovingFocus';
+export type { UseRovingFocusOptions, RovingItemProps } from './components/useRovingFocus';
