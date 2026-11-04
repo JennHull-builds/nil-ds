@@ -98,6 +98,11 @@
       "name": "Menu",
       "tokens": ["--nil-color-surface", "--nil-color-bg", "--nil-color-text", "--nil-color-text-muted", "--nil-color-text-danger", "--nil-color-border", "--nil-border-width", "--nil-border-width-thick", "--nil-radius-default", "--nil-font-mono", "--nil-type-scale-sm", "--nil-type-weight-mono", "--nil-spacing-xs", "--nil-spacing-sm", "--nil-spacing-md"],
       "props": { "label": "string (trigger text and the menu's accessible name)", "items": "({ label, onSelect, variant: default|danger, disabled? } | { separator: true })[]", "align": "start|end (default start)", "triggerVariant": "Button variant (default secondary)" }
+    },
+    {
+      "name": "Sidebar",
+      "tokens": ["--nil-color-surface", "--nil-color-bg", "--nil-color-text", "--nil-color-text-muted", "--nil-color-accent", "--nil-color-border", "--nil-border-width", "--nil-border-width-thick", "--nil-font-mono", "--nil-type-scale-xs", "--nil-type-scale-sm", "--nil-type-weight-mono", "--nil-type-weight-mono-emphasis", "--nil-spacing-xs", "--nil-spacing-sm", "--nil-spacing-md", "--nil-spacing-lg"],
+      "props": { "label": "string (the nav's accessible name)", "sections": "{ heading: string, items: { label, href, current? }[] }[]", "children": "ReactNode? (custom content, collapses with the list)", "collapsible": "boolean (default true)", "defaultCollapsed": "boolean? (default: collapsed below the md breakpoint)", "collapsed": "boolean? (controlled)", "onCollapsedChange": "function?", "showLabel": "string (default Show navigation)", "hideLabel": "string (default Hide navigation)", "headingLevel": "2-6 (default 2)", "renderLink": "(props) => ReactNode (a router's link; default is a plain anchor)" }
     }
   ]
 }

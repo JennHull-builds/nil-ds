@@ -70,7 +70,7 @@ Bordered components use `rounded.default`, a small radius: soft brutalist, not s
 
 ## Components
 
-One group per primitive in `registry.json`: Button, Panel, Stack, Dial, Ring, Toggle, DataRow, TabStrip, Meta, Readout, Prompt, Composer, Badge, Input, ThemeToggle, Lightbox, Dialog and Menu. Variants use the format's related-key convention (`button-primary`, `button-secondary`), and the dark twin of any variant ends in `-dark`. Dial and Ring sizes are `size` entries such as `dial-sm` and `ring-md`.
+One group per primitive in `registry.json`: Button, Panel, Stack, Dial, Ring, Toggle, DataRow, TabStrip, Meta, Readout, Prompt, Composer, Badge, Input, ThemeToggle, Lightbox, Dialog, Menu and Sidebar. Variants use the format's related-key convention (`button-primary`, `button-secondary`), and the dark twin of any variant ends in `-dark`. Dial and Ring sizes are `size` entries such as `dial-sm` and `ring-md`.
 
 What the front matter can't say:
 

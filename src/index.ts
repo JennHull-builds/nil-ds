@@ -69,3 +69,6 @@ export type { MenuProps, MenuItem, MenuSeparator, MenuEntry } from './components
 
 export { useRovingFocus } from './components/useRovingFocus';
 export type { UseRovingFocusOptions, RovingItemProps } from './components/useRovingFocus';
+
+export { Sidebar } from './components/Sidebar';
+export type { SidebarProps, SidebarLink, SidebarSection, SidebarLinkRenderProps } from './components/Sidebar';

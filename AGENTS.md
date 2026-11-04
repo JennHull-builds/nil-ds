@@ -22,12 +22,13 @@ Read this before generating UI with NIL primitives.
 | ON/OFF schedule pill | `Toggle` |
 | Theme light/dark | `ThemeToggle` |
 | Schedule / table row | `DataRow` |
-| Room / section nav (Tab enters on the selected tab; ArrowLeft, ArrowRight, Home and End move and select) | `TabStrip` |
+| Room / in-page section switching (Tab enters on the selected tab; ArrowLeft, ArrowRight, Home and End move and select) | `TabStrip` |
 | CLI key-value | `Meta` |
 | Terminal line | `Prompt` |
 | Multi-line chat or command input | `Composer` |
 | A modal decision or short form | `Dialog` |
 | A list of actions on one thing (rename, duplicate, delete) | `Menu` |
+| App navigation: grouped links, the current page marked, collapses | `Sidebar` |
 | Full-size image viewer | `Lightbox` |
 | Destructive action | `Button` with `variant="danger"` |
 | Destructive item inside a `Menu` | `variant="danger"` on the item: red text, never a red `Button` |
@@ -271,6 +272,32 @@ Added with Menu. Each of these fails quietly if someone "tidies" it.
 - **jsdom has no layout.** The flip that keeps the menu inside the viewport, the hover highlight and
   the real Tab order were checked in Chromium, not in jsdom. Typeahead is not built. Firefox and
   Safari are unchecked.
+
+## Gotcha: Sidebar collapses in flow, and the list is hidden for everyone
+
+Added with Sidebar. Each of these fails quietly if someone "tidies" it.
+
+- **App navigation goes to Sidebar, in-page switching stays with TabStrip.** Sidebar is a named
+  `<nav>` of links. TabStrip is a `tablist` that swaps a view on the same page.
+- **Collapsing sets `hidden` on the list, and the nav and toggle stay.** The links leave the page for
+  sight, keyboard and screen reader alike, while the landmark and the toggle remain, so the way back is
+  announced. `core.css` has an explicit `[hidden]` rule because the `display` on the class would beat it.
+- **It is in flow, never a drawer.** No fixed or absolute positioning, so there is nothing to trap. A
+  test fails if a position or transform declaration appears in the `.nil-sidebar*` rules.
+- **Focus goes to the toggle before the list hides.** Collapsing with a link focused would otherwise
+  drop focus to the page. The toggle handler moves it first, and a layout effect does the same when a
+  controlled parent collapses it. Both are asserted in jsdom. Only the toggle path was driven in a browser.
+- **The current page is marked by more than colour.** `aria-current="page"` on the link, a thick left
+  rule in the text colour and the emphasis weight. The component marks every link flagged `current`, so
+  the caller must flag exactly one.
+- **The narrow start is read once.** Uncontrolled and without `defaultCollapsed`, it starts collapsed
+  below the md breakpoint, read from `--nil-breakpoint-md`, and resizing later does not move it. The
+  `@media` blocks in `core.css` still hold the literal, as the other blocks there do.
+- **A router's link goes through `renderLink`.** `renderLink={({ href, ...rest }) => <Link to={href} {...rest} />}`
+  keeps the kit free of a router. The render props carry the class and `aria-current`, so spread them all.
+- **Two navigation landmarks need different names.** That is the rule axe can check: a sidebar with no
+  `label` beside a second nameless `<nav>` fails `landmark-unique`, and Sidebar's axe test is built that
+  way. A single nameless `<nav>` alone passes axe, so the name is also asserted with a role query.
 
 ## Gotcha: Composer's focus, sizing and registry rules
 

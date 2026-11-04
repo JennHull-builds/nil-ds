@@ -155,6 +155,15 @@ reinjection, brand lime/mint/pork, Soft Bento, page/print chrome.
 
 ## Log
 
+- 2026-11-04: **Sidebar.** App navigation in the kit's own look: a column on the surface colour with the
+  kit's rule on one edge, mono uppercase muted section headings like Panel's header, and full-width mono
+  links. The current page is marked by `aria-current="page"` plus a thick left rule and the emphasis
+  weight, so colour is never the only cue. The toggle is the kit Button, a disclosure with `aria-expanded`
+  and `aria-controls`. Collapsing hides the list with `hidden` and leaves the nav and toggle, in flow with
+  no drawer, so nothing is trapped; focus moves to the toggle first if a link had it. Uncontrolled, it
+  starts collapsed below the md breakpoint, read from the token. Links are plain anchors, and `renderLink`
+  lets a router's link in without a dependency. No new token and no value changed: the column width is the
+  caller's, since the kit has no size token for it. Nothing animates.
 - 2026-11-04: **Menu, and one roving-focus hook for Menu and TabStrip.** Menu is an action menu on the
   WAI-ARIA menu button pattern with no UI library: the kit Button as trigger, a `role="menu"` named by
   it, items as data (with optional separators), and a danger variant that is red text, never a filled

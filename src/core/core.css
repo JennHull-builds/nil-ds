@@ -1035,6 +1035,104 @@ pre,
   border-top: var(--nil-border-width) solid var(--nil-color-border);
 }
 
+/* ─── Sidebar ─────────────────────────────────────────────────────────────── */
+
+/*
+ * App navigation: a column on the surface colour, separated from the content by the kit's rule.
+ * On a wide screen the rule is on the right edge, and below the md breakpoint (the same literal
+ * as the other @media blocks here) the sidebar sits above the content, so the rule moves to
+ * the bottom. Collapsing is in flow: the list takes the `hidden` attribute and the toggle stays.
+ * Nothing animates, so the reduced-motion block at the foot has nothing to switch off here.
+ *
+ * Text pairs, all mapped in design-md/structure.json: a link on surface, a hovered link on the
+ * canvas colour, the current link on surface in the emphasis weight, and a heading muted on
+ * surface. The current link is marked by more than colour: a thick left rule in the text colour,
+ * which is non-text and clears 3:1 on surface, and the heavier weight.
+ */
+.nil-sidebar {
+  box-sizing: border-box;
+  background: var(--nil-color-surface);
+  color: var(--nil-color-text);
+  border-right: var(--nil-border-width) solid var(--nil-color-border);
+}
+
+@media (max-width: 767px) {
+  .nil-sidebar {
+    border-right: 0;
+    border-bottom: var(--nil-border-width) solid var(--nil-color-border);
+  }
+}
+
+.nil-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nil-spacing-md);
+  padding-block: var(--nil-spacing-md);
+}
+
+.nil-sidebar__toggle {
+  align-self: flex-start;
+  margin-inline: var(--nil-spacing-md);
+}
+
+.nil-sidebar__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nil-spacing-lg);
+}
+
+/* display on the class would otherwise beat the hidden attribute. */
+.nil-sidebar__body[hidden] {
+  display: none;
+}
+
+.nil-sidebar__heading {
+  margin: 0 0 var(--nil-spacing-xs);
+  /* Lines the heading text up with the link text, past the current-page rule. */
+  padding-inline: calc(var(--nil-border-width-thick) + var(--nil-spacing-md)) var(--nil-spacing-md);
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-xs);
+  font-weight: var(--nil-type-weight-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--nil-color-text-muted);
+}
+
+.nil-sidebar__links {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nil-sidebar__link {
+  display: block;
+  box-sizing: border-box;
+  padding: var(--nil-spacing-sm) var(--nil-spacing-md);
+  border-left: var(--nil-border-width-thick) solid transparent;
+  color: var(--nil-color-text);
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-sm);
+  font-weight: var(--nil-type-weight-mono);
+  line-height: 1.45;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.nil-sidebar__link:hover {
+  background: var(--nil-color-bg);
+}
+
+.nil-sidebar__link[aria-current='page'] {
+  border-left-color: var(--nil-color-text);
+  font-weight: var(--nil-type-weight-mono-emphasis);
+}
+
+/* Inset, so the ring is not clipped by a neighbour and the rows keep their full width. */
+.nil-sidebar__link:focus-visible {
+  outline: var(--nil-border-width-thick) solid var(--nil-color-accent);
+  outline-offset: calc(-1 * var(--nil-border-width-thick));
+}
+
 /* ─── DataRow ─────────────────────────────────────────────────────────────── */
 
 .nil-data-row {

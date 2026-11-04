@@ -232,6 +232,25 @@
   min-height: var(--nil-spacing-xl);
 }
 
+.nil-demo-sidebar-frame {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  align-items: start;
+  border: var(--nil-border-width) solid var(--nil-color-border);
+  border-radius: var(--nil-radius-default);
+  overflow: hidden;
+}
+
+.nil-demo-sidebar-main {
+  padding: var(--nil-spacing-md);
+}
+
+@media (max-width: 767px) {
+  .nil-demo-sidebar-frame {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 .nil-demo-dialog-row + .nil-demo-dialog-row {
   margin-top: var(--nil-spacing-md);
 }
