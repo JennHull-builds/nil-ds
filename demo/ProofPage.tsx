@@ -14,7 +14,7 @@ import { DemoScene } from './DemoScene';
  * eval/results/compare-rounds.md and eval/guidance/round-N/AGENTS.md. None is typed here.
  */
 
-const REPO_README = 'https://github.com/JennHull-builds/nil-ds/blob/main/eval/README.md';
+const REPO_README = 'https://github.com/JennHull-builds/nil-ds/blob/v0.2/eval/README.md';
 
 type Cell = { n: number; mean: number; min: number; max: number; scores: number[] };
 type Summary = {

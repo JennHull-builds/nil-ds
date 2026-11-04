@@ -1,9 +1,9 @@
-# NIL DS — PLAN
+# NIL DS: PLAN
 
 **Name:** NIL DS · repo/folder `nil-ds` · npm org target `@nilds/*`  
 **Status:** Public GitHub + live demo (`nil-ds.vercel.app`). Kit #1 active.  
 **Lineage:** Token + primitive extract from `mothership-stable` (brutalist CLI),
-neutral surfaces + swappable accent — not Soft Bento (console → dx-grid).
+neutral surfaces + swappable accent: not Soft Bento (console → dx-grid).
 
 Locked name 2026-08-21 (Jen). Was working-name `design-foundry`.
 
@@ -12,7 +12,7 @@ Locked name 2026-08-21 (Jen). Was working-name `design-foundry`.
 ## What this is
 
 Showroom of taste + usable primitives for real builds and fit-first DS/PD
-contract proof. Honest extraction framing — generalised for reuse, not a
+contract proof. Honest extraction framing: generalised for reuse, not a
 public Mothership reincarnation and not Soft Bento.
 
 **Two looks that must not be fused:**
@@ -29,10 +29,10 @@ public Mothership reincarnation and not Soft Bento.
 | # | Kit | Status |
 |---|-----|--------|
 | **1** | **NIL DS** (this repo) | **Active** |
-| **2** | Neumorphism | Wanted — after DS industry scan |
+| **2** | Neumorphism | Wanted: after DS industry scan |
 | **3** | TetherLog extract | After TetherLog UI |
-| **4** | More ideas | Parked — learn before spray |
-| **5** | Soft Bento | Parked — separate style |
+| **4** | More ideas | Parked: learn before spray |
+| **5** | Soft Bento | Parked: separate style |
 
 One active kit build at a time. Product UI in other repos ≠ this kit.
 
@@ -41,7 +41,7 @@ One active kit build at a time. Product UI in other repos ≠ this kit.
 ## Now vs north star (Gemini filtered)
 
 Gemini sketched a full `@nilds/*` monorepo. **Keep the shape as the target.**
-**Do not jump the whole monorepo today** — current tree is a single package
+**Do not jump the whole monorepo today**: current tree is a single package
 with tokens + primitives + Vite demo. Grow into packages when a split earns it.
 
 ### Keep (north star)
@@ -49,10 +49,10 @@ with tokens + primitives + Vite demo. Grow into packages when a split earns it.
 | Piece | Call |
 |-------|------|
 | **`@nilds/tokens`** | Raw + semantic contracts → CSS / TS maps. Target home for today’s `src/tokens/`. |
-| **`@nilds/core`** | Resets, brutalist layout primitives, base CSS (0 radius, hard borders, high contrast). |
-| **`@nilds/react`** (or `@nilds/ui`) | React primitives — today’s `src/components/`. |
+| **`@nilds/core`** | Resets, brutalist layout primitives, base CSS (`radius-default`, hard borders, high contrast). |
+| **`@nilds/react`** (or `@nilds/ui`) | React primitives: today’s `src/components/`. |
 | **`@nilds/cli`** | Later near-term: `nilds add …`, token sync (shadcn-shaped distribution). |
-| **`@nilds/icons`** | Later — 1-bit / geometric / CLI glyphs. Not day one. |
+| **`@nilds/icons`** | Later: 1-bit / geometric / CLI glyphs. Not day one. |
 | **3-tier tokens** | Primitive → semantic → component. CSS namespace: `--nil-*` / `--nil-primitive-*`. |
 | **Scoped imports** | `import { Button } from '@nilds/react'` once packages exist. |
 
@@ -65,25 +65,27 @@ with tokens + primitives + Vite demo. Grow into packages when a split earns it.
 | Next.js `apps/docs` + `sandbox` | Vite demo now; **Storybook parked** until it earns the cost; Next docs optional later |
 | `.nilrc` | Optional once CLI exists |
 | Tailwind v4 `@theme` preset as mandatory | Fine as a later `@nilds/core` export; kit must work without forcing TW |
-| Soft Bento chrome | Wrong system — kit #5 |
+| Soft Bento chrome | Wrong system: kit #5 |
 
 ### Near-term slices
 
-1. ~~Storybook stub (or keep demo until Storybook earns the cost)~~ **parked** — Vite demo stays
-2. Figma variables path (document + sync plan — not Code Connect day one)
-3. npm publish readiness under `@nilds/*` (gated until Jen says publish)
+1. ~~Storybook stub (or keep demo until Storybook earns the cost)~~ **parked**: Vite demo stays
+2. Figma variables path (document + sync plan: not Code Connect day one)
+3. npm publish readiness under `@nilds/*` (gated until the owner says publish)
 4. ~~Start `--nil-*` token rename when touching tokens next~~ **done 2026-08-21**
 
 ---
 
-## Current tree (v0 — single package)
+## Current tree (v0: single package)
 
 ```text
 nil-ds/
 ├── PLAN.md
 ├── README.md
 ├── package.json          # name: nil-ds (private); grows into @nilds/* workspace
-├── demo/                 # Vite playground
+├── demo/                 # Vite showroom and the /proof page
+├── eval/                 # agent-guidance eval (eval/README.md)
+├── scripts/              # tokens:build and tokens:validate
 └── src/
     ├── tokens/           # → future @nilds/tokens
     ├── core/             # → future @nilds/core (reset + layout CSS)
@@ -102,7 +104,7 @@ nil-ds/
 │   ├── icons/            # later
 │   └── cli/              # later
 ├── apps/
-│   └── docs/             # Storybook or Next — later
+│   └── docs/             # Storybook or Next: later
 └── package.json          # workspace root
 ```
 
@@ -111,13 +113,13 @@ nil-ds/
 ## Version control
 
 - **Local git:** yes
-- **Remote:** **public** GitHub — https://github.com/JennHull-builds/nil-ds
+- **Remote:** **public** GitHub: https://github.com/JennHull-builds/nil-ds
 - **Demo:** https://nil-ds.vercel.app
 - Commits from here on
 
 ---
 
-## Hygiene debt (cross-repo — parked)
+## Hygiene debt (cross-repo: parked)
 
 Portfolio + mothership-stable = brutalist CLI. Soft Bento = console → dx-grid.
 Docs/component names that still fuse them need a dedicated cleanup pass.

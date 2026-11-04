@@ -44,7 +44,7 @@ See `registry.json` for per-component token dependencies and props.
 
 - Import Radix/shadcn into NIL kit source
 - Use `#000` / `#fff` unless explicitly requested
-- Hardcode corner radius in components. Use `--nil-radius-default` (4px soft brutalist)
+- Hardcode corner radius in components. Use `--nil-radius-default` (the soft brutalist default)
 - Invent magic pixel values. Use `--nil-spacing-*` and layout tokens
 
 ## About this repo
@@ -75,13 +75,13 @@ npm run typecheck         # runs tokens:validate, then tsc
 npm test
 ```
 
-`tokens:validate` is load-bearing. If it fails, the token architecture claim in the
-capability ledger stops being true.
+`tokens:validate` is load-bearing. If it fails, the token architecture claim this kit
+makes stops being true.
 
 ## Visual system
 
-Brutalist CLI: 4px default radius (soft brutalist, `radius-default`), 2px borders, IBM
-Plex Sans and IBM Plex Mono, warm off-white and dark. **Not Soft Bento**, which belongs
+Brutalist CLI: a soft brutalist default radius (`radius-default`), hard borders
+(`border-width`, `border-width-thick`), IBM Plex Sans and IBM Plex Mono, warm off-white and dark. **Not Soft Bento**, which belongs
 to dx-grid-inspector. Do not merge the two systems; they are deliberately separate.
 
 **Never restate a token value in prose, here or in any doc.** Name the token and let the
@@ -98,9 +98,10 @@ The stale value reached `README.md`, `ARCHITECTURE.md`, `FIGMA.md`, three demo s
 `_readme` key inside `tokens.json` itself, and this file. Nothing errored. Same family as
 any plausible-output bug: the docs were well-formed and wrong.
 
-`tokens:validate` now carries a stale-hex guard. Any hex in a doc, demo scene or component
+`tokens:validate` now carries a stale-hex guard. Any hex in `README.md`, `ARCHITECTURE.md`,
+`FIGMA.md`, or a `.ts`, `.tsx` or `.md` file under `demo/` or `src/` (outside `src/tokens/`)
 must be a value `tokens.json` currently holds, or be allowlisted in `ALLOWED_HEX` with a
-reason. Demo scenes read the accent from `tokens.json` rather than typing it.
+reason. This file and `APPLY.md` are not scanned, so the dated hexes above are not checked. Demo scenes read the accent from `tokens.json` rather than typing it.
 
 Still not caught: raw pixel values, and components reaching for `--nil-primitive-*`
 directly. `AGENTS.md` forbids both in prose, and prose is exactly what this gotcha is
@@ -109,17 +110,19 @@ about.
 `PLAN.md` is exempt and must stay exempt. Its hexes are dated decision entries recording
 what was true that day; correcting them into the present would falsify the log.
 
-## No repo consumes this kit today
+## Who consumes this kit
 
-Checked 2026-11-03: no repo depends on this kit or holds a vendored copy
-of its CSS. The one hit, a test fixture, is a copy of the kit itself.
-TetherLog vendored a copy until its decision D-001 (2026-09-18) deleted `src/nil-ds/` and
-`scripts/sync-nil-ds.sh`.
+Checked 2026-11-04: TetherLog's `main` does not depend on this kit. TetherLog vendored a copy
+until its decision D-001 (2026-09-18) deleted `src/nil-ds/` and `scripts/sync-nil-ds.sh`.
+Its draft branch `nil-ds-capture` brings the kit back as a git dependency pinned to a commit
+of this repo. If that merges, a change here reaches TetherLog only when its pin moves, and
+nothing errors in the meantime.
 
 ## Gotcha: a green axe test does not mean contrast passes
 
-Added 2026-09-16, the same day the axe assertions landed. Every component test now ends
-with `expect(await axe(container)).toHaveNoViolations()`, and all 20 pass.
+Added 2026-09-16, the same day the axe assertions landed. Every component test file carries
+an `expect(await axe(container)).toHaveNoViolations()` assertion: 20 files then, 22 now
+(counted 2026-11-04), and all pass.
 
 **That covers roles, ARIA, labelling and semantic structure. It does not cover colour
 contrast.** `vitest.config.ts` sets `css: false`, so jsdom computes no styles and axe
@@ -163,7 +166,7 @@ Added 2026-10-17, with the DESIGN.md work on branch `design-md`.
   before it happens. Name the token; the generated front matter holds the value.
 - **`designmd lint` runs in `tokens:validate` and `typecheck` only. Never put it, or any other
   check, in `build:demo`.** TetherLog put checks into its build and every Vercel deployment
-  errored for eight in a row (`areas/products-tetherlog.md` in the brain, 2026-09-18); the
+  errored for eight in a row (2026-09-18, written up in TetherLog's own `AGENTS.md`); the
   mechanism was never found, and a green local build proved nothing. `build:demo` does run the
   *generator*, through `tokens:build`, and that has now built on Vercel: the Preview deployment for
   `094d15b` (GitHub deployment 7155578909, 2026-10-18) reports state success. If a later deploy
@@ -179,6 +182,8 @@ Added 2026-10-17, with the DESIGN.md work on branch `design-md`.
   ThemeToggle and Lightbox now have entries, with token lists derived from the CSS and the component
   source, so the registry lists 16 of the 21 files. The Meta and Prompt lists were completed the same way.
   Dialog brings it to 17 of the 22 files, and Button's list was completed from the code with it.
+  Updated 2026-11-04: Dial's sizes in the registry now include `xl`. Card, Grid, Heading, Text and
+  Divider still have no entry, and Stack still lists `shadow-stack`, which nothing reads.
 
 ## Gotcha: Dialog is the native element, and jsdom cannot see most of it
 

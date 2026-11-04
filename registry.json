@@ -1,12 +1,12 @@
 {
-  "version": "0.1.0",
+  "version": "0.2.0",
   "tokens": "src/tokens/tokens.json",
   "css": ["src/core/fonts.css", "src/tokens/tokens.css", "src/core/core.css"],
   "rules": [
     "Components only reference --nil-* semantic tokens",
     "Never use --nil-primitive-* in components",
     "App-specific colours live in consumer @theme, not NIL primitives",
-    "4px default radius (--nil-radius-default) and 2px borders; Toggle uses --nil-radius-full"
+    "Default radius is --nil-radius-default; borders use --nil-border-width or --nil-border-width-thick; Toggle uses --nil-radius-full"
   ],
   "components": [
     {
@@ -26,8 +26,8 @@
     },
     {
       "name": "Dial",
-      "tokens": ["--nil-color-accent", "--nil-color-border", "--nil-size-dial-sm|md|lg"],
-      "props": { "value": "string|number", "unit": "string?", "progress": "0-100", "size": "sm|md|lg" }
+      "tokens": ["--nil-color-accent", "--nil-color-border", "--nil-size-dial-sm|md|lg|xl"],
+      "props": { "value": "string|number", "unit": "string?", "progress": "0-100", "size": "sm|md|lg|xl" }
     },
     {
       "name": "Ring",
