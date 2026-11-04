@@ -14,7 +14,7 @@ import { DemoScene } from './DemoScene';
  * eval/results/compare-rounds.md and eval/guidance/round-N/AGENTS.md. None is typed here.
  */
 
-const REPO_README = 'https://github.com/JennHull-builds/nil-ds/blob/v0.2/eval/README.md';
+const REPO_README = 'https://github.com/JennHull-builds/nil-ds/blob/main/eval/README.md';
 
 type Cell = { n: number; mean: number; min: number; max: number; scores: number[] };
 type Summary = {
@@ -293,7 +293,8 @@ export function ProofPage() {
             <code>{addedLines.join('\n')}</code>
           </pre>
           <Text size="sm" muted>
-            The last line is the destructive-actions sentence from finding 3.
+            The last line is the destructive-actions sentence from finding 3. That line was true of the
+            kit the eval ran on, frozen at 094d15b. Button has had a danger variant since v0.2.
           </Text>
         </Section>
 

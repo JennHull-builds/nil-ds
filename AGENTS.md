@@ -124,7 +124,7 @@ nothing errors in the meantime.
 ## Gotcha: a green axe test does not mean contrast passes
 
 Added 2026-09-16, the same day the axe assertions landed. Every component test file carries
-an `expect(await axe(container)).toHaveNoViolations()` assertion: 20 files then, 22 now
+an `expect(await axe(container)).toHaveNoViolations()` assertion: 20 files then, 24 now
 (counted 2026-11-04), and all pass.
 
 **That covers roles, ARIA, labelling and semantic structure. It does not cover colour

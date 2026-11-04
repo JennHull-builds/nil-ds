@@ -187,7 +187,7 @@ Every checker test file lives under `eval/` and matches `eval/**/*.test.ts`. Cou
 
 | | Tests | Files |
 |---|---|---|
-| The kit's own (`src/`) | 278 | 23 |
+| The kit's own (`src/`) | 354 | 25 |
 | The eval checker's (`eval/`: `check.test.ts` 171, `guards.test.ts` 22) | 193 | 2 |
 
 The two are reported separately and never added together: a kit test count is the kit's alone.
