@@ -1,0 +1,60 @@
+{
+  "round": "1",
+  "harness": {
+    "commit": "e89ceea",
+    "uncommitted": [
+      "eval/README.md",
+      "eval/calibrate.mjs",
+      "eval/config.mjs",
+      "eval/guards.test.ts",
+      "eval/isolation-report.json",
+      "eval/isolation.mjs",
+      "eval/lib/claude.mjs",
+      "eval/lib/guards.mjs",
+      "eval/run.mjs",
+      "eval/lib/clock.mjs"
+    ]
+  },
+  "kitCommit": "094d15b",
+  "subjectEnv": {
+    "DISABLE_AUTOUPDATER": "1",
+    "ENABLE_CLAUDEAI_MCP_SERVERS": "false"
+  },
+  "subjectExtraFlags": [
+    "--strict-mcp-config",
+    "--mcp-config",
+    "{\"mcpServers\":{}}",
+    "--disable-slash-commands",
+    "--settings",
+    "{\"permissions\":{\"blockReadsOutsideWorkingDirectories\":true}}"
+  ],
+  "files": {
+    "README.md": "ddc9f23e29be32290207f873acb1a2d9f78df13fc5196618f56dc771574b9d57",
+    "band.json": "334a38d181a124fd9576a73a1f2cc696856cbdd7dd3057e2a4116f9116a4229e",
+    "behaviour/lib.tsx": "be829c5b708233483167ed7f35063494a833ec2c11c16474d3be0797c18320fa",
+    "behaviour/shim.ts": "4d17b56865d26ebcf9718903a7b1acdaee4613734133a4bad6caabf2153bbaa3",
+    "calibrate.mjs": "4f40f509d674f501b69fdba7d1678377dfbeffb99f51350c0884025c2734870f",
+    "check.mjs": "ca4eacec18f73b3a889b80f46fb9c8fc49649bea4a3c8271884dec0d93005243",
+    "check.test.ts": "d6d9fa9985674d192b05e65d44de424bd8d9a1ae61235d2a6782a44484a2b9ba",
+    "config.mjs": "8ae49adec5bf2ad6dcdc962b76a098202066194c05e2158832acd9ef40c82911",
+    "count-tests.mjs": "c3b5dc8fea24de67a742da633ca1d29648ea60a66c9fccd6d9beb225553b89a0",
+    "guards.test.ts": "05b9b48bb1f64bec132df81921d51a74a71e644c2f086af3fc29eda3c4145c54",
+    "guidance/round-1/AGENTS.md": "b5dba409ff2dc719a1985d8c75faca635d6aad9f0ca31382e234be459de1f5ac",
+    "guidance/round-1/CLAUDE.md": "336cc4fbf19beaada7ccf9986414fa91851a8d7a07dfb3ccbe800a69eed0ab49",
+    "guidance/round-1/DESIGN.md": "d23f21f2e10210c5991b46d40c541b95274b6f088baa7b9538755a6ee5649d03",
+    "guidance/round-1/registry.json": "12fdcc67449f6306e1169f45610814f058d4927020d6eb325ad01c30fe7059c6",
+    "isolation.mjs": "9db654454a273fd4e8a30f0626d568cc984197acde16a6031544cab1c629cc1b",
+    "lib/claude.mjs": "92be16be927365ebf554dae0137f14b24c5dd29c2fbc0587a4cc52eb8839f7c3",
+    "lib/clock.mjs": "ad91265db6d7758461c4ac9785772c99e3b979b7aceef784f7f4a98d438dfadb",
+    "lib/guards.mjs": "445f2352c0182669091588ea2523d53c6b7a50709eb941f70584f9018bb2ff16",
+    "lib/kit.mjs": "16cce397712ab72905a1a492b8f0b4e3a67268c883eda757498d7a3759caff7b",
+    "mutate.mjs": "d630c2436215e61a6befa63757642fb02de5a798e583819fb8262b043286cad7",
+    "run.mjs": "1dc65dd960017ca43f4665a156c6c99dfb23633adc38b9a2982a71cf8c8b030e",
+    "summarise.mjs": "0f8231f5e433f4841f4c81a86b84ac96d418767f141c3a07eb2c0e428da12654",
+    "tasks/T1.md": "eb85e3646474a6e8370c5d24a073822829963bf55bca827fdcf2d3c83423a6ec",
+    "tasks/T2.md": "17ee1bfe7fa45e8f26c13abc521611c6acc57ec3409ff6840588f33cfc285e39",
+    "tasks/T3.md": "6f6ce2f3aa43657a6efe2c00ddd302a759abc78d8bfa52e0a226ca7730c0d290",
+    "tasks/T4.md": "d270512e7fd4f8d770b41a1534d2e3686404a3de13fee97311a033bc8a0317a6",
+    "tasks/T5.md": "5ecab5a1a9294911cf93b023d94388a87afb98049bc4561fd98d540e0c490a83"
+  }
+}

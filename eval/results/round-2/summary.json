@@ -1,0 +1,461 @@
+{
+  "round": "2",
+  "generatedAt": "2026-11-02T17:52:36.020Z",
+  "stub": false,
+  "note": "A probe, not a study. No significance claims.",
+  "models": [
+    "claude-sonnet-5-5"
+  ],
+  "arms": {
+    "A": {
+      "label": "kit plus its human docs",
+      "n": 12,
+      "mean": 0.9356481481481483,
+      "min": 0.75,
+      "max": 1,
+      "scores": [
+        1,
+        1,
+        1,
+        1,
+        0.8888888888888888,
+        0.8888888888888888,
+        0.75,
+        1,
+        1,
+        0.9,
+        0.9,
+        0.9
+      ],
+      "notRun": 0
+    },
+    "B": {
+      "label": "kit plus its human docs plus agent guidance",
+      "n": 12,
+      "mean": 1,
+      "min": 1,
+      "max": 1,
+      "scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "notRun": 0
+    }
+  },
+  "perTask": {
+    "T1": {
+      "A": {
+        "n": 3,
+        "mean": 1,
+        "min": 1,
+        "max": 1,
+        "scores": [
+          1,
+          1,
+          1
+        ]
+      },
+      "B": {
+        "n": 3,
+        "mean": 1,
+        "min": 1,
+        "max": 1,
+        "scores": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    "T2": {
+      "A": {
+        "n": 3,
+        "mean": 0.9259259259259259,
+        "min": 0.8888888888888888,
+        "max": 1,
+        "scores": [
+          1,
+          0.8888888888888888,
+          0.8888888888888888
+        ]
+      },
+      "B": {
+        "n": 3,
+        "mean": 1,
+        "min": 1,
+        "max": 1,
+        "scores": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    "T3": {
+      "A": {
+        "n": 3,
+        "mean": 0.9166666666666666,
+        "min": 0.75,
+        "max": 1,
+        "scores": [
+          0.75,
+          1,
+          1
+        ]
+      },
+      "B": {
+        "n": 3,
+        "mean": 1,
+        "min": 1,
+        "max": 1,
+        "scores": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    "T4": {
+      "A": {
+        "n": 3,
+        "mean": 0.9,
+        "min": 0.9,
+        "max": 0.9,
+        "scores": [
+          0.9,
+          0.9,
+          0.9
+        ]
+      },
+      "B": {
+        "n": 3,
+        "mean": 1,
+        "min": 1,
+        "max": 1,
+        "scores": [
+          1,
+          1,
+          1
+        ]
+      }
+    }
+  },
+  "perRule": {
+    "A": {
+      "R1": {
+        "pass": 4,
+        "fail": 2,
+        "na": 6
+      },
+      "R2": {
+        "pass": 12,
+        "fail": 0,
+        "na": 0
+      },
+      "R3": {
+        "pass": 11,
+        "fail": 1,
+        "na": 0
+      },
+      "R4": {
+        "pass": 8,
+        "fail": 4,
+        "na": 0
+      },
+      "R5": {
+        "pass": 3,
+        "fail": 0,
+        "na": 9
+      },
+      "R6": {
+        "pass": 12,
+        "fail": 0,
+        "na": 0
+      },
+      "R7": {
+        "pass": 12,
+        "fail": 0,
+        "na": 0
+      },
+      "R8": {
+        "pass": 12,
+        "fail": 0,
+        "na": 0
+      },
+      "R9": {
+        "pass": 12,
+        "fail": 0,
+        "na": 0
+      },
+      "R10": {
+        "pass": 12,
+        "fail": 0,
+        "na": 0
+      }
+    },
+    "B": {
+      "R1": {
+        "pass": 6,
+        "fail": 0,
+        "na": 6
+      },
+      "R2": {
+        "pass": 12,
+        "fail": 0,
+        "na": 0
+      },
+      "R3": {
+        "pass": 12,
+        "fail": 0,
+        "na": 0
+      },
+      "R4": {
+        "pass": 12,
+        "fail": 0,
+        "na": 0
+      },
+      "R5": {
+        "pass": 3,
+        "fail": 0,
+        "na": 9
+      },
+      "R6": {
+        "pass": 12,
+        "fail": 0,
+        "na": 0
+      },
+      "R7": {
+        "pass": 12,
+        "fail": 0,
+        "na": 0
+      },
+      "R8": {
+        "pass": 12,
+        "fail": 0,
+        "na": 0
+      },
+      "R9": {
+        "pass": 12,
+        "fail": 0,
+        "na": 0
+      },
+      "R10": {
+        "pass": 12,
+        "fail": 0,
+        "na": 0
+      }
+    }
+  },
+  "inventedTokens": {
+    "A": [
+      {
+        "name": "--nil-space-2",
+        "runs": 1
+      }
+    ],
+    "B": []
+  },
+  "guidanceOpened": {
+    "runs": 12,
+    "DESIGN.md": 0,
+    "registry.json": 1,
+    "AGENTS.md": 0
+  },
+  "refOnKitComponent": {
+    "A": 0,
+    "B": 0
+  },
+  "runsWithKitEdits": 0,
+  "notRun": [],
+  "notRunByReason": {},
+  "excludedAttempts": {},
+  "endedBy": {
+    "A": {
+      "completed": 12
+    },
+    "B": {
+      "completed": 12
+    }
+  },
+  "zeroScoreRuns": [],
+  "validity": {
+    "promptSizeGapBToA": [
+      {
+        "task": "T1",
+        "medianGap": 4209
+      },
+      {
+        "task": "T2",
+        "medianGap": 4207
+      },
+      {
+        "task": "T3",
+        "medianGap": 4209
+      },
+      {
+        "task": "T4",
+        "medianGap": 4207
+      }
+    ]
+  },
+  "usage": {
+    "runs": 24,
+    "totalCostUsd": 2.0549534,
+    "totalWallSeconds": 707,
+    "inputTokens": 246,
+    "outputTokens": 68707,
+    "cacheReadTokens": 1243434,
+    "cacheWriteTokens": 310762,
+    "fiveHourUtilizationFirstToLast": [
+      0,
+      0.26
+    ],
+    "sevenDayUtilizationFirstToLast": [
+      0.35,
+      0.37
+    ]
+  },
+  "heldOut": {
+    "T5": {
+      "note": "Held out. Never folded into the four-task mean.",
+      "A": {
+        "n": 3,
+        "mean": 0.736111111111111,
+        "min": 0.4444444444444444,
+        "max": 0.8888888888888888,
+        "scores": [
+          0.875,
+          0.4444444444444444,
+          0.8888888888888888
+        ]
+      },
+      "B": {
+        "n": 3,
+        "mean": 0.9666666666666667,
+        "min": 0.9,
+        "max": 1,
+        "scores": [
+          1,
+          0.9,
+          1
+        ]
+      },
+      "perRule": {
+        "A": {
+          "R1": {
+            "pass": 1,
+            "fail": 1,
+            "na": 1
+          },
+          "R2": {
+            "pass": 2,
+            "fail": 1,
+            "na": 0
+          },
+          "R3": {
+            "pass": 2,
+            "fail": 1,
+            "na": 0
+          },
+          "R4": {
+            "pass": 1,
+            "fail": 2,
+            "na": 0
+          },
+          "R5": {
+            "pass": 0,
+            "fail": 0,
+            "na": 3
+          },
+          "R6": {
+            "pass": 3,
+            "fail": 0,
+            "na": 0
+          },
+          "R7": {
+            "pass": 1,
+            "fail": 2,
+            "na": 0
+          },
+          "R8": {
+            "pass": 3,
+            "fail": 0,
+            "na": 0
+          },
+          "R9": {
+            "pass": 3,
+            "fail": 0,
+            "na": 0
+          },
+          "R10": {
+            "pass": 3,
+            "fail": 0,
+            "na": 0
+          }
+        },
+        "B": {
+          "R1": {
+            "pass": 3,
+            "fail": 0,
+            "na": 0
+          },
+          "R2": {
+            "pass": 3,
+            "fail": 0,
+            "na": 0
+          },
+          "R3": {
+            "pass": 3,
+            "fail": 0,
+            "na": 0
+          },
+          "R4": {
+            "pass": 3,
+            "fail": 0,
+            "na": 0
+          },
+          "R5": {
+            "pass": 3,
+            "fail": 0,
+            "na": 0
+          },
+          "R6": {
+            "pass": 3,
+            "fail": 0,
+            "na": 0
+          },
+          "R7": {
+            "pass": 2,
+            "fail": 1,
+            "na": 0
+          },
+          "R8": {
+            "pass": 3,
+            "fail": 0,
+            "na": 0
+          },
+          "R9": {
+            "pass": 3,
+            "fail": 0,
+            "na": 0
+          },
+          "R10": {
+            "pass": 3,
+            "fail": 0,
+            "na": 0
+          }
+        }
+      }
+    }
+  }
+}

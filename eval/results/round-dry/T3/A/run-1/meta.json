@@ -1,0 +1,102 @@
+{
+  "task": "T3",
+  "arm": "A",
+  "armLabel": "kit plus its human docs",
+  "round": "dry",
+  "run": 1,
+  "subject": "claude",
+  "attempt": 1,
+  "kitCommit": "094d15b",
+  "guidance": null,
+  "model": {
+    "requested": "sonnet",
+    "resolved": "claude-sonnet-5-5"
+  },
+  "cliVersion": "2.1.316",
+  "apiKeySource": "none",
+  "ended": "completed",
+  "terminalReason": "completed",
+  "turns": 9,
+  "durationMs": 22016,
+  "durationApiMs": 21591,
+  "wallMs": 22996,
+  "totalCostUsd": 0.058968900000000005,
+  "costNote": "As reported by the CLI: an API-price equivalent, not a bill. Runs draw on Jen's Claude plan.",
+  "usage": {
+    "input_tokens": 12,
+    "output_tokens": 1845,
+    "cache_read_input_tokens": 48469,
+    "cache_creation_input_tokens": 8912
+  },
+  "firstTurnPromptTokens": 6157,
+  "promptBand": {
+    "expected": 6157,
+    "diff": 0,
+    "toleranceTokens": 100
+  },
+  "usageWindows": {
+    "before": {
+      "status": "allowed_warning",
+      "fiveHour": {
+        "utilization": 0.37,
+        "resetsAt": 1793622600,
+        "status": "allowed"
+      },
+      "sevenDay": {
+        "utilization": 0.25,
+        "resetsAt": 1794124800,
+        "status": "allowed"
+      }
+    },
+    "first": {
+      "status": "allowed_warning",
+      "fiveHour": {
+        "utilization": 0.37,
+        "resetsAt": 1793622600,
+        "status": "allowed"
+      },
+      "sevenDay": {
+        "utilization": 0.25,
+        "resetsAt": 1794124800,
+        "status": "allowed"
+      }
+    },
+    "last": {
+      "status": "allowed_warning",
+      "fiveHour": {
+        "utilization": 0.38,
+        "resetsAt": 1793622600,
+        "status": "allowed"
+      },
+      "sevenDay": {
+        "utilization": 0.25,
+        "resetsAt": 1794124800,
+        "status": "allowed"
+      }
+    }
+  },
+  "permissionDenials": 0,
+  "init": {
+    "tools": [
+      "Edit",
+      "Glob",
+      "Grep",
+      "Read",
+      "Write"
+    ],
+    "mcpServers": [],
+    "plugins": [
+      "cc-plugin-agents-md",
+      "cc-plugin-telemetry",
+      "cc-plugin-plugin-authoring"
+    ],
+    "autoMemory": true
+  },
+  "kitEditsOutsideEvalOutput": [],
+  "filesWritten": [
+    "Result.tsx"
+  ],
+  "refOnKitComponent": [],
+  "startedAt": "2026-11-02T08:30:18.619Z",
+  "finishedAt": "2026-11-02T08:30:48.702Z"
+}

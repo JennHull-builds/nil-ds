@@ -1,0 +1,129 @@
+{
+  "task": "T5",
+  "arm": "A",
+  "armLabel": "kit plus its human docs",
+  "round": "2",
+  "run": 2,
+  "ended": "completed",
+  "score": 0.4444444444444444,
+  "passed": 4,
+  "applicable": 9,
+  "rules": {
+    "R1": {
+      "status": "fail",
+      "inspected": 10,
+      "violations": [
+        "eval-output/Result.tsx:136 background: #0a0a0a",
+        "eval-output/Result.tsx:137 color: #f5f5f4",
+        "eval-output/Result.tsx:138 border: rgba()",
+        "eval-output/Result.tsx:165 background: #1c1c1c",
+        "eval-output/Result.tsx:166 color: #ff6b73",
+        "eval-output/Result.tsx:167 outline: #3b6ef5"
+      ],
+      "count": 6
+    },
+    "R2": {
+      "status": "fail",
+      "inspected": 13,
+      "violations": [
+        "eval-output/Result.tsx:133 --nil-primitive-spacing-xs",
+        "eval-output/Result.tsx:134 --nil-primitive-spacing-xs",
+        "eval-output/Result.tsx:136 --nil-primitive-color-neutral-0",
+        "eval-output/Result.tsx:137 --nil-primitive-color-overlay-fg",
+        "eval-output/Result.tsx:138 --nil-primitive-border-width",
+        "eval-output/Result.tsx:138 --nil-primitive-color-overlay-border",
+        "eval-output/Result.tsx:139 --nil-primitive-type-font-mono",
+        "eval-output/Result.tsx:140 --nil-primitive-type-scale-sm",
+        "eval-output/Result.tsx:161 --nil-primitive-spacing-sm",
+        "eval-output/Result.tsx:161 --nil-primitive-spacing-md"
+      ],
+      "count": 13
+    },
+    "R3": {
+      "status": "fail",
+      "inspected": 13,
+      "violations": [
+        "eval-output/Result.tsx:166 --nil-primitive-color-danger-fg"
+      ],
+      "count": 1,
+      "invented": [
+        "--nil-primitive-color-danger-fg"
+      ],
+      "dynamicRefsSkipped": 0
+    },
+    "R4": {
+      "status": "fail",
+      "inspected": 8,
+      "violations": [
+        "eval-output/Result.tsx:133 margin: 4px",
+        "eval-output/Result.tsx:134 padding: 4px",
+        "eval-output/Result.tsx:138 border: 1.5px",
+        "eval-output/Result.tsx:140 font-size: 0.875rem",
+        "eval-output/Result.tsx:161 padding: 8px",
+        "eval-output/Result.tsx:161 padding: 16px"
+      ],
+      "count": 6
+    },
+    "R5": {
+      "status": "na",
+      "inspected": 0,
+      "violations": [],
+      "count": 0
+    },
+    "R6": {
+      "status": "pass",
+      "inspected": 3,
+      "violations": [],
+      "count": 0
+    },
+    "R7": {
+      "status": "fail",
+      "inspected": 4,
+      "violations": [
+        "eval-output/Result.tsx:148 raw <button>: the kit has Button"
+      ],
+      "count": 1
+    },
+    "R8": {
+      "status": "pass",
+      "inspected": 1,
+      "violations": [],
+      "count": 0
+    },
+    "R9": {
+      "status": "pass",
+      "inspected": 27,
+      "violations": [],
+      "count": 0,
+      "axeViolations": [],
+      "axeDetail": [],
+      "incomplete": [
+        "color-contrast",
+        "aria-valid-attr-value"
+      ]
+    },
+    "R10": {
+      "status": "pass",
+      "inspected": 5,
+      "violations": [],
+      "count": 0,
+      "skipped": 0
+    }
+  },
+  "facts": {
+    "refOnKitComponent": [],
+    "kitImports": [
+      "../src"
+    ],
+    "files": [
+      "eval-output/Result.tsx"
+    ],
+    "hasDefaultExport": true,
+    "inventedTokens": [
+      "--nil-primitive-color-danger-fg"
+    ]
+  },
+  "notes": [
+    "R9 asserts semantics and ARIA only (axe). Contrast is not covered: color-contrast comes back incomplete under css: false."
+  ]
+}

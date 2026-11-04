@@ -1,0 +1,80 @@
+{
+  "note": "Tool calls only: name and path. The transcript is never saved here.",
+  "tools": [
+    {
+      "name": "Glob",
+      "path": "",
+      "pattern": "src/**/*.{ts,tsx}"
+    },
+    {
+      "name": "Read",
+      "path": "registry.json"
+    },
+    {
+      "name": "Read",
+      "path": "src/components/Button.tsx"
+    },
+    {
+      "name": "Read",
+      "path": "src/components/Lightbox.tsx"
+    },
+    {
+      "name": "Read",
+      "path": "src/index.ts"
+    },
+    {
+      "name": "Read",
+      "path": "src/components/Panel.tsx"
+    },
+    {
+      "name": "Grep",
+      "path": "src",
+      "pattern": "danger|nil-btn|overlay"
+    },
+    {
+      "name": "Grep",
+      "path": "src/tokens/tokens.json",
+      "pattern": "\"(danger|overlay)[^\"]*\""
+    },
+    {
+      "name": "Read",
+      "path": "src/core/core.css"
+    },
+    {
+      "name": "Grep",
+      "path": "src/tokens/tokens.css",
+      "pattern": "danger-contrast|color-danger|spacing-"
+    },
+    {
+      "name": "Write",
+      "path": "eval-output/Result.tsx"
+    },
+    {
+      "name": "Grep",
+      "path": "src/tokens/tokens.css",
+      "pattern": "type-scale-md|font-mono"
+    },
+    {
+      "name": "Read",
+      "path": "src/components/Text.tsx"
+    },
+    {
+      "name": "Grep",
+      "path": "src/tokens/tokens.css",
+      "pattern": "--nil-type-scale-[a-z0-9]+:"
+    },
+    {
+      "name": "Edit",
+      "path": "eval-output/Result.tsx"
+    },
+    {
+      "name": "Edit",
+      "path": "eval-output/Result.tsx"
+    }
+  ],
+  "opened": {
+    "DESIGN.md": 0,
+    "registry.json": 1,
+    "AGENTS.md": 0
+  }
+}

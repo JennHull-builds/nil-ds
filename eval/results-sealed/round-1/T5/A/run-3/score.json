@@ -1,0 +1,98 @@
+{
+  "task": "T5",
+  "arm": "A",
+  "armLabel": "kit plus its human docs",
+  "round": "1",
+  "run": 3,
+  "ended": "completed",
+  "score": 0.875,
+  "passed": 7,
+  "applicable": 8,
+  "rules": {
+    "R1": {
+      "status": "na",
+      "inspected": 0,
+      "violations": [],
+      "count": 0
+    },
+    "R2": {
+      "status": "pass",
+      "inspected": 1,
+      "violations": [],
+      "count": 0
+    },
+    "R3": {
+      "status": "pass",
+      "inspected": 1,
+      "violations": [],
+      "count": 0,
+      "invented": [],
+      "dynamicRefsSkipped": 0
+    },
+    "R4": {
+      "status": "fail",
+      "inspected": 3,
+      "violations": [
+        "eval-output/Result.tsx:121 margin-top: 4px"
+      ],
+      "count": 1
+    },
+    "R5": {
+      "status": "na",
+      "inspected": 0,
+      "violations": [],
+      "count": 0
+    },
+    "R6": {
+      "status": "pass",
+      "inspected": 3,
+      "violations": [],
+      "count": 0
+    },
+    "R7": {
+      "status": "pass",
+      "inspected": 3,
+      "violations": [],
+      "count": 0
+    },
+    "R8": {
+      "status": "pass",
+      "inspected": 1,
+      "violations": [],
+      "count": 0
+    },
+    "R9": {
+      "status": "pass",
+      "inspected": 26,
+      "violations": [],
+      "count": 0,
+      "axeViolations": [],
+      "axeDetail": [],
+      "incomplete": [
+        "color-contrast",
+        "aria-valid-attr-value"
+      ]
+    },
+    "R10": {
+      "status": "pass",
+      "inspected": 5,
+      "violations": [],
+      "count": 0,
+      "skipped": 0
+    }
+  },
+  "facts": {
+    "refOnKitComponent": [],
+    "kitImports": [
+      "../src"
+    ],
+    "files": [
+      "eval-output/Result.tsx"
+    ],
+    "hasDefaultExport": true,
+    "inventedTokens": []
+  },
+  "notes": [
+    "R9 asserts semantics and ARIA only (axe). Contrast is not covered: color-contrast comes back incomplete under css: false."
+  ]
+}

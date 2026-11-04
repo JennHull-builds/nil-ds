@@ -1,0 +1,213 @@
+{
+  "round": "dry",
+  "generatedAt": "2026-11-02T08:31:36.140Z",
+  "stub": false,
+  "note": "A probe, not a study. No significance claims.",
+  "models": [
+    "claude-sonnet-5-5"
+  ],
+  "arms": {
+    "A": {
+      "label": "kit plus its human docs",
+      "n": 1,
+      "mean": 1,
+      "min": 1,
+      "max": 1,
+      "scores": [
+        1
+      ],
+      "notRun": 0
+    },
+    "B": {
+      "label": "kit plus its human docs plus agent guidance",
+      "n": 1,
+      "mean": 1,
+      "min": 1,
+      "max": 1,
+      "scores": [
+        1
+      ],
+      "notRun": 0
+    }
+  },
+  "perTask": {
+    "T3": {
+      "A": {
+        "n": 1,
+        "mean": 1,
+        "min": 1,
+        "max": 1,
+        "scores": [
+          1
+        ]
+      },
+      "B": {
+        "n": 1,
+        "mean": 1,
+        "min": 1,
+        "max": 1,
+        "scores": [
+          1
+        ]
+      }
+    }
+  },
+  "perRule": {
+    "A": {
+      "R1": {
+        "pass": 0,
+        "fail": 0,
+        "na": 1
+      },
+      "R2": {
+        "pass": 1,
+        "fail": 0,
+        "na": 0
+      },
+      "R3": {
+        "pass": 1,
+        "fail": 0,
+        "na": 0
+      },
+      "R4": {
+        "pass": 1,
+        "fail": 0,
+        "na": 0
+      },
+      "R5": {
+        "pass": 0,
+        "fail": 0,
+        "na": 1
+      },
+      "R6": {
+        "pass": 1,
+        "fail": 0,
+        "na": 0
+      },
+      "R7": {
+        "pass": 1,
+        "fail": 0,
+        "na": 0
+      },
+      "R8": {
+        "pass": 1,
+        "fail": 0,
+        "na": 0
+      },
+      "R9": {
+        "pass": 1,
+        "fail": 0,
+        "na": 0
+      },
+      "R10": {
+        "pass": 1,
+        "fail": 0,
+        "na": 0
+      }
+    },
+    "B": {
+      "R1": {
+        "pass": 0,
+        "fail": 0,
+        "na": 1
+      },
+      "R2": {
+        "pass": 1,
+        "fail": 0,
+        "na": 0
+      },
+      "R3": {
+        "pass": 1,
+        "fail": 0,
+        "na": 0
+      },
+      "R4": {
+        "pass": 1,
+        "fail": 0,
+        "na": 0
+      },
+      "R5": {
+        "pass": 0,
+        "fail": 0,
+        "na": 1
+      },
+      "R6": {
+        "pass": 1,
+        "fail": 0,
+        "na": 0
+      },
+      "R7": {
+        "pass": 1,
+        "fail": 0,
+        "na": 0
+      },
+      "R8": {
+        "pass": 1,
+        "fail": 0,
+        "na": 0
+      },
+      "R9": {
+        "pass": 1,
+        "fail": 0,
+        "na": 0
+      },
+      "R10": {
+        "pass": 1,
+        "fail": 0,
+        "na": 0
+      }
+    }
+  },
+  "inventedTokens": {
+    "A": [],
+    "B": []
+  },
+  "guidanceOpened": {
+    "runs": 1,
+    "DESIGN.md": 0,
+    "registry.json": 1,
+    "AGENTS.md": 0
+  },
+  "refOnKitComponent": {
+    "A": 0,
+    "B": 0
+  },
+  "runsWithKitEdits": 0,
+  "notRun": [],
+  "notRunByReason": {},
+  "excludedAttempts": {},
+  "endedBy": {
+    "A": {
+      "completed": 1
+    },
+    "B": {
+      "completed": 1
+    }
+  },
+  "zeroScoreRuns": [],
+  "validity": {
+    "promptSizeGapBToA": [
+      {
+        "task": "T3",
+        "medianGap": 3783
+      }
+    ]
+  },
+  "usage": {
+    "runs": 2,
+    "totalCostUsd": 0.13563530000000001,
+    "totalWallSeconds": 65,
+    "inputTokens": 22,
+    "outputTokens": 3858,
+    "cacheReadTokens": 104313,
+    "cacheWriteTokens": 21645,
+    "fiveHourUtilizationFirstToLast": [
+      0.37,
+      0.39
+    ],
+    "sevenDayUtilizationFirstToLast": [
+      0.25,
+      0.25
+    ]
+  }
+}

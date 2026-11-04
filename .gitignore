@@ -2,3 +2,13 @@ node_modules/
 dist-demo/
 .vercel
 marketing-shots/
+
+# eval harness: raw transcripts never get committed (this also covers eval/results-sealed/).
+# T5 was sealed until round 2 ended and is committed now, without raw/. It is spent as a
+# held-out task, so a later round needs a new one. Stub-subject output is scratch
+# (see eval/README.md)
+eval/results*/**/raw/
+eval/results-stub/
+eval/results-stub-sealed/
+eval/logs/
+eval/isolation-scratch/
