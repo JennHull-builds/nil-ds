@@ -336,7 +336,7 @@ export function ProofPage() {
             </Card>
             <Card>
               <Text>
-                <a href="/">Back to the showroom</a>
+                <a href="/">See the showroom</a>
               </Text>
             </Card>
           </Grid>
