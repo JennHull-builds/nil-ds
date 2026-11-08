@@ -263,6 +263,27 @@ describe('Composer', () => {
     });
   });
 
+  describe('icons', () => {
+    // Both icons are decorative: the button's name stays "Send" or "Stop", read from its label alone.
+    it('puts the arrow-up icon beside Send, aria-hidden, without changing the name', () => {
+      render(<Composer label="Message" defaultValue="hi" onSend={() => {}} />);
+      const send = screen.getByRole('button', { name: 'Send' });
+      const svg = send.querySelector('svg');
+      expect(svg).not.toBeNull();
+      expect(svg).toHaveAttribute('aria-hidden', 'true');
+      expect(svg!.innerHTML).toContain('M12 20V4');
+    });
+
+    it('swaps in the stop icon beside Stop, on the same button', () => {
+      const { rerender } = render(<Composer label="Message" defaultValue="hi" onSend={() => {}} />);
+      const send = screen.getByRole('button', { name: 'Send' });
+      rerender(<Composer label="Message" defaultValue="hi" status="streaming" onStop={() => {}} onSend={() => {}} />);
+      const stop = screen.getByRole('button', { name: 'Stop' });
+      expect(stop).toBe(send);
+      expect(stop.querySelector('svg')!.innerHTML).toContain('M5 5h14v14H5z');
+    });
+  });
+
   describe('streaming', () => {
     it('turns Send into a Stop button that calls onStop', async () => {
       const user = userEvent.setup();
@@ -618,7 +639,7 @@ describe('Composer', () => {
     });
 
     it('keeps :has() out of the shared focus list, and its outline removal behind @supports', () => {
-      const sharedFocus = coreCss.match(/\.nil-btn:focus-visible,[^{]*\{/)?.[0] ?? '';
+      const sharedFocus = coreCss.match(/\.nil-input:focus-visible,[^{]*\{/)?.[0] ?? '';
       expect(sharedFocus.length).toBeGreaterThan(0);
       expect(sharedFocus).not.toContain('nil-composer');
 

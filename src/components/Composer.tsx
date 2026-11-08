@@ -269,6 +269,7 @@ export const Composer = forwardRef<HTMLTextAreaElement, ComposerProps>(function 
               type="button"
               variant={isStreaming ? 'secondary' : 'primary'}
               size="sm"
+              icon={isStreaming ? 'stop' : 'arrow-up'}
               disabled={buttonDisabled}
               onClick={isStreaming ? stop : send}
             >
