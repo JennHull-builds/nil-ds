@@ -170,7 +170,8 @@
   --nil-size-offset-lift: var(--nil-primitive-size-offset-lift);
 }
 
-:root {
+:root,
+[data-theme='light'] {
   --nil-color-bg: #f3f2ee;
   --nil-color-surface: #eae9e5;
   --nil-color-text: #0a0a0a;

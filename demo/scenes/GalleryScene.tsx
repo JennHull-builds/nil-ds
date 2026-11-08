@@ -339,7 +339,7 @@ export function GalleryScene() {
         <Card className="nil-demo-gallery-buttons" style={{ gridColumn: '1 / -1' }}>
           <Heading level={3}>Buttons</Heading>
           <Text size="sm" muted style={{ marginTop: 'var(--nil-spacing-xs)' }}>
-            IBM Plex Mono · uppercase label · brackets match Meta spacing
+            IBM Plex Mono · uppercase label · offset shadow · 44 px tall · Tab to see focus
           </Text>
           <div className="nil-demo-button-strip">
             <div className="nil-demo-button-cell">

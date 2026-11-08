@@ -4,7 +4,9 @@ import './demo.css';
 import { AnalyticsScene } from './scenes/AnalyticsScene';
 import { ClimateScene } from './scenes/ClimateScene';
 import { ExamplesIntro } from './scenes/ExamplesIntro';
+import { ChartScene } from './scenes/ChartScene';
 import { GalleryScene } from './scenes/GalleryScene';
+import { IconsScene } from './scenes/IconsScene';
 import { InstrumentScene } from './scenes/InstrumentScene';
 import { IntroScene } from './scenes/IntroScene';
 import { TokenLabScene } from './scenes/TokenLabScene';
@@ -13,6 +15,8 @@ import { Analytics } from '@vercel/analytics/react';
 const SCENES = [
   { id: 'intro', label: 'Intro' },
   { id: 'gallery', label: 'Gallery' },
+  { id: 'icons', label: 'Icons' },
+  { id: 'chart-colour', label: 'Chart colour' },
   { id: 'token-lab', label: 'Token Lab' },
   { id: 'examples', label: 'Examples' },
 ] as const;
@@ -32,6 +36,8 @@ export function App() {
     <div data-theme={theme} className="nil-demo-canvas">
       <IntroScene band theme={theme} onThemeChange={setTheme} scenes={SCENES} />
       <GalleryScene />
+      <IconsScene />
+      <ChartScene />
       <TokenLabScene band />
       <ExamplesIntro />
       <ClimateScene />
