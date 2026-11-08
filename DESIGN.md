@@ -14,6 +14,24 @@ colors:
   on-primary: "#ffffff"
   danger: "#c62832"
   success: "#00774c"
+  chart-blue: "#396bf2"
+  chart-blue-text: "#ffffff"
+  chart-blue-pale: "#bcd1fd"
+  chart-blue-pale-text: "#0a0a0a"
+  chart-orange: "#f5810b"
+  chart-orange-text: "#0a0a0a"
+  chart-orange-pale: "#f9d2b4"
+  chart-orange-pale-text: "#0a0a0a"
+  chart-ramp-1: "#dee8fd"
+  chart-ramp-1-text: "#0a0a0a"
+  chart-ramp-2: "#b2caff"
+  chart-ramp-2-text: "#0a0a0a"
+  chart-ramp-3: "#87acfe"
+  chart-ramp-3-text: "#0a0a0a"
+  chart-ramp-4: "#5b8bfe"
+  chart-ramp-4-text: "#0a0a0a"
+  chart-ramp-5: "#396bf2"
+  chart-ramp-5-text: "#ffffff"
   overlay: "rgba(10, 10, 10, 0.92)"
   overlay-fg: "#f5f5f4"
   overlay-border: "rgba(245, 245, 244, 0.4)"
@@ -27,6 +45,20 @@ colors:
   text-danger-dark: "#ea4d4f"
   border-dark: "#eae9e5"
   success-dark: "#22a06b"
+  chart-blue-dark: "#4a7dff"
+  chart-blue-text-dark: "#0a0a0a"
+  chart-blue-pale-dark: "#aec7fc"
+  chart-orange-dark: "#f88b1c"
+  chart-orange-pale-dark: "#f4c7a3"
+  chart-ramp-1-dark: "#040092"
+  chart-ramp-1-text-dark: "#ffffff"
+  chart-ramp-2-dark: "#0b2db3"
+  chart-ramp-2-text-dark: "#ffffff"
+  chart-ramp-3-dark: "#2350d5"
+  chart-ramp-3-text-dark: "#ffffff"
+  chart-ramp-4-dark: "#4074fb"
+  chart-ramp-5-dark: "#78a1fd"
+  chart-ramp-5-text-dark: "#0a0a0a"
 typography:
   heading-1:
     fontFamily: "IBM Plex Sans"
@@ -144,6 +176,91 @@ components:
     rounded: "{rounded.default}"
   button-sm:
     typography: "{typography.button-sm}"
+    height: 36px
+  button-md:
+    typography: "{typography.button-md}"
+    height: 44px
+  button-icon:
+    width: 44px
+    height: 44px
+  icon-sm:
+    size: 16px
+  icon-md:
+    size: 20px
+  icon-lg:
+    size: 24px
+  chart-blue:
+    backgroundColor: "{colors.chart-blue}"
+    textColor: "{colors.chart-blue-text}"
+    typography: "{typography.label}"
+  chart-blue-dark:
+    backgroundColor: "{colors.chart-blue-dark}"
+    textColor: "{colors.chart-blue-text-dark}"
+    typography: "{typography.label}"
+  chart-blue-pale:
+    backgroundColor: "{colors.chart-blue-pale}"
+    textColor: "{colors.chart-blue-pale-text}"
+    typography: "{typography.label}"
+  chart-blue-pale-dark:
+    backgroundColor: "{colors.chart-blue-pale-dark}"
+    textColor: "{colors.chart-blue-pale-text}"
+    typography: "{typography.label}"
+  chart-orange:
+    backgroundColor: "{colors.chart-orange}"
+    textColor: "{colors.chart-orange-text}"
+    typography: "{typography.label}"
+  chart-orange-dark:
+    backgroundColor: "{colors.chart-orange-dark}"
+    textColor: "{colors.chart-orange-text}"
+    typography: "{typography.label}"
+  chart-orange-pale:
+    backgroundColor: "{colors.chart-orange-pale}"
+    textColor: "{colors.chart-orange-pale-text}"
+    typography: "{typography.label}"
+  chart-orange-pale-dark:
+    backgroundColor: "{colors.chart-orange-pale-dark}"
+    textColor: "{colors.chart-orange-pale-text}"
+    typography: "{typography.label}"
+  chart-ramp-1:
+    backgroundColor: "{colors.chart-ramp-1}"
+    textColor: "{colors.chart-ramp-1-text}"
+    typography: "{typography.label}"
+  chart-ramp-1-dark:
+    backgroundColor: "{colors.chart-ramp-1-dark}"
+    textColor: "{colors.chart-ramp-1-text-dark}"
+    typography: "{typography.label}"
+  chart-ramp-2:
+    backgroundColor: "{colors.chart-ramp-2}"
+    textColor: "{colors.chart-ramp-2-text}"
+    typography: "{typography.label}"
+  chart-ramp-2-dark:
+    backgroundColor: "{colors.chart-ramp-2-dark}"
+    textColor: "{colors.chart-ramp-2-text-dark}"
+    typography: "{typography.label}"
+  chart-ramp-3:
+    backgroundColor: "{colors.chart-ramp-3}"
+    textColor: "{colors.chart-ramp-3-text}"
+    typography: "{typography.label}"
+  chart-ramp-3-dark:
+    backgroundColor: "{colors.chart-ramp-3-dark}"
+    textColor: "{colors.chart-ramp-3-text-dark}"
+    typography: "{typography.label}"
+  chart-ramp-4:
+    backgroundColor: "{colors.chart-ramp-4}"
+    textColor: "{colors.chart-ramp-4-text}"
+    typography: "{typography.label}"
+  chart-ramp-4-dark:
+    backgroundColor: "{colors.chart-ramp-4-dark}"
+    textColor: "{colors.chart-ramp-4-text}"
+    typography: "{typography.label}"
+  chart-ramp-5:
+    backgroundColor: "{colors.chart-ramp-5}"
+    textColor: "{colors.chart-ramp-5-text}"
+    typography: "{typography.label}"
+  chart-ramp-5-dark:
+    backgroundColor: "{colors.chart-ramp-5-dark}"
+    textColor: "{colors.chart-ramp-5-text-dark}"
+    typography: "{typography.label}"
   panel:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.text}"
@@ -726,6 +843,24 @@ In CSS, colours are the `--nil-color-*` custom properties. Use those, not the va
 | `on-primary` | `semantic.light.color-accent-contrast` | `--nil-color-accent-contrast` |
 | `danger` | `semantic.light.color-danger` | `--nil-color-danger` |
 | `success` | `semantic.light.color-success` | `--nil-color-success` |
+| `chart-blue` | `semantic.light.color-chart-blue` | `--nil-color-chart-blue` |
+| `chart-blue-text` | `semantic.light.color-chart-blue-text` | `--nil-color-chart-blue-text` |
+| `chart-blue-pale` | `semantic.light.color-chart-blue-pale` | `--nil-color-chart-blue-pale` |
+| `chart-blue-pale-text` | `semantic.light.color-chart-blue-pale-text` | `--nil-color-chart-blue-pale-text` |
+| `chart-orange` | `semantic.light.color-chart-orange` | `--nil-color-chart-orange` |
+| `chart-orange-text` | `semantic.light.color-chart-orange-text` | `--nil-color-chart-orange-text` |
+| `chart-orange-pale` | `semantic.light.color-chart-orange-pale` | `--nil-color-chart-orange-pale` |
+| `chart-orange-pale-text` | `semantic.light.color-chart-orange-pale-text` | `--nil-color-chart-orange-pale-text` |
+| `chart-ramp-1` | `semantic.light.color-chart-ramp-1` | `--nil-color-chart-ramp-1` |
+| `chart-ramp-1-text` | `semantic.light.color-chart-ramp-1-text` | `--nil-color-chart-ramp-1-text` |
+| `chart-ramp-2` | `semantic.light.color-chart-ramp-2` | `--nil-color-chart-ramp-2` |
+| `chart-ramp-2-text` | `semantic.light.color-chart-ramp-2-text` | `--nil-color-chart-ramp-2-text` |
+| `chart-ramp-3` | `semantic.light.color-chart-ramp-3` | `--nil-color-chart-ramp-3` |
+| `chart-ramp-3-text` | `semantic.light.color-chart-ramp-3-text` | `--nil-color-chart-ramp-3-text` |
+| `chart-ramp-4` | `semantic.light.color-chart-ramp-4` | `--nil-color-chart-ramp-4` |
+| `chart-ramp-4-text` | `semantic.light.color-chart-ramp-4-text` | `--nil-color-chart-ramp-4-text` |
+| `chart-ramp-5` | `semantic.light.color-chart-ramp-5` | `--nil-color-chart-ramp-5` |
+| `chart-ramp-5-text` | `semantic.light.color-chart-ramp-5-text` | `--nil-color-chart-ramp-5-text` |
 | `overlay` | `semantic.color-overlay` | `--nil-color-overlay` |
 | `overlay-fg` | `semantic.color-overlay-fg` | `--nil-color-overlay-fg` |
 | `overlay-border` | `semantic.color-overlay-border` | `--nil-color-overlay-border` |
@@ -739,6 +874,20 @@ In CSS, colours are the `--nil-color-*` custom properties. Use those, not the va
 | `text-danger-dark` | `semantic.dark.color-text-danger` | `--nil-color-text-danger under [data-theme='dark']` |
 | `border-dark` | `semantic.dark.color-border` | `--nil-color-border under [data-theme='dark']` |
 | `success-dark` | `semantic.dark.color-success` | `--nil-color-success under [data-theme='dark']` |
+| `chart-blue-dark` | `semantic.dark.color-chart-blue` | `--nil-color-chart-blue under [data-theme='dark']` |
+| `chart-blue-text-dark` | `semantic.dark.color-chart-blue-text` | `--nil-color-chart-blue-text under [data-theme='dark']` |
+| `chart-blue-pale-dark` | `semantic.dark.color-chart-blue-pale` | `--nil-color-chart-blue-pale under [data-theme='dark']` |
+| `chart-orange-dark` | `semantic.dark.color-chart-orange` | `--nil-color-chart-orange under [data-theme='dark']` |
+| `chart-orange-pale-dark` | `semantic.dark.color-chart-orange-pale` | `--nil-color-chart-orange-pale under [data-theme='dark']` |
+| `chart-ramp-1-dark` | `semantic.dark.color-chart-ramp-1` | `--nil-color-chart-ramp-1 under [data-theme='dark']` |
+| `chart-ramp-1-text-dark` | `semantic.dark.color-chart-ramp-1-text` | `--nil-color-chart-ramp-1-text under [data-theme='dark']` |
+| `chart-ramp-2-dark` | `semantic.dark.color-chart-ramp-2` | `--nil-color-chart-ramp-2 under [data-theme='dark']` |
+| `chart-ramp-2-text-dark` | `semantic.dark.color-chart-ramp-2-text` | `--nil-color-chart-ramp-2-text under [data-theme='dark']` |
+| `chart-ramp-3-dark` | `semantic.dark.color-chart-ramp-3` | `--nil-color-chart-ramp-3 under [data-theme='dark']` |
+| `chart-ramp-3-text-dark` | `semantic.dark.color-chart-ramp-3-text` | `--nil-color-chart-ramp-3-text under [data-theme='dark']` |
+| `chart-ramp-4-dark` | `semantic.dark.color-chart-ramp-4` | `--nil-color-chart-ramp-4 under [data-theme='dark']` |
+| `chart-ramp-5-dark` | `semantic.dark.color-chart-ramp-5` | `--nil-color-chart-ramp-5 under [data-theme='dark']` |
+| `chart-ramp-5-text-dark` | `semantic.dark.color-chart-ramp-5-text` | `--nil-color-chart-ramp-5-text under [data-theme='dark']` |
 
 ### Contrast
 

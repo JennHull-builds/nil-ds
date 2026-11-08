@@ -15,6 +15,16 @@
       "props": { "variant": "primary|secondary|ghost|danger", "size": "sm|md", "disabled": "boolean" }
     },
     {
+      "name": "Icon",
+      "tokens": ["--nil-size-icon-sm", "--nil-size-icon-md", "--nil-size-icon-lg", "--nil-border-width", "--nil-border-width-thick"],
+      "props": { "name": "IconName (36 names, see ICON_NAMES)", "size": "sm|md|lg (16, 20, 24 px)", "label": "string? (omit for a decorative icon, which is aria-hidden)" }
+    },
+    {
+      "name": "ChartPalette",
+      "tokens": ["--nil-color-chart-blue", "--nil-color-chart-blue-pale", "--nil-color-chart-orange", "--nil-color-chart-orange-pale", "--nil-color-chart-ramp-1 to 5", "--nil-color-chart-*-text", "--nil-color-border", "--nil-border-width"],
+      "props": { "kind": "tokens only, no component. Four categorical colours and a five-step ramp. Every mark takes a --nil-color-border outline at --nil-border-width." }
+    },
+    {
       "name": "Panel",
       "tokens": ["--nil-color-surface", "--nil-color-text", "--nil-color-border", "--nil-color-bg"],
       "props": { "title": "string?", "variant": "default|inverse" }

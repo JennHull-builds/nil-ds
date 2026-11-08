@@ -29,7 +29,25 @@
       "button-ghost": { "backgroundColor": "color-bg", "textColor": "color-text", "typography": "button-md", "rounded": "radius-default" },
       "button-danger": { "backgroundColor": "color-danger", "textColor": "color-accent-contrast", "typography": "button-md", "rounded": "radius-default" },
       "button-disabled": { "backgroundColor": "color-surface", "textColor": "color-text-muted", "typography": "button-md", "rounded": "radius-default" },
-      "button-sm": { "typography": "button-sm" }
+      "button-sm": { "typography": "button-sm", "height": "size-button-sm" },
+      "button-md": { "typography": "button-md", "height": "size-tap" },
+      "button-icon": { "width": "size-tap", "height": "size-tap" }
+    },
+    "Icon": {
+      "icon-sm": { "size": "size-icon-sm" },
+      "icon-md": { "size": "size-icon-md" },
+      "icon-lg": { "size": "size-icon-lg" }
+    },
+    "ChartPalette": {
+      "chart-blue": { "backgroundColor": "color-chart-blue", "textColor": "color-chart-blue-text", "typography": "label" },
+      "chart-blue-pale": { "backgroundColor": "color-chart-blue-pale", "textColor": "color-chart-blue-pale-text", "typography": "label" },
+      "chart-orange": { "backgroundColor": "color-chart-orange", "textColor": "color-chart-orange-text", "typography": "label" },
+      "chart-orange-pale": { "backgroundColor": "color-chart-orange-pale", "textColor": "color-chart-orange-pale-text", "typography": "label" },
+      "chart-ramp-1": { "backgroundColor": "color-chart-ramp-1", "textColor": "color-chart-ramp-1-text", "typography": "label" },
+      "chart-ramp-2": { "backgroundColor": "color-chart-ramp-2", "textColor": "color-chart-ramp-2-text", "typography": "label" },
+      "chart-ramp-3": { "backgroundColor": "color-chart-ramp-3", "textColor": "color-chart-ramp-3-text", "typography": "label" },
+      "chart-ramp-4": { "backgroundColor": "color-chart-ramp-4", "textColor": "color-chart-ramp-4-text", "typography": "label" },
+      "chart-ramp-5": { "backgroundColor": "color-chart-ramp-5", "textColor": "color-chart-ramp-5-text", "typography": "label" }
     },
     "Panel": {
       "panel": { "backgroundColor": "color-surface", "textColor": "color-text", "rounded": "radius-default", "padding": "spacing-md" },
