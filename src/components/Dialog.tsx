@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef } from 'react';
 import type { ReactNode, RefObject } from 'react';
+import { Button } from './Button';
 import { Text } from './Text';
 
 export interface DialogProps {
@@ -177,17 +178,18 @@ function OpenDialog({
             {title}
           </h2>
           {/* aria-disabled, not disabled, so Close keeps focus and the Tab order while busy. */}
-          <button
+          <Button
             type="button"
             ref={closeRef}
+            size="sm"
+            icon="close"
+            aria-label="Close"
             className="nil-dialog__close"
             aria-disabled={busy || undefined}
             onClick={() => {
               if (!busy) onClose();
             }}
-          >
-            Close <span aria-hidden>[Esc]</span>
-          </button>
+          />
         </div>
         {description || children ? (
           <div className="nil-dialog__body">

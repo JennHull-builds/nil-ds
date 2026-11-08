@@ -47,10 +47,15 @@ describe('Menu', () => {
       expect(screen.queryAllByRole('menuitem')).toHaveLength(0);
     });
 
-    it('the trigger is the kit Button and keeps a plain name; the caret is decorative', () => {
+    it('the trigger is the kit Button and keeps a plain name; the chevron icon is decorative', () => {
       const { container } = setup();
       expect(container.querySelector('.nil-btn')).toBe(trigger());
       expect(trigger()).toHaveAccessibleName('Project actions');
+      const chevron = trigger().querySelector('svg');
+      expect(chevron).not.toBeNull();
+      expect(chevron).toHaveAttribute('aria-hidden', 'true');
+      expect(chevron!.innerHTML).toContain('M6 9l6 6 6-6');
+      expect(trigger().textContent).toBe('Project actions');
     });
 
     it('opens a role=menu named by the trigger, with menuitems and a separator', async () => {

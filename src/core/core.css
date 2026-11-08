@@ -469,54 +469,32 @@ pre,
 
 .nil-theme-toggle {
   display: flex;
-  align-items: stretch;
-  height: 28px;
-  overflow: hidden;
-  flex-shrink: 0;
-  border: var(--nil-border-width) solid var(--nil-color-border);
-  border-radius: var(--nil-radius-default);
-}
-
-.nil-theme-segment {
-  padding: 0 10px;
-  display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: var(--nil-type-scale-xs);
-  line-height: 1;
-  background: transparent;
-  color: var(--nil-color-text);
-  /* The inactive icon. Dimmed by opacity so it clears 3:1 against the canvas in both themes
-     (WCAG 1.4.11, non-text contrast). The contrast linter only reads colours, so nothing
-     guards this number: recheck it by hand if the canvas or the icon colour changes. */
-  opacity: 0.46;
-  border: none;
-  cursor: pointer;
-  transition:
-    background var(--nil-motion-duration-base) var(--nil-motion-easing-standard),
-    color var(--nil-motion-duration-base) var(--nil-motion-easing-standard),
-    opacity var(--nil-motion-duration-base) var(--nil-motion-easing-standard);
-}
-
-.nil-theme-segment[aria-pressed='true'] {
-  background: var(--nil-color-accent);
-  color: var(--nil-color-accent-contrast);
-  opacity: 1;
-}
-
-.nil-theme-segment:not([aria-pressed='true']):hover {
-  opacity: 0.6;
-}
-
-.nil-theme-divider {
-  width: var(--nil-border-width);
-  display: block;
-  background: var(--nil-color-border);
+  gap: var(--nil-spacing-sm);
   flex-shrink: 0;
+  /* Room for the Buttons' offset shadow, so a parent with overflow hidden does not clip it. */
+  padding: 0 var(--nil-size-offset) var(--nil-size-offset) 0;
 }
 
-.nil-lightbox-close:not(:disabled):hover {
-  background: rgba(255, 255, 255, 0.08);
+/* Lightbox controls are Buttons, set in a dark-themed scrim, in the corner and at the sides. */
+.nil-lightbox-close {
+  position: absolute;
+  top: var(--nil-spacing-lg);
+  right: var(--nil-spacing-lg);
+}
+
+.nil-lightbox-step {
+  position: absolute;
+  /* Centred without a transform, because a Button's own hover and press use transform. */
+  top: calc(50% - var(--nil-size-tap) / 2);
+}
+
+.nil-lightbox-step--previous {
+  left: var(--nil-spacing-lg);
+}
+
+.nil-lightbox-step--next {
+  right: var(--nil-spacing-lg);
 }
 
 /* ─── Demo shell ────────────────────────────────────────────────────────────── */
@@ -552,10 +530,52 @@ pre,
 
 /* ─── Toggle / TabStrip focus ─────────────────────────────────────────────── */
 
-.nil-toggle:focus-visible,
-.nil-tab-strip__tab:focus-visible {
+.nil-toggle:focus-visible {
   outline: 2px solid var(--nil-color-accent);
   outline-offset: 2px;
+}
+
+/*
+ * TabStrip tabs. A tab is a tab, not an Offset button: the active tab is the thick underline. What it
+ * shares with Button is the tap height and the focus idea, where the thing that marks the control turns
+ * to the accent. Keyboard focus turns the tab's underline and label to the accent. No outline ring.
+ */
+.nil-tab-strip__tab {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--nil-size-tap);
+  margin: 0 0 calc(-1 * var(--nil-border-width));
+  padding: 0;
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--nil-color-text-muted);
+  background: transparent;
+  border: none;
+  border-bottom: var(--nil-border-width) solid transparent;
+  cursor: pointer;
+  transition:
+    color var(--nil-motion-duration-fast) var(--nil-motion-easing-standard),
+    border-color var(--nil-motion-duration-fast) var(--nil-motion-easing-standard);
+}
+
+.nil-tab-strip__tab[aria-selected='true'] {
+  color: var(--nil-color-text);
+  border-bottom: var(--nil-border-width-thick) solid var(--nil-color-text);
+}
+
+.nil-tab-strip__tab:focus-visible {
+  outline: none;
+  color: var(--nil-color-text-accent);
+  border-bottom: var(--nil-border-width-thick) solid var(--nil-color-accent);
+}
+
+@media (forced-colors: active) {
+  .nil-tab-strip__tab:focus-visible {
+    outline: var(--nil-border-width-thick) solid Highlight;
+  }
 }
 
 .nil-toggle:not(:disabled):hover {
@@ -928,32 +948,9 @@ pre,
   color: var(--nil-color-text);
 }
 
-/* Styled like Lightbox's "Close [Esc]", on the panel's own surface. */
+/* Close is a Button (an icon one). While the dialog is busy it is aria-disabled, which Button dims and keeps focusable. */
 .nil-dialog__close {
-  appearance: none;
   flex-shrink: 0;
-  padding: var(--nil-spacing-xs) var(--nil-spacing-md);
-  font-family: var(--nil-font-mono);
-  font-size: var(--nil-type-scale-sm);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--nil-color-text);
-  background: transparent;
-  border: var(--nil-border-width-thick) solid var(--nil-color-border);
-  border-radius: var(--nil-radius-default);
-  cursor: pointer;
-  transition: background var(--nil-motion-duration-fast) var(--nil-motion-easing-standard);
-}
-
-.nil-dialog__close:not([aria-disabled='true']):hover {
-  background: var(--nil-color-bg);
-}
-
-/* While the dialog is busy, Close stays focusable and looks unavailable, like a disabled Button. */
-.nil-dialog__close[aria-disabled='true'] {
-  opacity: 0.55;
-  cursor: not-allowed;
-  color: var(--nil-color-text-muted);
 }
 
 .nil-dialog__body {

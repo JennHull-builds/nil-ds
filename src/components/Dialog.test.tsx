@@ -536,23 +536,21 @@ describe('Dialog', () => {
     });
   });
 
-  describe('Close while busy (core.css)', () => {
-    const css = readFileSync(join(__dirname, '..', '..', 'src/core/core.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
-
-    it('read the stylesheet at all', () => {
-      expect(css.length).toBeGreaterThan(500);
+  describe('Close while busy', () => {
+    // Close is an icon Button, so it takes Button's unavailable look (dimmed, no hover, not-allowed
+    // cursor, tested in Button.test.tsx) from aria-disabled. It must stay enabled so it keeps focus.
+    it('is a Button with a close icon, named Close, with the icon aria-hidden', () => {
+      render(<Dialog open onClose={() => {}} title="T" />);
+      const close = screen.getByRole('button', { name: 'Close' });
+      expect(close).toHaveClass('nil-btn', 'nil-btn--icon', 'nil-dialog__close');
+      expect(close.querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
     });
 
-    it('dims Close and shows it unavailable when aria-disabled', () => {
-      const rule = css.match(/\.nil-dialog__close\[aria-disabled='true'\]\s*\{([^}]*)\}/);
-      expect(rule).not.toBeNull();
-      expect(rule![1]).toMatch(/opacity:\s*0\.55/);
-      expect(rule![1]).toMatch(/cursor:\s*not-allowed/);
-    });
-
-    it('lights Close up on hover only when it is available', () => {
-      expect(css).toMatch(/\.nil-dialog__close:not\(\[aria-disabled='true'\]\):hover\s*\{/);
-      expect(css).not.toMatch(/\.nil-dialog__close:hover\s*\{/);
+    it('is aria-disabled and not disabled while busy, so it keeps focus', () => {
+      render(<Dialog open busy onClose={() => {}} title="T" />);
+      const close = screen.getByRole('button', { name: 'Close' });
+      expect(close).toHaveAttribute('aria-disabled', 'true');
+      expect(close).not.toBeDisabled();
     });
   });
 
@@ -613,7 +611,7 @@ describe('Dialog', () => {
     });
 
     it('guards the check above: it also fails on a nameless button inside the dialog', async () => {
-      const results = await axeOnSwappedMarkup((html) => html.replace('>Close <span aria-hidden="true">[Esc]</span><', '><'));
+      const results = await axeOnSwappedMarkup((html) => html.replace(' aria-label="Close"', ''));
       expect(results.violations.map((v) => v.id)).toContain('button-name');
     });
   });

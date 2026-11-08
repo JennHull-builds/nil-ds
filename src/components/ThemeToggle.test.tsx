@@ -59,11 +59,24 @@ describe('ThemeToggle', () => {
     expect(onThemeChange).toHaveBeenCalledWith('light');
   });
 
-  it('disables both segments and dims the control when disabled', () => {
+  it('disables both segments when disabled, and does not dim twice', () => {
     render(<ThemeToggle theme="light" onThemeChange={vi.fn()} disabled />);
     expect(screen.getByRole('button', { name: 'Light mode' })).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Dark mode' })).toBeDisabled();
-    expect(screen.getByRole('group', { name: 'Theme' })).toHaveStyle({ opacity: '0.55' });
+    // Each segment is a Button, which dims itself. A dimmed wrapper on top would square the dimming.
+    expect(screen.getByRole('group', { name: 'Theme' }).style.opacity).toBe('');
+  });
+
+  it('uses a sun and a moon icon in place of text characters, decorative, on small icon Buttons', () => {
+    render(<ThemeToggle theme="light" onThemeChange={vi.fn()} />);
+    const light = screen.getByRole('button', { name: 'Light mode' });
+    const dark = screen.getByRole('button', { name: 'Dark mode' });
+    for (const button of [light, dark]) {
+      expect(button).toHaveClass('nil-btn', 'nil-btn--icon', 'nil-btn--sm');
+      expect(button.querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
+      expect(button.textContent).toBe('');
+    }
+    expect(light.querySelector('svg')!.innerHTML).toContain('M11 9.5h2'); // the sun's centre, in its 16 px form
   });
 
   it('does not call onThemeChange when disabled and a segment is clicked', () => {

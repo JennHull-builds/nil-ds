@@ -11,8 +11,8 @@
   "components": [
     {
       "name": "Button",
-      "tokens": ["--nil-color-accent", "--nil-color-accent-contrast", "--nil-color-danger", "--nil-color-text", "--nil-color-text-muted", "--nil-color-bg", "--nil-color-border", "--nil-color-surface", "--nil-border-width", "--nil-border-width-thick", "--nil-radius-default", "--nil-font-mono", "--nil-type-scale-xs", "--nil-type-scale-sm", "--nil-motion-duration-base", "--nil-motion-easing-standard"],
-      "props": { "variant": "primary|secondary|ghost|danger", "size": "sm|md", "disabled": "boolean" }
+      "tokens": ["--nil-color-accent", "--nil-color-accent-contrast", "--nil-color-danger", "--nil-color-text", "--nil-color-text-muted", "--nil-color-bg", "--nil-color-border", "--nil-color-surface", "--nil-border-width-thick", "--nil-radius-default", "--nil-font-mono", "--nil-type-scale-xs", "--nil-type-scale-sm", "--nil-type-weight-mono-emphasis", "--nil-spacing-sm", "--nil-spacing-xs", "--nil-spacing-md", "--nil-size-tap", "--nil-size-button-sm", "--nil-size-offset", "--nil-size-offset-hover", "--nil-size-offset-focus", "--nil-size-offset-lift", "--nil-motion-duration-fast", "--nil-motion-easing-standard"],
+      "props": { "variant": "primary|secondary|ghost|danger", "size": "sm|md (md is 44 px tall; sm is 36 px with a 44 px tap area)", "icon": "IconName? (before the label, decorative)", "children": "ReactNode (omit for an icon-only button, which then REQUIRES aria-label or aria-labelledby: the type enforces it)", "aria-pressed": "boolean? (a toggle that is on stays pushed in and inverted)", "aria-disabled": "'true'? (looks unavailable, keeps focus)", "aria-busy": "'true'? (full strength, progress cursor)", "disabled": "boolean" }
     },
     {
       "name": "Icon",
@@ -91,13 +91,13 @@
     },
     {
       "name": "ThemeToggle",
-      "tokens": ["--nil-color-text", "--nil-color-border", "--nil-color-accent", "--nil-color-accent-contrast", "--nil-border-width", "--nil-radius-default", "--nil-type-scale-xs", "--nil-motion-duration-base", "--nil-motion-easing-standard"],
+      "tokens": ["--nil-spacing-sm", "--nil-size-offset", "Button tokens (two small icon Buttons: sun and moon)"],
       "props": { "theme": "light|dark", "onThemeChange": "function", "disabled": "boolean" }
     },
     {
       "name": "Lightbox",
-      "tokens": ["--nil-color-overlay", "--nil-color-overlay-fg", "--nil-color-overlay-border", "--nil-color-accent", "--nil-border-width-thick", "--nil-radius-default", "--nil-font-mono", "--nil-type-scale-sm", "--nil-spacing-xs", "--nil-spacing-md", "--nil-spacing-lg", "--nil-spacing-xl", "--nil-spacing-2xl", "--nil-motion-duration-base", "--nil-motion-easing-out-expo"],
-      "props": { "image": "{ src, alt }|null", "onClose": "function" }
+      "tokens": ["--nil-color-overlay", "--nil-color-overlay-border", "--nil-border-width-thick", "--nil-radius-default", "--nil-size-tap", "--nil-spacing-xl", "--nil-spacing-2xl", "--nil-motion-duration-base", "--nil-motion-easing-out-expo"],
+      "props": { "image": "{ src, alt }|null", "onClose": "function", "onPrevious": "function? (shows a chevron Button; ArrowLeft calls it)", "onNext": "function? (shows a chevron Button; ArrowRight calls it)" }
     },
     {
       "name": "Dialog",

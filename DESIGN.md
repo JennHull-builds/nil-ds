@@ -164,6 +164,16 @@ components:
     textColor: "{colors.on-primary}"
     typography: "{typography.button-md}"
     rounded: "{rounded.default}"
+  button-pressed:
+    backgroundColor: "{colors.text}"
+    textColor: "{colors.bg}"
+    typography: "{typography.button-md}"
+    rounded: "{rounded.default}"
+  button-pressed-dark:
+    backgroundColor: "{colors.text-dark}"
+    textColor: "{colors.bg-dark}"
+    typography: "{typography.button-md}"
+    rounded: "{rounded.default}"
   button-disabled:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.text-muted}"
@@ -669,11 +679,25 @@ components:
     backgroundColor: "{colors.surface-dark}"
     textColor: "{colors.text-danger-dark}"
   theme-toggle-pressed:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.on-primary}"
+    backgroundColor: "{colors.text}"
+    textColor: "{colors.bg}"
+  theme-toggle-pressed-dark:
+    backgroundColor: "{colors.text-dark}"
+    textColor: "{colors.bg-dark}"
+  theme-toggle-rest:
+    backgroundColor: "{colors.bg}"
+    textColor: "{colors.text}"
+  theme-toggle-rest-dark:
+    backgroundColor: "{colors.bg-dark}"
+    textColor: "{colors.text-dark}"
   lightbox-close:
-    backgroundColor: "{colors.overlay}"
-    textColor: "{colors.overlay-fg}"
+    backgroundColor: "{colors.bg}"
+    textColor: "{colors.text}"
+    typography: "{typography.button-md}"
+    rounded: "{rounded.default}"
+  lightbox-close-dark:
+    backgroundColor: "{colors.bg-dark}"
+    textColor: "{colors.text-dark}"
     typography: "{typography.button-md}"
     rounded: "{rounded.default}"
   dialog:
@@ -705,12 +729,12 @@ components:
     textColor: "{colors.text-muted-dark}"
     typography: "{typography.body-md}"
   dialog-close:
-    backgroundColor: "{colors.surface}"
+    backgroundColor: "{colors.bg}"
     textColor: "{colors.text}"
     typography: "{typography.button-md}"
     rounded: "{rounded.default}"
   dialog-close-dark:
-    backgroundColor: "{colors.surface-dark}"
+    backgroundColor: "{colors.bg-dark}"
     textColor: "{colors.text-dark}"
     typography: "{typography.button-md}"
     rounded: "{rounded.default}"

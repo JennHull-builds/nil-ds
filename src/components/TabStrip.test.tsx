@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { useState } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -145,5 +147,27 @@ describe('TabStrip', () => {
       <TabStrip tabs={['Overview', 'Tokens']} activeIndex={0} onTabChange={() => {}} />,
     );
     expect(await axe(container)).toHaveNoViolations();
+  });
+
+  describe('look (core.css)', () => {
+    // jsdom computes no styles, so these read the stylesheet.
+    const css = readFileSync(join(__dirname, '..', '..', 'src/core/core.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+
+    it('is the tap height, and the active tab is the thick underline', () => {
+      expect(css).toMatch(/\.nil-tab-strip__tab \{[^}]*min-height: var\(--nil-size-tap\)/);
+      expect(css).toMatch(/\.nil-tab-strip__tab\[aria-selected='true'\] \{[^}]*border-bottom: var\(--nil-border-width-thick\) solid var\(--nil-color-text\)/);
+    });
+
+    it('turns its underline and label to the accent on keyboard focus, with no outline ring', () => {
+      const focus = css.match(/\.nil-tab-strip__tab:focus-visible \{([^}]*)\}/)![1];
+      expect(focus).toContain('outline: none');
+      expect(focus).toContain('color: var(--nil-color-text-accent)');
+      expect(focus).toContain('var(--nil-color-accent)');
+    });
+
+    it('sets nothing about its look in inline styles any more, so the focus rule can win', () => {
+      render(<TabStrip tabs={tabs} activeIndex={0} onTabChange={vi.fn()} />);
+      for (const tab of screen.getAllByRole('tab')) expect(tab.getAttribute('style')).toBeNull();
+    });
   });
 });

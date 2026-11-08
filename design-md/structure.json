@@ -28,6 +28,7 @@
       "button-secondary": { "backgroundColor": "color-bg", "textColor": "color-text", "typography": "button-md", "rounded": "radius-default" },
       "button-ghost": { "backgroundColor": "color-bg", "textColor": "color-text", "typography": "button-md", "rounded": "radius-default" },
       "button-danger": { "backgroundColor": "color-danger", "textColor": "color-accent-contrast", "typography": "button-md", "rounded": "radius-default" },
+      "button-pressed": { "backgroundColor": "color-text", "textColor": "color-bg", "typography": "button-md", "rounded": "radius-default" },
       "button-disabled": { "backgroundColor": "color-surface", "textColor": "color-text-muted", "typography": "button-md", "rounded": "radius-default" },
       "button-sm": { "typography": "button-sm", "height": "size-button-sm" },
       "button-md": { "typography": "button-md", "height": "size-tap" },
@@ -131,10 +132,11 @@
       "input-error-on-surface": { "backgroundColor": "color-surface", "textColor": "color-text-danger" }
     },
     "ThemeToggle": {
-      "theme-toggle-pressed": { "backgroundColor": "color-accent", "textColor": "color-accent-contrast" }
+      "theme-toggle-pressed": { "backgroundColor": "color-text", "textColor": "color-bg" },
+      "theme-toggle-rest": { "backgroundColor": "color-bg", "textColor": "color-text" }
     },
     "Lightbox": {
-      "lightbox-close": { "backgroundColor": "color-overlay", "textColor": "color-overlay-fg", "typography": "button-md", "rounded": "radius-default" }
+      "lightbox-close": { "backgroundColor": "color-bg", "textColor": "color-text", "typography": "button-md", "rounded": "radius-default" }
     },
     "Menu": {
       "menu": { "backgroundColor": "color-surface", "textColor": "color-text", "typography": "menu-item", "rounded": "radius-default" },
@@ -154,7 +156,7 @@
       "dialog": { "backgroundColor": "color-surface", "textColor": "color-text", "typography": "body-md", "rounded": "radius-default", "width": "size-dialog" },
       "dialog-title": { "backgroundColor": "color-surface", "textColor": "color-text", "typography": "label" },
       "dialog-description": { "backgroundColor": "color-surface", "textColor": "color-text-muted", "typography": "body-md" },
-      "dialog-close": { "backgroundColor": "color-surface", "textColor": "color-text", "typography": "button-md", "rounded": "radius-default" }
+      "dialog-close": { "backgroundColor": "color-bg", "textColor": "color-text", "typography": "button-md", "rounded": "radius-default" }
     }
   }
 }

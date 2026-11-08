@@ -71,4 +71,54 @@ describe('Lightbox', () => {
     );
     expect(await axe(container)).toHaveNoViolations();
   });
+
+  describe('controls', () => {
+    it('closes with an icon Button named Close enlarged image, with the icon aria-hidden', () => {
+      render(<Lightbox image={image} onClose={vi.fn()} />);
+      const close = screen.getByRole('button', { name: 'Close enlarged image' });
+      expect(close).toHaveClass('nil-btn', 'nil-btn--icon');
+      expect(close.querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
+    });
+
+    it('sets the controls in the dark theme, because the scrim is dark in both themes', () => {
+      render(<Lightbox image={image} onClose={vi.fn()} />);
+      expect(screen.getByRole('dialog')).toHaveAttribute('data-theme', 'dark');
+    });
+
+    it('shows no previous or next button unless the caller gives a handler', () => {
+      render(<Lightbox image={image} onClose={vi.fn()} />);
+      expect(screen.queryByRole('button', { name: 'Previous image' })).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: 'Next image' })).not.toBeInTheDocument();
+    });
+
+    it('calls onPrevious and onNext from the chevron Buttons, without closing', async () => {
+      const user = userEvent.setup();
+      const onClose = vi.fn();
+      const onPrevious = vi.fn();
+      const onNext = vi.fn();
+      render(<Lightbox image={image} onClose={onClose} onPrevious={onPrevious} onNext={onNext} />);
+      const previous = screen.getByRole('button', { name: 'Previous image' });
+      const next = screen.getByRole('button', { name: 'Next image' });
+      expect(previous.querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
+      await user.click(previous);
+      await user.click(next);
+      expect(onPrevious).toHaveBeenCalledTimes(1);
+      expect(onNext).toHaveBeenCalledTimes(1);
+      expect(onClose).not.toHaveBeenCalled();
+    });
+
+    it('moves with ArrowLeft and ArrowRight only when there is somewhere to go', async () => {
+      const user = userEvent.setup();
+      const onPrevious = vi.fn();
+      const { rerender } = render(<Lightbox image={image} onClose={vi.fn()} onPrevious={onPrevious} />);
+      await user.keyboard('{ArrowRight}');
+      expect(onPrevious).not.toHaveBeenCalled();
+      await user.keyboard('{ArrowLeft}');
+      expect(onPrevious).toHaveBeenCalledTimes(1);
+      const onNext = vi.fn();
+      rerender(<Lightbox image={image} onClose={vi.fn()} onNext={onNext} />);
+      await user.keyboard('{ArrowRight}');
+      expect(onNext).toHaveBeenCalledTimes(1);
+    });
+  });
 });
