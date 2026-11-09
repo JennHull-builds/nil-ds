@@ -1,6 +1,7 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import type { CSSProperties, KeyboardEvent } from 'react';
 import { Button } from './Button';
+import { Icon } from './Icon';
 import type { ButtonProps } from './Button';
 import { useRovingFocus } from './useRovingFocus';
 
@@ -174,7 +175,8 @@ export function Menu({ label, items, align = 'start', triggerVariant = 'secondar
         onClick={() => (open ? close(false) : openMenu('first'))}
         onKeyDown={onTriggerKeyDown}
       >
-        {label} <span aria-hidden>▾</span>
+        {label}
+        <Icon name="chevron-down" size="sm" />
       </Button>
       <div
         ref={listRef}

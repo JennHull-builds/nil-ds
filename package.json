@@ -1,6 +1,6 @@
 {
   "name": "nil-ds",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "description": "NIL DS: token + primitive kit (brutalist CLI lineage). Live demo: https://nil-ds.vercel.app. See PLAN.md.",
   "type": "module",

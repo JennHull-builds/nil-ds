@@ -223,57 +223,134 @@ pre,
   }
 }
 
+/* ─── Icon ──────────────────────────────────────────────────────────────────── */
+
+/*
+ * Icons are drawn on a 24 unit grid (Icon.tsx, icons.ts). The stroke is set here, from the border
+ * tokens, and kept at that many screen pixels at every size with a non-scaling stroke: the border
+ * width at the small size, the thick border width at the other two. Square ends and mitre joins.
+ */
+.nil-icon {
+  display: block;
+  flex-shrink: 0;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  --nil-icon-stroke: var(--nil-border-width-thick);
+  stroke-width: var(--nil-icon-stroke);
+}
+
+.nil-icon * {
+  vector-effect: non-scaling-stroke;
+}
+
+.nil-icon--sm {
+  width: var(--nil-size-icon-sm);
+  height: var(--nil-size-icon-sm);
+  --nil-icon-stroke: var(--nil-border-width);
+}
+
+.nil-icon--md {
+  width: var(--nil-size-icon-md);
+  height: var(--nil-size-icon-md);
+}
+
+.nil-icon--lg {
+  width: var(--nil-size-icon-lg);
+  height: var(--nil-size-icon-lg);
+}
+
+/* Solid parts: the eye's pupil, the settings knobs, the share nodes. */
+.nil-icon__solid {
+  fill: currentColor;
+}
+
+/* The slash on a struck-through icon is cut out of the drawing three strokes wide. */
+.nil-icon__cut {
+  stroke-width: calc(var(--nil-icon-stroke) * 3);
+}
+
 /* ─── Button ────────────────────────────────────────────────────────────────── */
 
+/*
+ * Offset: a thick frame with a hard shadow in the border colour. Hover lifts it up and left and the
+ * shadow grows, a press pushes it into the shadow, and a toggle that is on stays pushed in and
+ * inverted. Keyboard focus turns the shadow to the accent and grows it, and on a button with no fill
+ * of its own (secondary, ghost) the frame turns to the accent too. There is no floating outline ring.
+ * Every distance and duration is a token, so reduced motion (which collapses the durations) covers it.
+ *
+ * Sizes: md is the tap size. sm is shorter to look at and its tap area is extended to the tap size by
+ * an invisible ::after. An icon-only button is square and needs an accessible name (Button.tsx).
+ */
 .nil-btn {
   appearance: none;
+  position: relative;
+  box-sizing: border-box;
   display: inline-flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: center;
-  gap: 0.35em;
-  line-height: 1.45;
-  border-style: solid;
-  border-radius: var(--nil-radius-default);
-  cursor: pointer;
+  gap: var(--nil-spacing-sm);
+  min-height: var(--nil-size-tap);
+  margin: 0;
+  padding: 0 var(--nil-spacing-md);
   font-family: var(--nil-font-mono);
-  font-weight: 500;
+  font-size: var(--nil-type-scale-sm);
+  font-weight: var(--nil-type-weight-mono-emphasis);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
   white-space: nowrap;
-  padding: 4px;
+  color: var(--nil-color-text);
+  background: var(--nil-color-bg);
+  border: var(--nil-border-width-thick) solid var(--nil-color-border);
+  border-radius: var(--nil-radius-default);
+  box-shadow: var(--nil-size-offset) var(--nil-size-offset) 0 0 var(--nil-color-border);
+  cursor: pointer;
+  transition:
+    transform var(--nil-motion-duration-fast) var(--nil-motion-easing-standard),
+    box-shadow var(--nil-motion-duration-fast) var(--nil-motion-easing-standard),
+    background var(--nil-motion-duration-fast) var(--nil-motion-easing-standard),
+    color var(--nil-motion-duration-fast) var(--nil-motion-easing-standard),
+    border-color var(--nil-motion-duration-fast) var(--nil-motion-easing-standard);
 }
 
 .nil-btn__label {
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.nil-btn__bracket {
-  color: var(--nil-color-border);
-  font-weight: 500;
-  font-size: 1.12em;
-  letter-spacing: 0;
-  text-transform: none;
-  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--nil-spacing-sm);
 }
 
 .nil-btn--sm {
+  min-height: var(--nil-size-button-sm);
+  padding: 0 calc(var(--nil-spacing-sm) + var(--nil-spacing-xs));
   font-size: var(--nil-type-scale-xs);
 }
 
-.nil-btn--md {
-  font-size: var(--nil-type-scale-sm);
+/* The tap area of a sm button: invisible, centred, never narrower than the tap size. */
+.nil-btn--sm::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, var(--nil-size-tap));
+  height: var(--nil-size-tap);
+  transform: translate(-50%, -50%);
+}
+
+.nil-btn--icon {
+  width: var(--nil-size-tap);
+  padding: 0;
+}
+
+.nil-btn--icon.nil-btn--sm {
+  width: var(--nil-size-button-sm);
 }
 
 .nil-btn--primary {
   background: var(--nil-color-accent);
   color: var(--nil-color-accent-contrast);
-  border-width: var(--nil-border-width-thick);
-  border-color: var(--nil-color-accent);
-}
-
-.nil-btn--primary .nil-btn__bracket,
-.nil-btn--danger .nil-btn__bracket {
-  color: color-mix(in srgb, var(--nil-color-accent-contrast) 62%, transparent);
 }
 
 /* Destructive actions. The fill is --nil-color-danger and the text is the accent's contrast
@@ -281,28 +358,59 @@ pre,
 .nil-btn--danger {
   background: var(--nil-color-danger);
   color: var(--nil-color-accent-contrast);
-  border-width: var(--nil-border-width-thick);
-  border-color: var(--nil-color-danger);
 }
 
-.nil-btn--secondary {
-  background: var(--nil-color-bg);
-  color: var(--nil-color-text);
-  border-width: var(--nil-border-width-thick);
-  border-color: var(--nil-color-border);
-}
-
+/* Ghost has no frame and no shadow until it is pointed at. */
 .nil-btn--ghost {
   background: transparent;
-  color: var(--nil-color-text);
-  border-width: var(--nil-border-width);
   border-color: transparent;
+  box-shadow: none;
+}
+
+/*
+ * Hover. A button that is unavailable or busy never reacts, so every state rule below carries the
+ * three :not() guards. Pressed (aria-pressed) and active come after hover, so a toggle that is on
+ * and a button being pressed both win over it.
+ */
+.nil-btn--primary:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):hover,
+.nil-btn--secondary:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):hover,
+.nil-btn--danger:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):hover {
+  transform: translate(calc(-1 * var(--nil-size-offset-lift)), calc(-1 * var(--nil-size-offset-lift)));
+  box-shadow: var(--nil-size-offset-hover) var(--nil-size-offset-hover) 0 0 var(--nil-color-border);
+}
+
+.nil-btn--ghost:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):hover {
+  border-color: var(--nil-color-border);
+  box-shadow: var(--nil-size-offset) var(--nil-size-offset) 0 0 var(--nil-color-border);
+}
+
+/* A toggle that is on: pushed in and inverted. */
+.nil-btn[aria-pressed='true'] {
+  transform: translate(var(--nil-size-offset), var(--nil-size-offset));
+  box-shadow: none;
+  background: var(--nil-color-text);
+  color: var(--nil-color-bg);
+  border-color: var(--nil-color-text);
+}
+
+/* Pressing: pushed into the shadow. */
+.nil-btn--primary:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):active,
+.nil-btn--secondary:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):active,
+.nil-btn--danger:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):active {
+  transform: translate(var(--nil-size-offset), var(--nil-size-offset));
+  box-shadow: none;
+}
+
+.nil-btn--ghost:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):active {
+  transform: translate(var(--nil-size-offset), var(--nil-size-offset));
+  border-color: var(--nil-color-border);
+  box-shadow: none;
 }
 
 /*
  * Unavailable. `disabled` and `aria-disabled="true"` look the same, for every variant. A busy button
  * is marked aria-disabled and not disabled so it keeps focus: a focused button that turns natively
- * disabled sends focus to the page. The click is ignored in code, and the state rules below skip it.
+ * disabled sends focus to the page. The click is ignored in code, and the state rules above skip it.
  */
 .nil-btn:disabled,
 .nil-btn[aria-disabled='true'] {
@@ -310,13 +418,9 @@ pre,
   cursor: not-allowed;
   background: var(--nil-color-surface);
   color: var(--nil-color-text-muted);
-  border-width: var(--nil-border-width-thick);
-  border-color: var(--nil-color-border);
-}
-
-.nil-btn:disabled .nil-btn__bracket,
-.nil-btn[aria-disabled='true'] .nil-btn__bracket {
-  color: var(--nil-color-text-muted);
+  border-color: var(--nil-color-text-muted);
+  box-shadow: none;
+  transform: none;
 }
 
 /*
@@ -328,76 +432,32 @@ pre,
   cursor: progress;
 }
 
-/* ─── Interactive feedback ──────────────────────────────────────────────────── */
-
-.nil-btn:not(:disabled) {
-  transition:
-    background var(--nil-motion-duration-base) var(--nil-motion-easing-standard),
-    border-color var(--nil-motion-duration-base) var(--nil-motion-easing-standard),
-    color var(--nil-motion-duration-base) var(--nil-motion-easing-standard),
-    opacity var(--nil-motion-duration-base) var(--nil-motion-easing-standard);
-}
-
 /*
- * Primary hover darkens the fill and leaves the label alone. A brightness filter would darken
- * the white label with it, and a lighter fill would lose contrast under that label, so neither
- * clears AA. The colour mixed in is the dark of the current theme: the ink in light, the canvas
- * in dark. Both are the same colour, so the hovered fill matches across themes. The mixed result
- * is not in structure.json, so the contrast gate cannot see it: recheck by hand if it changes.
+ * Focus, option F1: the shadow itself turns to the accent and grows, and the button lifts a little.
+ * No outline ring. Keyboard focus only (:focus-visible). It sits after the unavailable rule so an
+ * aria-disabled button that holds focus still shows where it is. Contrast against the page is the
+ * accent fill's, which clears 3:1 in both themes; the shadow is 5 units of it, a large edge.
  */
-.nil-btn--primary:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):hover {
-  background: color-mix(in srgb, var(--nil-color-accent) 90%, var(--nil-color-text));
-  border-color: color-mix(in srgb, var(--nil-color-accent) 90%, var(--nil-color-text));
+.nil-btn:focus-visible {
+  outline: none;
+  transform: translate(calc(-1 * var(--nil-size-offset-lift)), calc(-1 * var(--nil-size-offset-lift)));
+  box-shadow: var(--nil-size-offset-focus) var(--nil-size-offset-focus) 0 0 var(--nil-color-accent);
 }
 
-[data-theme='dark'] .nil-btn--primary:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):hover {
-  background: color-mix(in srgb, var(--nil-color-accent) 90%, var(--nil-color-bg));
-  border-color: color-mix(in srgb, var(--nil-color-accent) 90%, var(--nil-color-bg));
+.nil-btn--secondary:focus-visible,
+.nil-btn--ghost:focus-visible {
+  border-color: var(--nil-color-accent);
 }
 
-/* Danger hover is the same darkening as primary, for the same reason. */
-.nil-btn--danger:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):hover {
-  background: color-mix(in srgb, var(--nil-color-danger) 90%, var(--nil-color-text));
-  border-color: color-mix(in srgb, var(--nil-color-danger) 90%, var(--nil-color-text));
+/* The shadow does not exist in forced-colours mode, so focus falls back to the system outline. */
+@media (forced-colors: active) {
+  .nil-btn:focus-visible {
+    outline: var(--nil-border-width-thick) solid Highlight;
+    outline-offset: var(--nil-border-width-thick);
+  }
 }
 
-[data-theme='dark'] .nil-btn--danger:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):hover {
-  background: color-mix(in srgb, var(--nil-color-danger) 90%, var(--nil-color-bg));
-  border-color: color-mix(in srgb, var(--nil-color-danger) 90%, var(--nil-color-bg));
-}
-
-.nil-btn--secondary:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):hover {
-  background: var(--nil-color-surface);
-}
-
-.nil-btn--secondary:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):active {
-  background: var(--nil-color-text);
-  color: var(--nil-color-bg);
-}
-
-.nil-btn--secondary:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):active .nil-btn__bracket {
-  color: var(--nil-color-text-muted);
-}
-
-.nil-btn--ghost:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):hover {
-  background: var(--nil-color-surface);
-  border-color: var(--nil-color-border);
-}
-
-.nil-btn--ghost:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):active {
-  background: var(--nil-color-text);
-  color: var(--nil-color-bg);
-}
-
-.nil-btn--ghost:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):active .nil-btn__bracket {
-  color: var(--nil-color-text-muted);
-}
-
-.nil-btn:focus-visible,
 .nil-input:focus-visible,
-.nil-theme-segment:focus-visible,
-.nil-lightbox-close:focus-visible,
-.nil-dialog__close:focus-visible,
 .nil-demo-nav a:focus-visible {
   outline: 2px solid var(--nil-color-accent);
   outline-offset: 2px;
@@ -409,54 +469,32 @@ pre,
 
 .nil-theme-toggle {
   display: flex;
-  align-items: stretch;
-  height: 28px;
-  overflow: hidden;
-  flex-shrink: 0;
-  border: var(--nil-border-width) solid var(--nil-color-border);
-  border-radius: var(--nil-radius-default);
-}
-
-.nil-theme-segment {
-  padding: 0 10px;
-  display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: var(--nil-type-scale-xs);
-  line-height: 1;
-  background: transparent;
-  color: var(--nil-color-text);
-  /* The inactive icon. Dimmed by opacity so it clears 3:1 against the canvas in both themes
-     (WCAG 1.4.11, non-text contrast). The contrast linter only reads colours, so nothing
-     guards this number: recheck it by hand if the canvas or the icon colour changes. */
-  opacity: 0.46;
-  border: none;
-  cursor: pointer;
-  transition:
-    background var(--nil-motion-duration-base) var(--nil-motion-easing-standard),
-    color var(--nil-motion-duration-base) var(--nil-motion-easing-standard),
-    opacity var(--nil-motion-duration-base) var(--nil-motion-easing-standard);
-}
-
-.nil-theme-segment[aria-pressed='true'] {
-  background: var(--nil-color-accent);
-  color: var(--nil-color-accent-contrast);
-  opacity: 1;
-}
-
-.nil-theme-segment:not([aria-pressed='true']):hover {
-  opacity: 0.6;
-}
-
-.nil-theme-divider {
-  width: var(--nil-border-width);
-  display: block;
-  background: var(--nil-color-border);
+  gap: var(--nil-spacing-sm);
   flex-shrink: 0;
+  /* Room for the Buttons' offset shadow, so a parent with overflow hidden does not clip it. */
+  padding: 0 var(--nil-size-offset) var(--nil-size-offset) 0;
 }
 
-.nil-lightbox-close:not(:disabled):hover {
-  background: rgba(255, 255, 255, 0.08);
+/* Lightbox controls are Buttons, set in a dark-themed scrim, in the corner and at the sides. */
+.nil-lightbox-close {
+  position: absolute;
+  top: var(--nil-spacing-lg);
+  right: var(--nil-spacing-lg);
+}
+
+.nil-lightbox-step {
+  position: absolute;
+  /* Centred without a transform, because a Button's own hover and press use transform. */
+  top: calc(50% - var(--nil-size-tap) / 2);
+}
+
+.nil-lightbox-step--previous {
+  left: var(--nil-spacing-lg);
+}
+
+.nil-lightbox-step--next {
+  right: var(--nil-spacing-lg);
 }
 
 /* ─── Demo shell ────────────────────────────────────────────────────────────── */
@@ -492,10 +530,52 @@ pre,
 
 /* ─── Toggle / TabStrip focus ─────────────────────────────────────────────── */
 
-.nil-toggle:focus-visible,
-.nil-tab-strip__tab:focus-visible {
+.nil-toggle:focus-visible {
   outline: 2px solid var(--nil-color-accent);
   outline-offset: 2px;
+}
+
+/*
+ * TabStrip tabs. A tab is a tab, not an Offset button: the active tab is the thick underline. What it
+ * shares with Button is the tap height and the focus idea, where the thing that marks the control turns
+ * to the accent. Keyboard focus turns the tab's underline and label to the accent. No outline ring.
+ */
+.nil-tab-strip__tab {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--nil-size-tap);
+  margin: 0 0 calc(-1 * var(--nil-border-width));
+  padding: 0;
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--nil-color-text-muted);
+  background: transparent;
+  border: none;
+  border-bottom: var(--nil-border-width) solid transparent;
+  cursor: pointer;
+  transition:
+    color var(--nil-motion-duration-fast) var(--nil-motion-easing-standard),
+    border-color var(--nil-motion-duration-fast) var(--nil-motion-easing-standard);
+}
+
+.nil-tab-strip__tab[aria-selected='true'] {
+  color: var(--nil-color-text);
+  border-bottom: var(--nil-border-width-thick) solid var(--nil-color-text);
+}
+
+.nil-tab-strip__tab:focus-visible {
+  outline: none;
+  color: var(--nil-color-text-accent);
+  border-bottom: var(--nil-border-width-thick) solid var(--nil-color-accent);
+}
+
+@media (forced-colors: active) {
+  .nil-tab-strip__tab:focus-visible {
+    outline: var(--nil-border-width-thick) solid Highlight;
+  }
 }
 
 .nil-toggle:not(:disabled):hover {
@@ -868,32 +948,9 @@ pre,
   color: var(--nil-color-text);
 }
 
-/* Styled like Lightbox's "Close [Esc]", on the panel's own surface. */
+/* Close is a Button (an icon one). While the dialog is busy it is aria-disabled, which Button dims and keeps focusable. */
 .nil-dialog__close {
-  appearance: none;
   flex-shrink: 0;
-  padding: var(--nil-spacing-xs) var(--nil-spacing-md);
-  font-family: var(--nil-font-mono);
-  font-size: var(--nil-type-scale-sm);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--nil-color-text);
-  background: transparent;
-  border: var(--nil-border-width-thick) solid var(--nil-color-border);
-  border-radius: var(--nil-radius-default);
-  cursor: pointer;
-  transition: background var(--nil-motion-duration-fast) var(--nil-motion-easing-standard);
-}
-
-.nil-dialog__close:not([aria-disabled='true']):hover {
-  background: var(--nil-color-bg);
-}
-
-/* While the dialog is busy, Close stays focusable and looks unavailable, like a disabled Button. */
-.nil-dialog__close[aria-disabled='true'] {
-  opacity: 0.55;
-  cursor: not-allowed;
-  color: var(--nil-color-text-muted);
 }
 
 .nil-dialog__body {

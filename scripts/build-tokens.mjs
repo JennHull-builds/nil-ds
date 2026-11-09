@@ -122,7 +122,8 @@ const header = `/**
 
 const primitiveSection = emitBlock(':root', primitiveVars);
 const semanticSection = emitBlock(':root', semanticVars);
-const lightSection = emitBlock(':root', lightVars);
+// [data-theme='light'] as well as :root, so a light panel can sit inside a dark page (the showroom shows both side by side).
+const lightSection = emitBlock(":root,\n[data-theme='light']", lightVars);
 const darkSection = emitBlock("[data-theme='dark']", darkVars);
 const reducedSection = reducedMotionSection(tokens.semantic);
 

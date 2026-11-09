@@ -17,11 +17,12 @@ component architecture with agent-readable `tokens.json` + `registry.json`.
 
 *Token Lab: swap a primitive; semantic `--nil-*` roles update; components stay put.*
 
-## Components (v0.2)
+## Components (v0.3)
 
 | Component | Notes |
 |-----------|-------|
-| `Button`, `Badge`, `Card`, `Grid`, `Input`, `Heading`, `Text`, `Divider` | Core + mothership extracts |
+| `Button`, `Badge`, `Card`, `Grid`, `Input`, `Heading`, `Text`, `Divider` | Core + mothership extracts. Button is an offset frame with a hard shadow, with an optional icon |
+| `Icon` | 36 icons drawn for the kit: straight lines, curves cut into 45 degree facets, stroke from the border tokens. Decorative unless labelled |
 | `Meta`, `ThemeToggle`, `Lightbox` | CLI extracts |
 | `Dialog` | A modal decision or short form, on the native `<dialog>`. Focus moves in, stays in and returns |
 | `Menu` | An action menu on the WAI-ARIA menu button pattern: arrow keys, Home and End, Escape returns focus, danger items in red text. No UI library |
@@ -30,6 +31,20 @@ component architecture with agent-readable `tokens.json` + `registry.json`.
 | `Composer` | Multi-line chat or command input, with Send and Stop |
 | `Dial`, `Ring` | Circular gauges |
 | `Toggle`, `DataRow`, `TabStrip` | Schedule / density UI. TabStrip has arrow keys, Home and End |
+
+## Icons
+
+36 icons in `src/components/icons.ts`, drawn for this kit on a 24 unit grid. Nothing is copied from an icon library and there is no icon dependency. The stroke is the border token: the thin one at the small size, the thick one at the medium and large sizes. A few drawings have a simpler form at the small size so no gap is thinner than the stroke beside it.
+
+```tsx
+<Icon name="mic" size="sm" />                          {/* decorative by default */}
+<Button icon="arrow-up" variant="primary">Send</Button>
+<Button icon="close" aria-label="Close" />            {/* icon-only: a name is required, and the types enforce it */}
+```
+
+## Chart colour
+
+Two-colour print: blue and orange, each at two strengths, as `--nil-color-chart-*` (four categories) plus a five step ramp for amounts. **Every mark carries an outline in the border colour.** The outline is what clears 3:1 against the page, so the pale fills are allowed to sit below it. More than four categories: group the rest into Other or label them, do not add colours. Text on a swatch uses the matching `-text` token, and `tokens:validate` holds those pairs to 4.5:1. The showroom shows all of it in light and dark.
 
 ## Tokens
 
@@ -78,7 +93,7 @@ Honest state: the format is at spec version `alpha`, and it has no concept of th
 
 ## Showroom
 
-Composed scenes, not a flat component catalogue, in this order: Intro, Gallery, Token Lab, then Examples (Climate, Instrument, Analytics).
+Composed scenes, not a flat component catalogue, in this order: Intro, Gallery, Icons and buttons, Chart colour, Token Lab, then Examples (Climate, Instrument, Analytics).
 
 A second page, `/proof` (`demo/ProofPage.tsx`), reports a small eval of the agent guidance. It is a probe, not a benchmark, and every number on it is read from the committed files in `eval/results/`. The method is in [eval/README.md](eval/README.md).
 

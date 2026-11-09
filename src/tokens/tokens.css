@@ -26,6 +26,24 @@
   --nil-primitive-color-overlay-border: rgba(245, 245, 244, 0.4);
   --nil-primitive-color-grid-line: rgba(128, 128, 128, 0.12);
   --nil-primitive-color-shadow-stack: #0a0a0a;
+  --nil-primitive-color-chart-blue: #396bf2;
+  --nil-primitive-color-chart-blue-pale: #bcd1fd;
+  --nil-primitive-color-chart-orange: #f5810b;
+  --nil-primitive-color-chart-orange-pale: #f9d2b4;
+  --nil-primitive-color-chart-blue-dark: #4a7dff;
+  --nil-primitive-color-chart-blue-pale-dark: #aec7fc;
+  --nil-primitive-color-chart-orange-dark: #f88b1c;
+  --nil-primitive-color-chart-orange-pale-dark: #f4c7a3;
+  --nil-primitive-color-chart-ramp-light-1: #dee8fd;
+  --nil-primitive-color-chart-ramp-light-2: #b2caff;
+  --nil-primitive-color-chart-ramp-light-3: #87acfe;
+  --nil-primitive-color-chart-ramp-light-4: #5b8bfe;
+  --nil-primitive-color-chart-ramp-light-5: #396bf2;
+  --nil-primitive-color-chart-ramp-dark-1: #040092;
+  --nil-primitive-color-chart-ramp-dark-2: #0b2db3;
+  --nil-primitive-color-chart-ramp-dark-3: #2350d5;
+  --nil-primitive-color-chart-ramp-dark-4: #4074fb;
+  --nil-primitive-color-chart-ramp-dark-5: #78a1fd;
   --nil-primitive-spacing-xs: 4px;
   --nil-primitive-spacing-sm: 8px;
   --nil-primitive-spacing-md: 16px;
@@ -68,6 +86,15 @@
   --nil-primitive-size-ring-sm: 48px;
   --nil-primitive-size-ring-md: 72px;
   --nil-primitive-size-dialog: 480px;
+  --nil-primitive-size-icon-sm: 16px;
+  --nil-primitive-size-icon-md: 20px;
+  --nil-primitive-size-icon-lg: 24px;
+  --nil-primitive-size-tap: 44px;
+  --nil-primitive-size-button-sm: 36px;
+  --nil-primitive-size-offset: 3px;
+  --nil-primitive-size-offset-hover: 4px;
+  --nil-primitive-size-offset-focus: 5px;
+  --nil-primitive-size-offset-lift: 1px;
   --nil-primitive-layout-page-x: 80px;
   --nil-primitive-layout-section-y: 120px;
   --nil-primitive-layout-max-width: 1440px;
@@ -132,9 +159,19 @@
   --nil-layout-gutter: var(--nil-primitive-layout-gutter);
   --nil-breakpoint-md: var(--nil-primitive-breakpoint-md);
   --nil-breakpoint-lg: var(--nil-primitive-breakpoint-lg);
+  --nil-size-icon-sm: var(--nil-primitive-size-icon-sm);
+  --nil-size-icon-md: var(--nil-primitive-size-icon-md);
+  --nil-size-icon-lg: var(--nil-primitive-size-icon-lg);
+  --nil-size-tap: var(--nil-primitive-size-tap);
+  --nil-size-button-sm: var(--nil-primitive-size-button-sm);
+  --nil-size-offset: var(--nil-primitive-size-offset);
+  --nil-size-offset-hover: var(--nil-primitive-size-offset-hover);
+  --nil-size-offset-focus: var(--nil-primitive-size-offset-focus);
+  --nil-size-offset-lift: var(--nil-primitive-size-offset-lift);
 }
 
-:root {
+:root,
+[data-theme='light'] {
   --nil-color-bg: #f3f2ee;
   --nil-color-surface: #eae9e5;
   --nil-color-text: #0a0a0a;
@@ -146,6 +183,24 @@
   --nil-color-accent-contrast: #ffffff;
   --nil-color-danger: #c62832;
   --nil-color-success: #00774c;
+  --nil-color-chart-blue: #396bf2;
+  --nil-color-chart-blue-text: #ffffff;
+  --nil-color-chart-blue-pale: #bcd1fd;
+  --nil-color-chart-blue-pale-text: #0a0a0a;
+  --nil-color-chart-orange: #f5810b;
+  --nil-color-chart-orange-text: #0a0a0a;
+  --nil-color-chart-orange-pale: #f9d2b4;
+  --nil-color-chart-orange-pale-text: #0a0a0a;
+  --nil-color-chart-ramp-1: #dee8fd;
+  --nil-color-chart-ramp-1-text: #0a0a0a;
+  --nil-color-chart-ramp-2: #b2caff;
+  --nil-color-chart-ramp-2-text: #0a0a0a;
+  --nil-color-chart-ramp-3: #87acfe;
+  --nil-color-chart-ramp-3-text: #0a0a0a;
+  --nil-color-chart-ramp-4: #5b8bfe;
+  --nil-color-chart-ramp-4-text: #0a0a0a;
+  --nil-color-chart-ramp-5: #396bf2;
+  --nil-color-chart-ramp-5-text: #ffffff;
 }
 
 [data-theme='dark'] {
@@ -160,6 +215,24 @@
   --nil-color-accent-contrast: #ffffff;
   --nil-color-danger: #c62832;
   --nil-color-success: #22a06b;
+  --nil-color-chart-blue: #4a7dff;
+  --nil-color-chart-blue-text: #0a0a0a;
+  --nil-color-chart-blue-pale: #aec7fc;
+  --nil-color-chart-blue-pale-text: #0a0a0a;
+  --nil-color-chart-orange: #f88b1c;
+  --nil-color-chart-orange-text: #0a0a0a;
+  --nil-color-chart-orange-pale: #f4c7a3;
+  --nil-color-chart-orange-pale-text: #0a0a0a;
+  --nil-color-chart-ramp-1: #040092;
+  --nil-color-chart-ramp-1-text: #ffffff;
+  --nil-color-chart-ramp-2: #0b2db3;
+  --nil-color-chart-ramp-2-text: #ffffff;
+  --nil-color-chart-ramp-3: #2350d5;
+  --nil-color-chart-ramp-3-text: #ffffff;
+  --nil-color-chart-ramp-4: #4074fb;
+  --nil-color-chart-ramp-4-text: #0a0a0a;
+  --nil-color-chart-ramp-5: #78a1fd;
+  --nil-color-chart-ramp-5-text: #0a0a0a;
 }
 
 @media (prefers-reduced-motion: reduce) {

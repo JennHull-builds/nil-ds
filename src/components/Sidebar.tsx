@@ -130,6 +130,7 @@ export function Sidebar({
             type="button"
             variant="secondary"
             size="sm"
+            icon="menu"
             className="nil-sidebar__toggle"
             aria-expanded={!collapsed}
             aria-controls={listId}

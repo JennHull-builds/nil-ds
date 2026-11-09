@@ -124,9 +124,13 @@ describe('Sidebar', () => {
       expect(document.getElementById(id)).toContainElement(screen.getByRole('link', { name: 'Tokens' }));
     });
 
-    it('is the kit Button', () => {
+    it('is the kit Button, with a decorative menu icon beside the label', () => {
       const { container } = render(<Sidebar label="Pages" sections={sections} defaultCollapsed={false} />);
       expect(container.querySelector('.nil-btn')).toBe(toggle());
+      const icon = toggle().querySelector('svg');
+      expect(icon).toHaveAttribute('aria-hidden', 'true');
+      expect(icon!.innerHTML).toContain('M3 6h18');
+      expect(toggle()).toHaveAccessibleName('Hide navigation');
     });
 
     it('hides the list from everyone and shows it again, swapping its label', async () => {

@@ -25,19 +25,25 @@ import tokensJson from '../../src/tokens/tokens.json';
 
 const ACCENT = tokensJson.primitive.color.accent.value;
 
-const DEMO_LIGHTBOX: LightboxImage = {
+const demoLightboxImage = (title: string, alt: string): LightboxImage => ({
   src:
     'data:image/svg+xml,' +
     encodeURIComponent(
       `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
         <rect width="800" height="500" fill="#0a0a0a"/>
         <rect x="40" y="40" width="720" height="420" fill="none" stroke="#f5f5f4" stroke-width="2"/>
-        <text x="60" y="100" fill="#f5f5f4" font-family="monospace" font-size="28">NIL DS / SPEC</text>
+        <text x="60" y="100" fill="#f5f5f4" font-family="monospace" font-size="28">${title}</text>
         <line x1="60" y1="140" x2="740" y2="140" stroke="${ACCENT}" stroke-width="2"/>
       </svg>`,
     ),
-  alt: 'Sample technical drawing',
-};
+  alt,
+});
+
+/** Two images, so the Lightbox's previous and next buttons have somewhere to go. */
+const DEMO_LIGHTBOX_IMAGES: LightboxImage[] = [
+  demoLightboxImage('NIL DS / SPEC', 'Sample technical drawing, 1 of 2'),
+  demoLightboxImage('NIL DS / SPEC / 2', 'Sample technical drawing, 2 of 2'),
+];
 
 const DEMO_REPLY =
   'Tokens are named values that code reads, like a colour or a spacing. A component asks for --nil-color-accent, never the hex, so one change in tokens.json reaches every component.';
@@ -326,7 +332,8 @@ function SidebarDemo() {
 
 export function GalleryScene() {
   const { ref, visible } = useReveal();
-  const [lightbox, setLightbox] = useState<LightboxImage | null>(null);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const lightbox = lightboxIndex === null ? null : DEMO_LIGHTBOX_IMAGES[lightboxIndex];
 
   return (
     <DemoScene id="gallery" ref={ref}>
@@ -339,7 +346,7 @@ export function GalleryScene() {
         <Card className="nil-demo-gallery-buttons" style={{ gridColumn: '1 / -1' }}>
           <Heading level={3}>Buttons</Heading>
           <Text size="sm" muted style={{ marginTop: 'var(--nil-spacing-xs)' }}>
-            IBM Plex Mono · uppercase label · brackets match Meta spacing
+            IBM Plex Mono · uppercase label · offset shadow · 44 px tall · Tab to see focus
           </Text>
           <div className="nil-demo-button-strip">
             <div className="nil-demo-button-cell">
@@ -444,7 +451,7 @@ export function GalleryScene() {
 
         <Card>
           <Heading level={3}>Lightbox</Heading>
-          <Button variant="secondary" style={{ marginTop: 'var(--nil-spacing-sm)' }} onClick={() => setLightbox(DEMO_LIGHTBOX)}>
+          <Button variant="secondary" style={{ marginTop: 'var(--nil-spacing-sm)' }} onClick={() => setLightboxIndex(0)}>
             Open sample
           </Button>
         </Card>
@@ -455,7 +462,12 @@ export function GalleryScene() {
         Motion: <code>.nil-grid-bg</code>, <code>.nil-cursor-blink</code>, <code>.nil-enter</code>. See the scenes above.
       </Text>
 
-      <Lightbox image={lightbox} onClose={() => setLightbox(null)} />
+      <Lightbox
+        image={lightbox}
+        onClose={() => setLightboxIndex(null)}
+        onPrevious={lightboxIndex ? () => setLightboxIndex(lightboxIndex - 1) : undefined}
+        onNext={lightboxIndex === 0 ? () => setLightboxIndex(1) : undefined}
+      />
     </DemoScene>
   );
 }

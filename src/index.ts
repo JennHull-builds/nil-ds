@@ -1,5 +1,10 @@
 export { Button } from './components/Button';
-export type { ButtonProps } from './components/Button';
+export type { ButtonProps, TextButtonProps, IconButtonProps } from './components/Button';
+
+export { Icon } from './components/Icon';
+export type { IconProps, IconSize } from './components/Icon';
+export { ICON_NAMES } from './components/icons';
+export type { IconName } from './components/icons';
 
 export { Badge } from './components/Badge';
 export type { BadgeProps } from './components/Badge';

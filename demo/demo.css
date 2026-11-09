@@ -404,3 +404,184 @@
 .nil-demo-examples-intro {
   padding-top: var(--nil-spacing-2xl);
 }
+
+
+/* ─── Icons and chart colour showroom (IconsScene, ChartScene) ───────────────── */
+
+.nil-demo-panes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 28rem), 1fr));
+  gap: var(--nil-spacing-md);
+  margin-top: var(--nil-spacing-sm);
+}
+
+.nil-demo-pane {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nil-spacing-md);
+  min-width: 0;
+  padding: var(--nil-spacing-md);
+  border: var(--nil-border-width) solid var(--nil-color-border);
+  border-radius: var(--nil-radius-default);
+}
+
+.nil-demo-pane__label {
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--nil-color-text-muted);
+}
+
+.nil-demo-icon-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nil-spacing-md);
+}
+
+.nil-demo-icon-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nil-spacing-sm);
+}
+
+.nil-demo-icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
+  gap: var(--nil-spacing-md) var(--nil-spacing-sm);
+}
+
+.nil-demo-icon-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--nil-spacing-xs);
+}
+
+.nil-demo-icon-sizes {
+  display: flex;
+  align-items: center;
+  gap: var(--nil-spacing-sm);
+}
+
+.nil-demo-icon-name {
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-xs);
+  color: var(--nil-color-text-muted);
+}
+
+.nil-demo-state-grid {
+  display: grid;
+  grid-template-columns: repeat(5, max-content);
+  justify-content: start;
+  gap: var(--nil-spacing-md) var(--nil-spacing-lg);
+  align-items: center;
+  overflow-x: auto;
+  /* Room for the shadow, so the scroller does not clip it. */
+  padding: var(--nil-spacing-xs) var(--nil-size-offset) var(--nil-size-offset) 0;
+}
+
+.nil-demo-state-row {
+  display: contents;
+}
+
+.nil-demo-button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--nil-spacing-md);
+  align-items: center;
+  padding-bottom: var(--nil-size-offset);
+}
+
+.nil-demo-swatches {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--nil-spacing-sm);
+}
+
+.nil-demo-swatches--five {
+  grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+}
+
+.nil-demo-swatch {
+  display: flex;
+  flex-direction: column;
+  border: var(--nil-border-width) solid var(--nil-color-border);
+  border-radius: var(--nil-radius-default);
+  overflow: hidden;
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-xs);
+}
+
+.nil-demo-swatch__fill {
+  display: flex;
+  align-items: flex-end;
+  min-height: var(--nil-size-tap);
+  padding: var(--nil-spacing-xs) var(--nil-spacing-sm);
+  font-weight: var(--nil-type-weight-mono-emphasis);
+  border-bottom: var(--nil-border-width) solid var(--nil-color-border);
+}
+
+.nil-demo-swatch__meta {
+  display: flex;
+  flex-direction: column;
+  padding: var(--nil-spacing-xs) var(--nil-spacing-sm);
+  color: var(--nil-color-text-muted);
+  overflow-wrap: anywhere;
+}
+
+.nil-demo-chart text {
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-xs);
+  fill: var(--nil-color-text-muted);
+}
+
+.nil-demo-chart .nil-demo-chart__label {
+  fill: var(--nil-color-text);
+}
+
+.nil-demo-chart__grid {
+  stroke: var(--nil-color-grid-line);
+}
+
+.nil-demo-chart__axis {
+  stroke: var(--nil-color-border);
+}
+
+.nil-demo-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--nil-spacing-xs) var(--nil-spacing-md);
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-xs);
+}
+
+.nil-demo-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--nil-spacing-xs);
+}
+
+.nil-demo-legend svg {
+  width: var(--nil-size-icon-sm);
+  height: var(--nil-size-icon-sm);
+}
+
+.nil-demo-table {
+  margin-top: var(--nil-spacing-sm);
+  border-collapse: collapse;
+  font-family: var(--nil-font-mono);
+  font-size: var(--nil-type-scale-sm);
+}
+
+.nil-demo-table th,
+.nil-demo-table td {
+  padding: var(--nil-spacing-xs) var(--nil-spacing-md) var(--nil-spacing-xs) 0;
+  text-align: left;
+  border-bottom: var(--nil-border-width) solid var(--nil-color-border);
+}
+
+/* A pane that needs the whole row: the Button state grid. */
+.nil-demo-panes--wide {
+  grid-template-columns: minmax(0, 1fr);
+}

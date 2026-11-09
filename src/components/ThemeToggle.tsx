@@ -1,4 +1,5 @@
 import type { HTMLAttributes } from 'react';
+import { Button } from './Button';
 
 export type Theme = 'light' | 'dark';
 
@@ -11,9 +12,9 @@ export interface ThemeToggleProps extends Omit<HTMLAttributes<HTMLDivElement>, '
 }
 
 /**
- * Extracted from mothership-stable's ThemeToggle. Sharp segmented light/dark
- * control — default radius, hard border. Controlled: no ThemeProvider; theme is a
- * kit object the consumer wires to `data-theme`.
+ * Light and dark as two small icon Buttons (sun and moon). The one that is on is a pressed
+ * Button, pushed in and inverted, so the state shows in more than a colour. Controlled: no
+ * ThemeProvider; theme is a kit object the consumer wires to `data-theme`.
  */
 export function ThemeToggle({
   theme,
@@ -30,32 +31,28 @@ export function ThemeToggle({
       aria-label="Theme"
       className={['nil-theme-toggle', className].filter(Boolean).join(' ')}
       style={{
-        opacity: disabled ? 0.55 : 1,
         pointerEvents: disabled ? 'none' : undefined,
         ...style,
       }}
     >
-      <button
-        type="button"
-        className="nil-theme-segment"
-        aria-pressed={theme === 'light'}
+      <Button
+        variant="secondary"
+        size="sm"
+        icon="sun"
         aria-label="Light mode"
+        aria-pressed={theme === 'light'}
         disabled={disabled}
         onClick={() => onThemeChange('light')}
-      >
-        ☀
-      </button>
-      <span aria-hidden className="nil-theme-divider" />
-      <button
-        type="button"
-        className="nil-theme-segment"
-        aria-pressed={theme === 'dark'}
+      />
+      <Button
+        variant="secondary"
+        size="sm"
+        icon="moon"
         aria-label="Dark mode"
+        aria-pressed={theme === 'dark'}
         disabled={disabled}
         onClick={() => onThemeChange('dark')}
-      >
-        ☾
-      </button>
+      />
     </div>
   );
 }
