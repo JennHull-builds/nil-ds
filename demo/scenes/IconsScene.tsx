@@ -13,9 +13,9 @@ const GROUPS: { title: string; names: IconName[] }[] = [
 ];
 
 /** Both themes side by side: a light panel and a dark panel, whatever the page is set to. */
-function Panes({ children }: { children: (theme: 'light' | 'dark') => ReactNode }) {
+function Panes({ children, wide }: { children: (theme: 'light' | 'dark') => ReactNode; wide?: boolean }) {
   return (
-    <div className="nil-demo-panes">
+    <div className={wide ? 'nil-demo-panes nil-demo-panes--wide' : 'nil-demo-panes'}>
       {(['light', 'dark'] as const).map((theme) => (
         <div key={theme} data-theme={theme} className="nil-demo-pane">
           <span className="nil-demo-pane__label">{theme}</span>
@@ -59,7 +59,7 @@ const LABELS = { primary: 'Save', secondary: 'Cancel', ghost: 'Skip', danger: 'D
 
 function ButtonStates() {
   return (
-    <Panes>
+    <Panes wide>
       {() => (
         <div className="nil-demo-icon-sheet">
           <div className="nil-demo-state-grid">

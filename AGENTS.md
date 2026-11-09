@@ -30,6 +30,9 @@ Read this before generating UI with NIL primitives.
 | A list of actions on one thing (rename, duplicate, delete) | `Menu` |
 | App navigation: grouped links, the current page marked, collapses | `Sidebar` |
 | Full-size image viewer | `Lightbox` |
+| An icon, beside text or alone | `Icon`. Decorative unless you give it a `label` |
+| A button that is only an icon | `Button` with `icon` and `aria-label` (or `aria-labelledby`). It does not compile without a name |
+| Chart colours: categories, or amounts | `--nil-color-chart-*`, outlined. See *Gotcha: chart colours* |
 | Destructive action | `Button` with `variant="danger"` |
 | Destructive item inside a `Menu` | `variant="danger"` on the item: red text, never a red `Button` |
 | Large stat | `Readout` |
@@ -47,6 +50,9 @@ See `registry.json` for per-component token dependencies and props.
 
 - Import Radix/shadcn into NIL kit source
 - Use `#000` / `#fff` unless explicitly requested
+- Copy an icon from a library (Lucide, Feather, Heroicons) or add an icon dependency. Draw it in the kit's style, see *Gotcha: the icon set*
+- Bring back the `[ LABEL ]` brackets on a Button. They are retired. (Meta keeps its own brackets, it is not a button.)
+- Put a Button's focus on an outline ring. Its focus is the accent shadow
 - Hardcode corner radius in components. Use `--nil-radius-default` (the soft brutalist default)
 - Invent magic pixel values. Use `--nil-spacing-*` and layout tokens
 
@@ -144,10 +150,11 @@ property and the honest home for it is `tokens:validate`.
 **Built as a gate 2026-11-03** (it was a report from 2026-10-17). `tokens:validate` runs the
 DESIGN.md linter, which computes WCAG ratios on the text and background pairs mapped in
 `design-md/structure.json`, and a contrast miss now fails the run. It covers only the pairs
-someone mapped. It can't see anything dimmed with `opacity`: ThemeToggle's inactive icon is
-one, and only a comment in `core.css` guards its number. It doesn't see states either. Hover and
-pressed states of Button and ThemeToggle were measured from pixels on 2026-11-03 and clear 4.5:1,
-but a hover rule is not a mapped pair, so a later change to one is not caught. So the true sentence is: every text and
+someone mapped. It can't see anything dimmed with `opacity`: a disabled Button is one (it is dimmed
+on purpose, and disabled controls are exempt from the contrast rule). It doesn't see states either.
+The Offset Button's hover, focus and pressed states change position, shadow and frame colour, and
+neither fill nor text, so they add no text pair. A pressed toggle is a pair, and `button-pressed` and
+`theme-toggle-pressed` map it. A later change to a state rule is not caught. So the true sentence is: every text and
 background pair mapped in `design-md/structure.json` meets WCAG AA, and `tokens:validate` fails
 if one does not. Unmapped pairs are not covered. Never write "contrast tested" or "accessible"
 for it.
@@ -187,6 +194,9 @@ Added 2026-10-17, with the DESIGN.md work on branch `design-md`.
   Dialog brings it to 17 of the 22 files, and Button's list was completed from the code with it.
   Updated 2026-11-04: Dial's sizes in the registry now include `xl`. Card, Grid, Heading, Text and
   Divider still have no entry, and Stack still lists `shadow-stack`, which nothing reads.
+  Updated 2026-11-09 (0.3.0): Icon is a new entry, and so is ChartPalette, which is tokens and no component.
+  Of the 25 component files the registry now covers 20, and Card, Grid, Heading, Text and Divider still
+  have no entry. Button's, ThemeToggle's and Lightbox's lists and props were rewritten from the code.
 
 ## Gotcha: Dialog is the native element, and jsdom cannot see most of it
 
@@ -337,3 +347,85 @@ Added 2026-11-03. `--nil-border-width` resolves to 1.5px, but Chromium 153 compu
 border that uses it as 1px, at device pixel ratio 1 and 2. Measured on the Gallery: Composer, Input
 and Card all compute the same. Firefox and Safari are unchecked. Whether to change the token is a
 later decision.
+## Gotcha: the Offset Button
+
+Added 2026-11-09, with 0.3.0. The bracket look is gone. Each of these fails quietly if someone "tidies" it.
+
+- **A Button is a frame with a hard shadow in the border colour.** Rest, hover, focus and pressed all
+  move the same shadow, and every distance is a token (`--nil-size-offset`, `-hover`, `-focus`, `-lift`).
+  Add no literal pixel. `Button.test.tsx` fails on one, and on a hex or a literal duration.
+- **Focus is the accent shadow, and there is no outline ring.** `outline: none` is deliberate and
+  only safe because the shadow is the indicator. The forced-colours block restores a system outline,
+  where shadows are not drawn. The focus rule sits after the unavailable rule on purpose, so an
+  `aria-disabled` Button that holds focus (the busy Dialog pattern) still shows where it is.
+- **A transition makes focus look absent for 120 ms.** Reading `getComputedStyle` right after Tab shows the
+  resting shadow. Measured 2026-11-09: after 300 ms it is the accent shadow at the focus offset, lifted by
+  the lift token, `outline-style: none`. Wait before asserting on it.
+- **Never position a Button with `transform`.** Hover, focus and press all set `transform`, so a
+  parent's `translate` is overwritten and the button jumps. Lightbox's side buttons are placed with `top`
+  for this reason.
+- **The shadow is outside the box, so an `overflow: hidden` parent clips it.** ThemeToggle pads for it,
+  and so should anything else that puts a Button in a clipped or scrolling container.
+- **`sm` is 36 px to see and 44 px to tap.** An invisible `::after` extends the hit area, and it is never
+  narrower than the tap size. Measured 2026-11-09 with `elementFromPoint`: a point 3 px outside the
+  visible box hits the button and a point 5 px outside does not. md is 44 px tall at every size.
+- **An icon-only Button needs a name, and the types enforce it.** `<Button icon="close" />` does not
+  compile (a `@ts-expect-error` test holds that, and `npm run typecheck` is what runs it). At run time
+  nothing stops it, so a JS consumer can still ship a nameless one.
+- **The one that is pressed (`aria-pressed`) is pushed in and inverted.** That is also how ThemeToggle
+  shows light or dark, so the state is not carried by colour alone.
+- **Lightbox sets its controls in the dark theme** with `data-theme="dark"` on the scrim, because the
+  scrim is dark in both themes and an ink shadow would vanish on it. The light tokens now also apply under
+  `[data-theme='light']`, so a light panel can sit inside a dark page.
+- **TabStrip and Toggle are not Offset buttons.** A tab is a tab: its active mark is the underline, and its
+  focus turns that underline and label to the accent. Toggle is still a pill with an outline focus ring.
+  Both are decisions waiting on Jen, listed in the 0.3.0 report. Menu items and Sidebar links are rows, not
+  buttons, and are about 36 px tall.
+
+## Gotcha: the icon set
+
+Added 2026-11-09. 36 icons in `src/components/icons.ts`, drawn for this kit, not copied.
+
+- **Straight lines only.** What would be a curve is cut into 45 degree facets. `Icon.test.tsx` fails on any
+  path command that is not M, L, H, V or Z, and on a coordinate outside the 24 unit grid.
+- **The stroke is a token and it is set in `core.css`, not in the drawing.** The border width at the small
+  size and the thick border width at the other two, kept at that many screen pixels by a non-scaling stroke.
+- **The gap rule.** A gap between two strokes is never thinner than the stroke beside it, checked at 16 px.
+  In drawing units that is about 4.5 between two separate strokes, centre to centre. Icons that could not
+  keep it at 16 px have a simpler `small` drawing: mic, eye, eye-off, sun and trash. The check was a
+  closing filter on a rendered raster: fill every gap narrower than the stroke and look at what fills.
+  Narrow wedges where two strokes meet at a join (an envelope's flap, a chevron's inside) are joins, not gaps.
+- **What was checked and what was not.** Measured 2026-11-09 on the final drawings, by the closing filter
+  above. At 16 px nothing is left above 8 square drawing units except join wedges (mic 6.8, mail 8,
+  printer 7.6, trash 5.8, key 5.5, volume-off 5.3, all read as joins by eye). At 20 px the full mic, eye, sun
+  and trash still have real gaps narrower than the stroke (areas 24.7, 27.8, 31 and 45.2), and eye-off,
+  clock, mail, warning and volume-off have small ones. At 24 px the full mic (27.6), eye-off (13.2) and eye
+  (8.1) do. 20 px is the strictest size in drawing units, because the stroke is 2 px on a grid scaled down to
+  20. Only 16 px was fixed, as decided. Mic, eye, eye-off and sun are the drawings Jen approved, so changing
+  them at 20 and 24 px is hers to decide.
+- **eye-off cuts its slash out with an SVG mask,** and the mask id comes from `useId` so two on one page
+  never share one. A test renders two and compares.
+- **Icons are decorative by default** (`aria-hidden`). Give `label` only for an icon that stands alone.
+  Inside a Button, never label the icon: the Button's own name is the name.
+
+## Gotcha: chart colours
+
+Added 2026-11-09. `--nil-color-chart-*` in `tokens.json`: four categorical colours (blue, pale blue, orange,
+pale orange) and a five-step ramp, each with a matching `-text` token.
+
+- **Every mark is outlined in `--nil-color-border` at `--nil-border-width`.** The outline is what clears 3:1
+  against the page, so the pale fills may sit below it. An unoutlined pale mark does not meet 3:1, and
+  `tokens:validate` cannot see that. It maps only text on fill.
+- **More than four categories: group into Other or label them. Do not add colours.**
+- **Wins stay `--nil-color-success`.** The chart colours are not status colours.
+- **Text on a swatch is the `-text` token,** mapped under `ChartPalette` in `design-md/structure.json` and
+  held to 4.5:1 by `tokens:validate`. The text is white on the light blue and on the dark ramp's first three
+  steps, and ink on the rest, so use the token, not a guess.
+- **The palette validator flags the pale tints, and that is expected.** It was written for unoutlined
+  fills. Its lightness band, chroma floor and 3:1 surface checks fail on the pale fills, and its
+  normal-vision floor of 15 is missed by pale blue against pale orange (12.5 in light, just under 15 in dark).
+  Its colour-blindness checks pass: worst pair 10.9 light and 13.2 dark. The mitigation is the outline and
+  a label on every mark, never colour alone.
+- **TetherLog mapping (suggested, not applied):** Do is blue, Wonder is pale blue, Drop is orange, Later is
+  pale orange, wins are success green, and an hour chart is the ramp with the busiest hour at full strength.
+

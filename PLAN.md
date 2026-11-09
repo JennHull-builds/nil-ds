@@ -256,6 +256,7 @@ reinjection, brand lime/mint/pork, Soft Bento, page/print chrome.
 - 2026-08-21: Layout tokens + `src/core/core.css` — reset, `.nil-container` / `.nil-grid`, demo on core layout.
 - 2026-08-21: Lightbox + CLI motion (`enter` / `blink` / `grid-bg`) tokens and core utilities.
 - 2026-08-21: Locked v0.1 colour — **accent kept** (not neutral-only).
+- 2026-11-09: **v0.3.0 icons, Offset Button, chart palette** (Jen's picks from the 2026-11-08 preview). Icon style "Cut", drawn for the kit, no library. Button rebuilt as Offset, brackets retired, focus F1 (the shadow turns accent). Chart colour "two-colour print" with an ink outline on every mark. Built overnight on branch `icons`, not pushed. See `CHANGELOG.md`.
 - 2026-08-21: Parked Storybook — Vite demo remains the showroom.
 - 2026-08-31: **Mothership light base** — semantic light tokens aligned to
   `mothership-stable/foundations/tokens.json` `colours.light` (bg `#EDECE8`,

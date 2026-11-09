@@ -472,8 +472,9 @@
 
 .nil-demo-state-grid {
   display: grid;
-  grid-template-columns: auto repeat(4, max-content);
-  gap: var(--nil-spacing-md) var(--nil-spacing-md);
+  grid-template-columns: repeat(5, max-content);
+  justify-content: start;
+  gap: var(--nil-spacing-md) var(--nil-spacing-lg);
   align-items: center;
   overflow-x: auto;
   /* Room for the shadow, so the scroller does not clip it. */
@@ -578,4 +579,9 @@
   padding: var(--nil-spacing-xs) var(--nil-spacing-md) var(--nil-spacing-xs) 0;
   text-align: left;
   border-bottom: var(--nil-border-width) solid var(--nil-color-border);
+}
+
+/* A pane that needs the whole row: the Button state grid. */
+.nil-demo-panes--wide {
+  grid-template-columns: minmax(0, 1fr);
 }

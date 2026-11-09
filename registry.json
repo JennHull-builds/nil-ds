@@ -1,5 +1,5 @@
 {
-  "version": "0.2.0",
+  "version": "0.3.0",
   "tokens": "src/tokens/tokens.json",
   "css": ["src/core/fonts.css", "src/tokens/tokens.css", "src/core/core.css"],
   "rules": [
