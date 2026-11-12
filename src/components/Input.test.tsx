@@ -63,6 +63,13 @@ describe('Input', () => {
     expect(await axe(container)).toHaveNoViolations();
   });
 
+  it('is as tall as the tap size, so it lines up beside a md Button (core.css)', () => {
+    const css = readFileSync(join(__dirname, '..', '..', 'src/core/core.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+    const rule = css.match(/\.nil-input \{([^}]*)\}/);
+    expect(rule).not.toBeNull();
+    expect(rule![1]).toMatch(/min-height: var\(--nil-size-tap\)/);
+  });
+
   describe('trailing control', () => {
     const eye = <Button type="button" size="sm" variant="ghost" icon="eye" aria-label="Show key" />;
 

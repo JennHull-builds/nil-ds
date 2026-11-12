@@ -700,6 +700,8 @@ pre,
 .nil-input {
   font-family: var(--nil-font-body);
   font-size: var(--nil-type-scale-base);
+  /* As tall as the tap size, so an Input beside a md Button lines up. The reset above already makes the box border-box. */
+  min-height: var(--nil-size-tap);
   padding: var(--nil-spacing-sm);
   border-radius: var(--nil-radius-default);
   border: var(--nil-border-width) solid var(--nil-color-border);

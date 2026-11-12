@@ -7,6 +7,10 @@
 - **`Message` component.** A status or error line that sits beside a control: `tone` (`neutral`, `success`, `danger`) and `busy`. It is a live region that is always rendered, even empty. Danger is `role="alert"` with the error icon, success is `role="status"` with the check icon, and `busy` follows the words with the kit's blinking cursor. Each tone is a mapped text pair on `bg` and on `surface`.
 - **`Input` takes a `trailing` control.** A small control drawn inside the field at its end, such as an icon `Button` that shows or hides a secret. With no `trailing` the markup is unchanged. With one, the input and the control share a `.nil-input-field` wrapper, and the input gets end padding so typed text never runs under the control.
 
+### Changed
+
+- **`Input` is as tall as the tap size.** `.nil-input` reads `--nil-size-tap` for its `min-height`, so an Input beside a md Button is no longer 2 px short.
+
 ## 0.3.0
 
 An icon set, a new Button, and a chart palette.
