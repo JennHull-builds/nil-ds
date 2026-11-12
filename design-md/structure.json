@@ -131,6 +131,14 @@
       "input-error": { "backgroundColor": "color-bg", "textColor": "color-text-danger" },
       "input-error-on-surface": { "backgroundColor": "color-surface", "textColor": "color-text-danger" }
     },
+    "Message": {
+      "message-neutral": { "backgroundColor": "color-bg", "textColor": "color-text-muted", "typography": "body-sm" },
+      "message-danger": { "backgroundColor": "color-bg", "textColor": "color-text-danger", "typography": "body-sm" },
+      "message-success": { "backgroundColor": "color-bg", "textColor": "color-success", "typography": "body-sm" },
+      "message-neutral-on-surface": { "backgroundColor": "color-surface", "textColor": "color-text-muted", "typography": "body-sm" },
+      "message-danger-on-surface": { "backgroundColor": "color-surface", "textColor": "color-text-danger", "typography": "body-sm" },
+      "message-success-on-surface": { "backgroundColor": "color-surface", "textColor": "color-success", "typography": "body-sm" }
+    },
     "ThemeToggle": {
       "theme-toggle-pressed": { "backgroundColor": "color-text", "textColor": "color-bg" },
       "theme-toggle-rest": { "backgroundColor": "color-bg", "textColor": "color-text" }

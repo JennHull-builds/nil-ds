@@ -18,6 +18,9 @@ export type { GridProps } from './components/Grid';
 export { Input } from './components/Input';
 export type { InputProps } from './components/Input';
 
+export { Message } from './components/Message';
+export type { MessageProps } from './components/Message';
+
 export { Heading } from './components/Heading';
 export type { HeadingProps } from './components/Heading';
 

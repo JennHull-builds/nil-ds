@@ -11,6 +11,7 @@ import {
   Input,
   Lightbox,
   Menu,
+  Message,
   Meta,
   Prompt,
   Sidebar,
@@ -436,6 +437,15 @@ export function GalleryScene() {
           <div style={{ marginTop: 'var(--nil-spacing-sm)' }}>
             <Input label="Name" placeholder="Your name" />
             <Input label="Device ID" placeholder="Required" error="Invalid ID: check the format" style={{ marginTop: 'var(--nil-spacing-md)' }} />
+          </div>
+        </Card>
+
+        <Card>
+          <Heading level={3}>Message</Heading>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--nil-spacing-sm)', marginTop: 'var(--nil-spacing-sm)' }}>
+            <Message tone="success">Saved on this device.</Message>
+            <Message tone="danger">That file is not a backup. Nothing was changed.</Message>
+            <Message busy>Sorting. This can take up to 20 seconds.</Message>
           </div>
         </Card>
 

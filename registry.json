@@ -90,6 +90,11 @@
       "props": { "label": "string", "error": "string?" }
     },
     {
+      "name": "Message",
+      "tokens": ["--nil-color-text-muted", "--nil-color-text-danger", "--nil-color-success", "--nil-color-text-accent", "--nil-font-body", "--nil-type-scale-sm", "--nil-spacing-xs", "--nil-spacing-sm", "--nil-size-icon-sm"],
+      "props": { "tone": "neutral|success|danger (danger is role=alert, the others role=status)", "busy": "boolean? (the kit's blinking cursor follows the words)", "children": "ReactNode (empty renders the empty live region, so a later message is announced)" }
+    },
+    {
       "name": "ThemeToggle",
       "tokens": ["--nil-spacing-sm", "--nil-size-offset", "Button tokens (two small icon Buttons: sun and moon)"],
       "props": { "theme": "light|dark", "onThemeChange": "function", "disabled": "boolean" }

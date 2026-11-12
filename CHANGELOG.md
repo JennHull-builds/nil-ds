@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- **`Message` component.** A status or error line that sits beside a control: `tone` (`neutral`, `success`, `danger`) and `busy`. It is a live region that is always rendered, even empty. Danger is `role="alert"` with the error icon, success is `role="status"` with the check icon, and `busy` follows the words with the kit's blinking cursor. Each tone is a mapped text pair on `bg` and on `surface`.
+
 ## 0.3.0
 
 An icon set, a new Button, and a chart palette.

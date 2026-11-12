@@ -70,7 +70,7 @@ Bordered components use `rounded.default`, a small radius: soft brutalist, not s
 
 ## Components
 
-One group per primitive in `registry.json`: Button, Icon, ChartPalette, Panel, Stack, Dial, Ring, Toggle, DataRow, TabStrip, Meta, Readout, Prompt, Composer, Badge, Input, ThemeToggle, Lightbox, Dialog, Menu and Sidebar. Variants use the format's related-key convention (`button-primary`, `button-secondary`), and the dark twin of any variant ends in `-dark`. Dial and Ring sizes are `size` entries such as `dial-sm` and `ring-md`.
+One group per primitive in `registry.json`: Button, Icon, ChartPalette, Panel, Stack, Dial, Ring, Toggle, DataRow, TabStrip, Meta, Readout, Prompt, Composer, Badge, Input, Message, ThemeToggle, Lightbox, Dialog, Menu and Sidebar. Variants use the format's related-key convention (`button-primary`, `button-secondary`), and the dark twin of any variant ends in `-dark`. Dial and Ring sizes are `size` entries such as `dial-sm` and `ring-md`.
 
 What the front matter can't say:
 
@@ -78,6 +78,7 @@ What the front matter can't say:
 - Interaction states other than disabled. A button is a frame with a hard shadow in the border colour. Hover lifts it, pressing pushes it into the shadow, a toggle that is on stays pushed in and inverted, and focus turns the shadow to `primary`. There is no outline ring. None of this changes a text and background pair, except a pressed toggle, which is mapped as `button-pressed`.
 - Dialog's scrim and danger rule. The scrim is `overlay` painted on the dialog element itself, and a danger dialog adds a top rule in `danger`. Neither is a text and background pair, so the linter doesn't check them. The danger rule is a non-text edge and needs 3:1 against what touches it.
 - Menu's highlighted row. It is the canvas colour on the surface, which are close, so the row also gets a thick left rule in the text colour. The rule is a non-text edge and needs 3:1 against the surface it touches. The trigger is a Button and takes its pairs from there. Menu opens with no animation, so there is no motion to switch off under reduced motion.
+- Message's icon and cursor. A danger message leads with the error icon and a success message with the check icon, so the state is never carried by colour alone, and both take the colour of the words. The busy cursor is the same one Prompt blinks, in `text-accent`. Each tone is mapped on `bg` and on `surface`, because a message sits beside a field or inside a card.
 - Composer's height. The text box grows with its text up to a row limit set by a prop, so it has no size entry. Its focus outline is drawn on the shell, not on the text box.
 - The active data row's background. CSS mixes it from other tokens, so it has no entry of its own and the linter doesn't check it.
 - Transparency. Components that are transparent in code (the ghost button, an off toggle, rows, tabs, meta labels, prompts, readouts, dials and rings) are listed on `bg`.

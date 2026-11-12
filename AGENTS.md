@@ -36,6 +36,7 @@ Read this before generating UI with NIL primitives.
 | Destructive action | `Button` with `variant="danger"` |
 | Destructive item inside a `Menu` | `variant="danger"` on the item: red text, never a red `Button` |
 | Large stat | `Readout` |
+| Saying what the system is doing, has done, or why it failed, beside the control | `Message` |
 
 ## App vs NIL boundary
 
@@ -407,6 +408,21 @@ Added 2026-11-09. 36 icons in `src/components/icons.ts`, drawn for this kit, not
   never share one. A test renders two and compares.
 - **Icons are decorative by default** (`aria-hidden`). Give `label` only for an icon that stands alone.
   Inside a Button, never label the icon: the Button's own name is the name.
+
+## Gotcha: Message is a live region
+
+Added 2026-11-12, with Message. Each of these fails quietly if someone "tidies" it.
+
+- **It is always rendered, even empty.** A live region has to be in the page before its text arrives, or a
+  screen reader does not announce the text. Render `<Message tone="danger" />` with nothing in it and fill
+  it later. Do not mount it only when there is something to say.
+- **Danger is `role="alert"`, the other tones are `role="status"`.** An alert interrupts, a status waits its
+  turn. A `role` you pass wins, so a danger line that should not interrupt can ask for `status`.
+- **The icon is there so the state is not carried by colour alone.** Danger leads with the error icon and
+  success with the check icon, both decorative. Neutral has none.
+- **`busy` reuses the kit's cursor, `.nil-cursor-blink`.** It follows the words, in the accent text role,
+  and holds still under reduced motion like Prompt's. Do not write a second blink. With no words there is
+  no cursor.
 
 ## Gotcha: chart colours
 

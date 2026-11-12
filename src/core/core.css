@@ -721,6 +721,54 @@ pre,
   color: var(--nil-color-text-danger);
 }
 
+/* ─── Message ─────────────────────────────────────────────────────────────── */
+
+/*
+ * The system saying what it is doing or what went wrong, beside a control. A live region (Message.tsx),
+ * so it is always in the page, empty or not. The line height is written once, as the same unitless
+ * number .nil-text uses, because the kit has no line-height token. The icon sits on the first line:
+ * it is centred on one line's height, worked out from that number and the icon size token, and the
+ * line height is declared twice (em form, then lh) so an engine without the lh unit keeps the first.
+ * Text pairs, all mapped in design-md/structure.json: each tone on the canvas and on a surface.
+ */
+.nil-message {
+  --nil-message-leading: 1.6;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--nil-spacing-sm);
+  margin: 0;
+  font-family: var(--nil-font-body);
+  font-size: var(--nil-type-scale-sm);
+  line-height: var(--nil-message-leading);
+}
+
+.nil-message--neutral {
+  color: var(--nil-color-text-muted);
+}
+
+.nil-message--danger {
+  color: var(--nil-color-text-danger);
+}
+
+.nil-message--success {
+  color: var(--nil-color-success);
+}
+
+.nil-message__icon {
+  margin-top: calc((var(--nil-message-leading) * 1em - var(--nil-size-icon-sm)) / 2);
+  margin-top: calc((1lh - var(--nil-size-icon-sm)) / 2);
+}
+
+.nil-message__text {
+  min-width: 0;
+}
+
+/* Reuses .nil-cursor-blink, which holds still under reduced motion. Only its colour and gap are set here. */
+.nil-message__cursor {
+  margin-left: var(--nil-spacing-xs);
+  color: var(--nil-color-text-accent);
+}
+
 /* ─── Composer ────────────────────────────────────────────────────────────── */
 
 /*

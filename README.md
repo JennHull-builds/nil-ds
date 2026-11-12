@@ -28,6 +28,7 @@ component architecture with agent-readable `tokens.json` + `registry.json`.
 | `Menu` | An action menu on the WAI-ARIA menu button pattern: arrow keys, Home and End, Escape returns focus, danger items in red text. No UI library |
 | `Sidebar` | App navigation: a named nav, headed sections, the current page marked by more than colour, and a toggle that collapses it in flow |
 | `Panel`, `Stack`, `Prompt`, `Readout` | Instrument shells |
+| `Message` | A status or error line beside a control: a live region with a danger, success or neutral tone, an icon so colour is not the only cue, and an optional blinking cursor while the system works |
 | `Composer` | Multi-line chat or command input, with Send and Stop |
 | `Dial`, `Ring` | Circular gauges |
 | `Toggle`, `DataRow`, `TabStrip` | Schedule / density UI. TabStrip has arrow keys, Home and End |
