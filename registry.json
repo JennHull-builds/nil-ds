@@ -86,8 +86,8 @@
     },
     {
       "name": "Input",
-      "tokens": ["--nil-color-text", "--nil-color-text-muted", "--nil-color-text-danger", "--nil-color-danger", "--nil-color-surface", "--nil-color-border", "--nil-color-accent", "--nil-border-width", "--nil-radius-default", "--nil-font-body", "--nil-type-scale-xs", "--nil-type-scale-sm", "--nil-type-scale-base", "--nil-spacing-xs", "--nil-spacing-sm"],
-      "props": { "label": "string", "error": "string?" }
+      "tokens": ["--nil-color-text", "--nil-color-text-muted", "--nil-color-text-danger", "--nil-color-danger", "--nil-color-surface", "--nil-color-border", "--nil-color-accent", "--nil-border-width", "--nil-radius-default", "--nil-font-body", "--nil-type-scale-xs", "--nil-type-scale-sm", "--nil-type-scale-base", "--nil-spacing-xs", "--nil-spacing-sm", "--nil-size-button-sm", "--nil-size-offset"],
+      "props": { "label": "string", "error": "string?", "trailing": "ReactNode? (a small control inside the field at its end, such as an icon Button, size sm, that shows or hides the value)" }
     },
     {
       "name": "Message",

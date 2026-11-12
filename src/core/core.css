@@ -707,6 +707,34 @@ pre,
   color: var(--nil-color-text);
 }
 
+/*
+ * A trailing control, such as a show or hide Button on a secret field. The wrapper is the positioning
+ * context. The slot is as tall as the field and centres the control inside it, with no transform
+ * (a Button's own hover and press use transform). It is inset from the end by a spacing token plus the
+ * Button's offset, so its hover and focus shadow and its pressed shift (which moves it by the offset)
+ * all stay inside the frame. The input's end padding is the small button width, that inset and a gap,
+ * so typed text never runs under the control.
+ */
+.nil-input-field {
+  position: relative;
+  display: block;
+}
+
+.nil-input--trailing {
+  display: block;
+  width: 100%;
+  padding-right: calc(var(--nil-size-button-sm) + var(--nil-spacing-xs) + var(--nil-size-offset) + var(--nil-spacing-sm));
+}
+
+.nil-input-trailing {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: calc(var(--nil-spacing-xs) + var(--nil-size-offset));
+  display: flex;
+  align-items: center;
+}
+
 .nil-input::placeholder {
   color: var(--nil-color-text-muted);
 }

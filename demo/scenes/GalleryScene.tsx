@@ -331,6 +331,36 @@ function SidebarDemo() {
   );
 }
 
+/** A secret field with a show or hide control on the field itself. The Button is the Input's `trailing` slot. */
+function SecretInputDemo() {
+  const [shown, setShown] = useState(false);
+  return (
+    // The spacing sits on a wrapper, not on the Input: its style goes to the <input>, and a margin there
+    // would move the field's centre, which is where the control is placed.
+    <div style={{ marginTop: 'var(--nil-spacing-md)' }}>
+      <Input
+        label="API key"
+        name="api-key"
+        type={shown ? 'text' : 'password'}
+        placeholder="Paste your key"
+        autoComplete="off"
+        spellCheck={false}
+        trailing={
+          <Button
+            type="button"
+            size="sm"
+            variant="ghost"
+            icon={shown ? 'eye-off' : 'eye'}
+            aria-label={shown ? 'Hide key' : 'Show key'}
+            aria-pressed={shown}
+            onClick={() => setShown((value) => !value)}
+          />
+        }
+      />
+    </div>
+  );
+}
+
 export function GalleryScene() {
   const { ref, visible } = useReveal();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -437,6 +467,7 @@ export function GalleryScene() {
           <div style={{ marginTop: 'var(--nil-spacing-sm)' }}>
             <Input label="Name" placeholder="Your name" />
             <Input label="Device ID" placeholder="Required" error="Invalid ID: check the format" style={{ marginTop: 'var(--nil-spacing-md)' }} />
+            <SecretInputDemo />
           </div>
         </Card>
 

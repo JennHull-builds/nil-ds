@@ -36,6 +36,7 @@ Read this before generating UI with NIL primitives.
 | Destructive action | `Button` with `variant="danger"` |
 | Destructive item inside a `Menu` | `variant="danger"` on the item: red text, never a red `Button` |
 | Large stat | `Readout` |
+| A show or hide control on a secret field | `Input` with `trailing` (an icon `Button`, `size="sm"`) |
 | Saying what the system is doing, has done, or why it failed, beside the control | `Message` |
 
 ## App vs NIL boundary
