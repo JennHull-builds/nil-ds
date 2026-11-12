@@ -366,6 +366,11 @@ Added 2026-11-09, with 0.3.0. The bracket look is gone. Each of these fails quie
 - **Never position a Button with `transform`.** Hover, focus and press all set `transform`, so a
   parent's `translate` is overwritten and the button jumps. Lightbox's side buttons are placed with `top`
   for this reason.
+- **Hover rules sit inside `@media (hover: hover)`.** On a touch screen `:hover` sticks to the last thing
+  tapped, so a tapped Button would keep its lifted look until something else was tapped. Button, Input,
+  Toggle and Composer hover rules are each in their own block, in place, so the cascade order is
+  unchanged. A new hover rule goes inside the same kind of block. Menu's highlight follows focus, which is
+  moved in code, so it has no such block.
 - **The shadow is outside the box, so an `overflow: hidden` parent clips it.** ThemeToggle pads for it,
   and so should anything else that puts a Button in a clipped or scrolling container.
 - **`sm` is 36 px to see and 44 px to tap.** An invisible `::after` extends the hit area, and it is never

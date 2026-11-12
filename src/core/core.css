@@ -370,18 +370,21 @@ pre,
 /*
  * Hover. A button that is unavailable or busy never reacts, so every state rule below carries the
  * three :not() guards. Pressed (aria-pressed) and active come after hover, so a toggle that is on
- * and a button being pressed both win over it.
+ * and a button being pressed both win over it. The hover rules sit inside `@media (hover: hover)`, so a
+ * touch screen, where :hover sticks to the last thing tapped, never keeps a tapped button lifted.
  */
-.nil-btn--primary:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):hover,
-.nil-btn--secondary:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):hover,
-.nil-btn--danger:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):hover {
-  transform: translate(calc(-1 * var(--nil-size-offset-lift)), calc(-1 * var(--nil-size-offset-lift)));
-  box-shadow: var(--nil-size-offset-hover) var(--nil-size-offset-hover) 0 0 var(--nil-color-border);
-}
+@media (hover: hover) {
+  .nil-btn--primary:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):hover,
+  .nil-btn--secondary:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):hover,
+  .nil-btn--danger:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):hover {
+    transform: translate(calc(-1 * var(--nil-size-offset-lift)), calc(-1 * var(--nil-size-offset-lift)));
+    box-shadow: var(--nil-size-offset-hover) var(--nil-size-offset-hover) 0 0 var(--nil-color-border);
+  }
 
-.nil-btn--ghost:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):hover {
-  border-color: var(--nil-color-border);
-  box-shadow: var(--nil-size-offset) var(--nil-size-offset) 0 0 var(--nil-color-border);
+  .nil-btn--ghost:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):hover {
+    border-color: var(--nil-color-border);
+    box-shadow: var(--nil-size-offset) var(--nil-size-offset) 0 0 var(--nil-color-border);
+  }
 }
 
 /* A toggle that is on: pushed in and inverted. */
@@ -463,8 +466,10 @@ pre,
   outline-offset: 2px;
 }
 
-.nil-input:not(:disabled):hover {
-  border-color: var(--nil-color-text-muted);
+@media (hover: hover) {
+  .nil-input:not(:disabled):hover {
+    border-color: var(--nil-color-text-muted);
+  }
 }
 
 .nil-theme-toggle {
@@ -578,8 +583,10 @@ pre,
   }
 }
 
-.nil-toggle:not(:disabled):hover {
-  opacity: 0.9;
+@media (hover: hover) {
+  .nil-toggle:not(:disabled):hover {
+    opacity: 0.9;
+  }
 }
 
 /* ─── Typography utilities ─────────────────────────────────────────────────── */
@@ -838,8 +845,10 @@ pre,
   transition: border-color var(--nil-motion-duration-fast) var(--nil-motion-easing-standard);
 }
 
-.nil-composer:not(.nil-composer--disabled):hover {
-  border-color: var(--nil-color-text-muted);
+@media (hover: hover) {
+  .nil-composer:not(.nil-composer--disabled):hover {
+    border-color: var(--nil-color-text-muted);
+  }
 }
 
 .nil-composer__row {

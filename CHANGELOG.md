@@ -10,6 +10,7 @@
 ### Changed
 
 - **`Input` is as tall as the tap size.** `.nil-input` reads `--nil-size-tap` for its `min-height`, so an Input beside a md Button is no longer 2 px short.
+- **Hover styles apply only where a pointer can hover.** The `:hover` rules of Button, Input, Toggle and Composer are inside `@media (hover: hover)`, so a touch screen no longer keeps a tapped control looking hovered. No declaration inside the rules changed.
 
 ## 0.3.0
 
