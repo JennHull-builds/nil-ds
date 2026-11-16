@@ -7,9 +7,9 @@ import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync, execSync } from 'node:child_process';
+import { loadTokens } from './lib/tokens.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const jsonPath = join(root, 'src/tokens/tokens.json');
 const cssPath = join(root, 'src/tokens/tokens.css');
 
 // Regenerate and compare
@@ -22,7 +22,7 @@ if (before !== after) {
   process.exit(1);
 }
 
-const tokens = JSON.parse(readFileSync(jsonPath, 'utf8'));
+const tokens = loadTokens(root);
 const css = after;
 
 function getPath(obj, path) {
