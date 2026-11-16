@@ -5,15 +5,15 @@ import { DemoScene } from '../DemoScene';
 import tokensJson from '../../src/tokens/tokens.json';
 
 type Theme = 'light' | 'dark';
-type TokenNode = { value?: string; ref?: string };
+type TokenNode = { $value: string | { hex: string } };
 
-/** Walk a ref in tokens.json down to its value. Values are read here, never typed, so this page cannot go stale. */
+/** Walk an alias ("{group.token}") in tokens.json down to its colour's hex. Values are read here, never typed, so this page cannot go stale. */
 function resolve(node: TokenNode): string {
-  if (node.value !== undefined) return node.value;
-  const target = node.ref!.split('.').reduce<unknown>((cur, key) => (cur as Record<string, unknown>)[key], tokensJson) as TokenNode;
+  if (typeof node.$value !== 'string') return node.$value.hex;
+  const target = node.$value.slice(1, -1).split('.').reduce<unknown>((cur, key) => (cur as Record<string, unknown>)[key], tokensJson) as TokenNode;
   return resolve(target);
 }
-const themed = (theme: Theme, key: string) => resolve((tokensJson.semantic[theme] as Record<string, TokenNode>)[key]);
+const themed = (theme: Theme, key: string) => resolve((tokensJson.semantic[theme] as unknown as Record<string, TokenNode>)[key]);
 
 const lin = (c: number) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
 const lum = (hex: string) => {

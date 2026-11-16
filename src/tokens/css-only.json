@@ -1,0 +1,15 @@
+{
+  "_readme": "Values that Design Tokens (DTCG) 2025.10 has no type for, so they cannot live in tokens.json. Today that is one CSS keyword, step-end: the standard's easing type, cubicBezier, takes four numbers and nothing else (format module section 8.6), and a token with no valid type is invalid (section 8). scripts/lib/tokens.mjs reads this file after tokens.json and puts each entry back in the place `after` names, so the generated CSS is the same as it was before the move. An entry is { path, value } or { path, ref }, with `after` the sibling token it follows.",
+  "tokens": [
+    {
+      "path": "primitive.motion.easing-step",
+      "value": "step-end",
+      "after": "primitive.motion.easing-out-expo"
+    },
+    {
+      "path": "semantic.motion-easing-step",
+      "ref": "primitive.motion.easing-step",
+      "after": "semantic.motion-easing-out-expo"
+    }
+  ]
+}

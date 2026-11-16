@@ -23,7 +23,7 @@ import { useReveal } from '../hooks/useReveal';
 import { DemoScene } from '../DemoScene';
 import tokensJson from '../../src/tokens/tokens.json';
 
-const ACCENT = tokensJson.primitive.color.accent.value;
+const ACCENT = tokensJson.primitive.color.accent.$value.hex;
 
 const demoLightboxImage = (title: string, alt: string): LightboxImage => ({
   src:

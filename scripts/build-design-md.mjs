@@ -19,11 +19,12 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { loadTokens } from './lib/tokens.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const outPath = join(root, 'DESIGN.md');
 
-const tokens = JSON.parse(readFileSync(join(root, 'src/tokens/tokens.json'), 'utf8'));
+const tokens = loadTokens(root);
 const registry = JSON.parse(readFileSync(join(root, 'registry.json'), 'utf8'));
 const structure = JSON.parse(readFileSync(join(root, 'design-md/structure.json'), 'utf8'));
 const prose = readFileSync(join(root, 'design-md/prose.md'), 'utf8');

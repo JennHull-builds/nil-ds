@@ -2,15 +2,15 @@
  * Generate src/tokens/tokens.css from src/tokens/tokens.json.
  * Run: npm run tokens:build
  */
-import { readFileSync, writeFileSync } from 'node:fs';
+import { writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { loadTokens } from './lib/tokens.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const jsonPath = join(root, 'src/tokens/tokens.json');
 const cssPath = join(root, 'src/tokens/tokens.css');
 
-const tokens = JSON.parse(readFileSync(jsonPath, 'utf8'));
+const tokens = loadTokens(root);
 
 function getPath(obj, path) {
   const parts = path.split('.');
