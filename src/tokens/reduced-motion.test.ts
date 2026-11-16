@@ -69,7 +69,7 @@ describe('reduced motion', () => {
 
   it('the substitute duration is non-zero', () => {
     // 0s can skip transitionend handlers, which silently breaks anything waiting on one.
-    expect(tokensJson.primitive.motion['duration-instant'].value).toBe('1ms');
+    expect(tokensJson.primitive.motion['duration-instant'].$value).toEqual({ value: 1, unit: 'ms' });
   });
 
   it('easings are left alone', () => {

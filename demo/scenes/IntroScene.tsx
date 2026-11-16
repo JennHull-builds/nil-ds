@@ -12,7 +12,7 @@ import { version } from '../../package.json';
 import { useReveal } from '../hooks/useReveal';
 import { DemoScene } from '../DemoScene';
 
-const ACCENT = tokensJson.primitive.color.accent.value;
+const ACCENT = tokensJson.primitive.color.accent.$value.hex;
 
 export function IntroScene({
   theme,
